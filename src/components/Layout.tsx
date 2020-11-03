@@ -18,7 +18,7 @@ const Emoji = () => (
   <span aria-label="weekday-golf" role="img">🏌🏾‍♂</span>
 );
 
-const Layout = ({ children, rounds, stats, title }) => {
+const Layout = ({ children, title }) => {
   const { pathname } = useRouter();
   const activeKey = pathname.replace('/', '') || DEFAULT_ITEM;
 

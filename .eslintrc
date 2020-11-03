@@ -4,19 +4,58 @@
     "es6": true,
     "node": true
   },
-  "extends": [
-    "@ericgio/eslint-config-react",
+  "plugins": [
+    "@typescript-eslint"
   ],
-  "parser": "babel-eslint",
+  "extends": [
+    "@ericgio/eslint-config-react"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    }
+  },
   "rules": {
     "curly": ["error", "all"],
     "consistent-return": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
     "no-alert": "off",
     "no-param-reassign": "off",
     "no-restricted-globals": "off",
     "no-shadow": "off",
+    "no-unused-expressions": "off",
+    "no-use-before-define": "off",
     "react/forbid-prop-types": "off",
     "react/default-props-match-prop-types": "off",
+    "@typescript-eslint/no-use-before-define": "error",
+    "react/jsx-filename-extension": [
+      "error",
+      {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    ],
     "sort-keys": "off"
   }
 }
