@@ -22,6 +22,7 @@ const useResizeObserver = (
 
     observer.observe(containerElem);
 
+    // eslint-disable-next-line consistent-return
     return () => observer.unobserve(containerElem);
   }, [containerRef]);
 
