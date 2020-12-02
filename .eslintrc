@@ -8,9 +8,12 @@
     "@typescript-eslint"
   ],
   "extends": [
-    "@ericgio/eslint-config-react"
+    "airbnb-typescript"
   ],
   "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "settings": {
     "import/resolver": {
       "node": {
@@ -25,7 +28,6 @@
   },
   "rules": {
     "curly": ["error", "all"],
-    "consistent-return": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -36,15 +38,10 @@
         "tsx": "never"
       }
     ],
-    "no-alert": "off",
-    "no-param-reassign": "off",
-    "no-restricted-globals": "off",
-    "no-shadow": "off",
-    "no-unused-expressions": "off",
-    "no-use-before-define": "off",
+    "react/prop-types": "off",
     "react/forbid-prop-types": "off",
-    "react/default-props-match-prop-types": "off",
-    "@typescript-eslint/no-use-before-define": "error",
+    "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off",
     "react/jsx-filename-extension": [
       "error",
       {
@@ -55,7 +52,6 @@
           ".tsx"
         ]
       }
-    ],
-    "sort-keys": "off"
+    ]
   }
 }

@@ -1,0 +1,19 @@
+.yAxis {
+  text {
+    text-anchor: start;
+    transform: translate(10px, -8px);
+  }
+}
+
+.backgroundPlayerRound {
+  fill: lightgray;
+}
+
+.focusedPlayer {
+  fill: blue;
+  stroke: blue;
+}
+
+.focusedRound {
+  fill: black;
+}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 const useResizeObserver = (
   containerRef,
-  initialSize = { height: 0, width: 0 }
+  initialSize = { height: 0, width: 0 },
 ) => {
   const [size, setSize] = useState(initialSize);
 

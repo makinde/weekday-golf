@@ -1,0 +1,15 @@
+query overviewPage($courseId: Int!) {
+  summaryRounds: rounds(
+    where: { courseId: { _eq: $courseId } },
+    order_by: { date: desc },
+    limit: 5,
+  ) {
+    ...roundForSummary
+  }
+
+  leaderboardEntries: leaderboard(
+    args: { course: $courseId, rank: 10 }
+  ) {
+    ...entryForLeaderboard
+  }
+}

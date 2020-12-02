@@ -1,0 +1,29 @@
+query courseSlugListing {
+  courses {
+    slug
+  }
+}
+
+fragment pageCourse on course {
+  id
+  slug
+  name
+  img
+}
+
+fragment pagePlayer on player {
+  id
+  slug
+}
+
+query courseForPage($slug: String!) {
+  courses(where: { slug: { _eq: $slug } }) {
+    ...pageCourse
+  }
+}
+
+query playerForPage($slug: String!) {
+  players(where: { slug: { _eq: $slug } }) {
+    ...pagePlayer
+  }
+}

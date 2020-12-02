@@ -1,18 +1,18 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Container, Navbar, Nav } from 'react-bootstrap';
 import cx from 'classnames';
 
-import styles from './styles/Layout.module.scss';
+import styles from './Layout.module.scss';
 
 const ITEMS = [
+  { path: '', label: 'Overview' },
   { path: 'rounds', label: 'Rounds' },
-  { path: 'stats', label: 'Stats' },
 ];
 
-const DEFAULT_ITEM = 'rounds';
+const DEFAULT_ITEM = '';
 
 const Emoji = () => (
   <span aria-label="weekday-golf" role="img">🏌🏾‍♂</span>
@@ -23,9 +23,12 @@ const Layout = ({ children, title }) => {
   const activeKey = pathname.replace('/', '') || DEFAULT_ITEM;
 
   return (
-    <Fragment>
+    <>
       <Head>
-        <title>Weekday Golf · {title}</title>
+        <title>
+          Weekday Golf ·
+          {title}
+        </title>
         <link
           href="/apple-touch-icon.png"
           rel="apple-touch-icon"
@@ -48,11 +51,14 @@ const Layout = ({ children, title }) => {
       </Head>
       <Navbar
         className={cx(styles.appNav, 'justify-content-between')}
-        sticky="top">
+        sticky="top"
+      >
         <Container>
           <Link href="/" passHref>
             <Navbar.Brand>
-              <Emoji /> Weekday Golf
+              <Emoji />
+              {' '}
+              Weekday Golf
             </Navbar.Brand>
           </Link>
           <Nav activeKey={activeKey}>
@@ -69,7 +75,7 @@ const Layout = ({ children, title }) => {
       <Container>
         {children}
       </Container>
-    </Fragment>
+    </>
   );
 };
 

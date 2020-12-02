@@ -1,0 +1,13 @@
+fragment entryForLeaderboard on zz_leaderboard {
+  rank
+  playerRound {
+    player {
+      nickname
+      slug
+    }
+    relativeScore
+    round {
+      id
+    }
+  }
+}

@@ -1,0 +1,33 @@
+fragment roundForTable on round {
+  id
+  date
+  name
+  roundBounty
+  skinsHoleBounty
+  course {
+    name
+    holes(order_by: { number: asc }) {
+      nickname
+      number
+      par
+    }
+  }
+  playerRounds(order_by: { relativeScore: asc }) {
+    relativeScore
+    roundBountyWinner
+    totalWinnings
+    player {
+      nickname
+      img
+      id
+    }
+    skins {
+      holeNumber
+      won
+    }
+    scores {
+      holeNumber
+      score
+    }
+  }
+}

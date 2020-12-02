@@ -2,7 +2,6 @@ $border-color: rgba(0, 0, 0, 0.1);
 $border-style: 1px solid $border-color;
 
 .appTable {
-  margin-bottom: 30px;
   white-space: nowrap;
 
   td, th {
@@ -11,7 +10,11 @@ $border-style: 1px solid $border-color;
   }
 
   .highlightCell {
-    background-color: #ffffbb;
+    border-bottom: 4px solid #28A745;
+
+    &.light {
+      border-bottom-color: grey;
+    }
   }
 
   .rowHeader {

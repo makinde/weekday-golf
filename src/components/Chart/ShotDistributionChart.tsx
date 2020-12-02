@@ -45,7 +45,7 @@ const RoundsChart = ({ scores }) => {
     .padding(0.25);
 
   const yScale = d3.scaleLinear()
-    .domain([0, d3.max(Object.values(data)) + 15])
+    .domain([0, d3.max<number>(Object.values(data)) + 15])
     .rangeRound([innerHeight, 0]);
 
   const xAxis = d3
@@ -66,7 +66,8 @@ const RoundsChart = ({ scores }) => {
     <div className={styles.container} ref={ref}>
       <svg
         height={HEIGHT}
-        width={width}>
+        width={width}
+      >
         <g transform={translate(MARGIN.left, MARGIN.top)}>
           <Axis
             axis={xAxis}
@@ -81,13 +82,14 @@ const RoundsChart = ({ scores }) => {
             axis={yAxis}
             className={cx(styles.yAxis)}
           />
-          {Object.keys(data).map((k, idx) => {
+          {Object.keys(data).map((k) => {
             const value = data[k];
             return (
               <OverlayTrigger
                 key={`${k}-${value}`}
-                overlay={<Tooltip>{value}</Tooltip>}
-                placement="top">
+                overlay={<Tooltip id={`oid-${value}`}>{value}</Tooltip>}
+                placement="top"
+              >
                 <rect
                   fill={d3.schemeCategory10[0]}
                   height={Math.abs(innerHeight - yScale(value))}

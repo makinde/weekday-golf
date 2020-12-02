@@ -1,0 +1,28 @@
+query defaultCourseRoundsPage($courseId: Int!) {
+  course(id: $courseId) {
+    ...pageCourse
+  }
+
+  roundsForChart: playerRounds(
+    where: {
+      courseId: { _eq: $courseId },
+      complete: { _eq: true },
+    }
+  ) {
+    ...playerRoundForChart
+  }
+
+  leaderboardEntries: leaderboard(
+    args: { course: $courseId, rank: 10 }
+  ) {
+    ...entryForLeaderboard
+  }
+
+  roundsForTable: rounds(
+    where: { courseId: { _eq: $courseId } },
+    order_by: { date: desc },
+  ) {
+    id
+    ...roundForTable
+  }
+}

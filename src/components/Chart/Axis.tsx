@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 
 import styles from './styles/Axis.module.scss';
 
-const Axis = ({ axis, ...props }) => {
+const Axis = ({ axis, className = '', ...props }) => {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const Axis = ({ axis, ...props }) => {
   return (
     <g
       {...props}
-      className={cx(styles.axis, props.className)}
+      className={cx(styles.axis, className)}
       ref={containerRef}
     />
   );

@@ -12,9 +12,9 @@ import React, { useCallback, useState } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import BestRoundsTable from '../components/BestRoundsTable';
-import Layout from '../components/Layout';
+import Layout from '../components/utils/Layout';
 import ShotDistributionChart from '../components/Chart/ShotDistributionChart';
-import Table from '../components/Table';
+import Table from '../components/utils/Table';
 
 import getAllData from '../data/getAllData';
 
@@ -45,13 +45,16 @@ const RECENT_ROUND_COUNT = 8;
 // Placeholder to break dependency on constant
 const COURSE = {
   holes: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
-  pars: { 1: 3, 2: 3, 3: 3, 4: 3, 5: 3, 6: 3, 7: 3, 8: 3, 9: 3 },
+  pars: {
+    1: 3, 2: 3, 3: 3, 4: 3, 5: 3, 6: 3, 7: 3, 8: 3, 9: 3,
+  },
 };
 
 const Arrow = ({ className, dir, ...props }) => (
   <span
     {...props}
-    className={cx(styles.arrow, className)}>
+    className={cx(styles.arrow, className)}
+  >
     {dir === 'up' ? '▲' : '▼'}
   </span>
 );
@@ -80,15 +83,18 @@ const SortableHeader = ({
   selectedSortKey,
   sortKey,
 }) => {
-  const arrow = sortKey === selectedSortKey ?
-    <SortArrow order={order} /> :
-    null;
+  const arrow = sortKey === selectedSortKey
+    ? <SortArrow order={order} />
+    : null;
 
   return (
     <th
       className={cx(styles.sortable, className)}
-      onClick={() => onClick(sortKey)}>
-      {children} {arrow}
+      onClick={() => onClick(sortKey)}
+    >
+      {children}
+      {' '}
+      {arrow}
     </th>
   );
 };
@@ -129,28 +135,32 @@ const StatsPage = ({
               onClick={handleHeaderClick}
               order={order}
               selectedSortKey={selectedSortKey}
-              sortKey="name">
+              sortKey="name"
+            >
               Name
             </Table.RowHeader>
             <SortableHeader
               onClick={handleHeaderClick}
               order={order}
               selectedSortKey={selectedSortKey}
-              sortKey="roundAvg">
+              sortKey="roundAvg"
+            >
               Avg. Score
             </SortableHeader>
             <SortableHeader
               onClick={handleHeaderClick}
               order={order}
               selectedSortKey={selectedSortKey}
-              sortKey="roundsPlayed">
+              sortKey="roundsPlayed"
+            >
               Rounds Played
             </SortableHeader>
             <SortableHeader
               onClick={handleHeaderClick}
               order={order}
               selectedSortKey={selectedSortKey}
-              sortKey="roundsWon">
+              sortKey="roundsWon"
+            >
               Rounds Won
             </SortableHeader>
             <th>Best Hole</th>
@@ -173,21 +183,61 @@ const StatsPage = ({
             const maxHoles = holes.filter((hole) => holeAvgs[hole] === max);
             const parTotal = sum(Object.values(pars));
 
-            const dataCells = roundsPlayed === 0 ?
-              <React.Fragment>
-                <td>-</td>
-                <td>{roundsPlayed} ({roundsPlayedPercentage}%)</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </React.Fragment> :
-              <React.Fragment>
-                <td>{roundAvg} (+{roundTo(roundAvg - parTotal, 1)})</td>
-                <td>{roundsPlayed} ({roundsPlayedPercentage}%)</td>
-                <td>{roundsWon} ({roundsWonPercentage}%)</td>
-                <td>{minHoles.join(', ')} ({min})</td>
-                <td>{maxHoles.join(', ')} ({max})</td>
-              </React.Fragment>;
+            const dataCells = roundsPlayed === 0
+              ? (
+                <>
+                  <td>-</td>
+                  <td>
+                    {roundsPlayed}
+                    {' '}
+                    (
+                    {roundsPlayedPercentage}
+                    %)
+                  </td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </>
+              )
+              : (
+                <>
+                  <td>
+                    {roundAvg}
+                    {' '}
+                    (+
+                    {roundTo(roundAvg - parTotal, 1)}
+                    )
+                  </td>
+                  <td>
+                    {roundsPlayed}
+                    {' '}
+                    (
+                    {roundsPlayedPercentage}
+                    %)
+                  </td>
+                  <td>
+                    {roundsWon}
+                    {' '}
+                    (
+                    {roundsWonPercentage}
+                    %)
+                  </td>
+                  <td>
+                    {minHoles.join(', ')}
+                    {' '}
+                    (
+                    {min}
+                    )
+                  </td>
+                  <td>
+                    {maxHoles.join(', ')}
+                    {' '}
+                    (
+                    {max}
+                    )
+                  </td>
+                </>
+              );
 
             return (
               <tr key={name}>
@@ -203,7 +253,15 @@ const StatsPage = ({
 
       <h3>Average Score By Hole</h3>
       <div className={styles.avgScoreExplanation}>
-        Most recent {RECENT_ROUND_COUNT} rounds, minimum {MIN_ROUNDS} rounds
+        Most recent
+        {' '}
+        {RECENT_ROUND_COUNT}
+        {' '}
+        rounds, minimum
+        {' '}
+        {MIN_ROUNDS}
+        {' '}
+        rounds
       </div>
       <Table>
         <thead>
@@ -217,7 +275,9 @@ const StatsPage = ({
         <tbody>
           {sortBy(playerStats, [(stat) => mean(values(stat.recentHoleAvgs))])
             .filter((stat) => stat.roundsPlayed >= MIN_ROUNDS)
-            .map(({ name, holeAvgs, recentHoleAvgs, roundsPlayed }, i, arr) => (
+            .map(({
+              name, holeAvgs, recentHoleAvgs, roundsPlayed,
+            }, i, arr) => (
               <tr key={name}>
                 <Table.RowHeader>
                   {name}
@@ -231,16 +291,22 @@ const StatsPage = ({
                   return (
                     <Table.HighlightableCell
                       highlight={isBestScore}
-                      key={`avgHoleScore-${name}-${hole}`}>
+                      key={`avgHoleScore-${name}-${hole}`}
+                    >
                       <OverlayTrigger
-                        overlay={
+                        overlay={(
                           <Tooltip>
-                            Recent: {recentHoleAvg}
+                            Recent:
+                            {' '}
+                            {recentHoleAvg}
                             <br />
-                            All-time: {holeAvg}
+                            All-time:
+                            {' '}
+                            {holeAvg}
                           </Tooltip>
-                        }
-                        placement="top">
+                        )}
+                        placement="top"
+                      >
                         <span>
                           {recentHoleAvg}
                           {' '}
@@ -306,7 +372,7 @@ export async function getStaticProps() {
     const playerScores = filter(scores, { player: id });
     const recentRounds = getRecentPlayerRounds(rounds, id, RECENT_ROUND_COUNT);
     const recentPlayerScores = playerScores.filter(
-      (score) => recentRounds.includes(score.round)
+      (score) => recentRounds.includes(score.round),
     );
     const roundsWon = roundsWonByPlayer[id] || 0;
     const roundsPlayed = getRoundsPlayed(rounds, id);

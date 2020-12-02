@@ -1,0 +1,14 @@
+fragment roundForSummary on round {
+  ...roundForTable
+  date
+  name
+  course {
+    name
+  }
+  playerRounds(order_by: { relativeScore: asc }) {
+    player {
+      id
+      img
+    }
+  }
+}

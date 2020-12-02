@@ -1,0 +1,12 @@
+fragment playerRoundForChart on player_round {
+  relativeScore
+  player {
+    nickname
+    id
+    img
+  }
+  round {
+    date
+    id
+  }
+}
