@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-import Table from '../utils/Table';
+import AppTable from '../utils/AppTable';
 import { EntryForLeaderboardFragment } from '../../types';
 import RelativeScore from '../utils/RelativeScore';
 import styles from './Leaderboard.module.scss';
@@ -17,7 +17,7 @@ const Leaderboard = ({
   focusedRoundId,
   onRoundFocus = () => {},
 }: Props) => (
-  <Table size="sm" className={styles.table}>
+  <AppTable size="sm" className={styles.table}>
     <tbody>
       {entries.map(({
         rank, playerRound: { relativeScore, player, round },
@@ -36,7 +36,7 @@ const Leaderboard = ({
         </tr>
       ))}
     </tbody>
-  </Table>
+  </AppTable>
 );
 
 export default Leaderboard;

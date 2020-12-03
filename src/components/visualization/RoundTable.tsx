@@ -6,7 +6,7 @@ import {
   OverlayTrigger, Tooltip, Image,
 } from 'react-bootstrap';
 
-import Table from '../utils/Table';
+import AppTable from '../utils/AppTable';
 import { RoundForTableFragment } from '../../types';
 import RelativeScore from '../utils/RelativeScore';
 import WinningsPill from '../utils/WinningsPill';
@@ -35,7 +35,7 @@ const RoundTable = ({ round, round: { course, playerRounds } }: Props) => (
       )}
     </div>
 
-    <Table>
+    <AppTable>
       <thead>
         <tr>
           <th className="text-left border-right">
@@ -112,7 +112,7 @@ const RoundTable = ({ round, round: { course, playerRounds } }: Props) => (
           );
         })}
       </tbody>
-    </Table>
+    </AppTable>
   </>
 );
 

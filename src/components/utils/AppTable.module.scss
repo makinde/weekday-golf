@@ -8,24 +8,6 @@ $border-style: 1px solid $border-color;
     border-color: $border-color;
     text-align: center,
   }
-
-  .highlightCell {
-    border-bottom: 4px solid #28A745;
-
-    &.light {
-      border-bottom-color: grey;
-    }
-  }
-
-  .rowHeader {
-    border-right: $border-style;
-    text-align: left;
-    width: 33%;
-  }
-
-  .rowFooter {
-    border-left: $border-style;
-  }
 }
 
 @media (max-width: 767px) {
