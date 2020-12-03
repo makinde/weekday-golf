@@ -1,3 +1,4 @@
+import cx from 'classnames';
 import find from 'lodash/find';
 import Link from 'next/link';
 import React from 'react';
@@ -6,10 +7,10 @@ import {
 } from 'react-bootstrap';
 
 import Table from '../utils/Table';
-
 import { RoundForTableFragment } from '../../types';
 import RelativeScore from '../utils/RelativeScore';
 import WinningsPill from '../utils/WinningsPill';
+import styles from './RoundTable.module.scss';
 
 type Props = {
   round: RoundForTableFragment,
@@ -37,9 +38,9 @@ const RoundTable = ({ round, round: { course, playerRounds } }: Props) => (
     <Table>
       <thead>
         <tr>
-          <Table.RowHeader as="th">
+          <th className="text-left border-right">
             Name
-          </Table.RowHeader>
+          </th>
           {course.holes.map(({ number, nickname }) => (
             <th key={`hole-${number}`}>
               {nickname === null && number}
@@ -57,9 +58,9 @@ const RoundTable = ({ round, round: { course, playerRounds } }: Props) => (
               )}
             </th>
           ))}
-          <Table.RowFooter as="th">
+          <th className="bl-1">
             Tot
-          </Table.RowFooter>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -70,7 +71,7 @@ const RoundTable = ({ round, round: { course, playerRounds } }: Props) => (
 
           return (
             <tr key={player.id}>
-              <Table.RowHeader>
+              <td className="text-left border-right">
                 <Link href={`/player/${player.id}`}>
                   {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                   <a className="text-dark">
@@ -84,27 +85,29 @@ const RoundTable = ({ round, round: { course, playerRounds } }: Props) => (
                   </a>
                 </Link>
                 <WinningsPill value={totalWinnings} className="float-right" />
-              </Table.RowHeader>
+              </td>
               {course.holes.map(({ number }) => {
                 const holeScore = find(scores, { holeNumber: number });
                 const holeSkin = find(skins, { holeNumber: number });
                 const won = !!holeSkin?.won;
-                const wonSubsequent = !holeSkin
+                const wonViaPush = !holeSkin
                   && !!find(skins, ({ holeNumber }) => holeNumber > number)?.won;
 
                 return (
-                  <Table.HighlightableCell
-                    highlight={won || wonSubsequent}
-                    light={wonSubsequent}
+                  <td
+                    className={cx({
+                      [styles.won]: won,
+                      [styles.wonViaPush]: wonViaPush,
+                    })}
                     key={number}
                   >
                     {holeScore?.score || '-'}
-                  </Table.HighlightableCell>
+                  </td>
                 );
               })}
-              <Table.HighlightableCell as={Table.RowFooter} highlight={roundBountyWinner}>
+              <td className={cx({ [styles.won]: roundBountyWinner })}>
                 <RelativeScore value={playerRound.relativeScore} />
-              </Table.HighlightableCell>
+              </td>
             </tr>
           );
         })}
