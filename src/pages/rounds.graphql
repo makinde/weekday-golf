@@ -23,6 +23,8 @@ query defaultCourseRoundsPage($courseId: Int!) {
     order_by: { date: desc },
   ) {
     id
+    date
+    name
     ...roundForTable
   }
 }

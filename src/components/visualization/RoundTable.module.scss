@@ -1,5 +1,13 @@
+$border-color: rgba(0, 0, 0, 0.1);
+
+.table {
+  tr:last-child  td {
+    border-bottom: 1px solid $border-color;
+  }
+}
+
 .won, .wonViaPush {
-  border-bottom: 4px solid;
+  border-bottom: 4px solid !important;
 }
 
 .won {

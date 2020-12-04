@@ -4285,7 +4285,7 @@ export type DefaultCourseRoundsPageQuery = (
     & EntryForLeaderboardFragment
   )>, roundsForTable: Array<(
     { __typename?: 'round' }
-    & Pick<Round, 'id'>
+    & Pick<Round, 'id' | 'date' | 'name'>
     & RoundForTableFragment
   )> }
 );
@@ -4464,6 +4464,8 @@ export const DefaultCourseRoundsPageDocument = gql`
     order_by: {date: desc}
   ) {
     id
+    date
+    name
     ...roundForTable
   }
 }

@@ -35,7 +35,7 @@ const RoundTable = ({ round, round: { course, playerRounds } }: Props) => (
       )}
     </div>
 
-    <AppTable>
+    <AppTable className={styles.table}>
       <thead>
         <tr>
           <th className="text-left border-right">

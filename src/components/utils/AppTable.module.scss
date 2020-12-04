@@ -3,6 +3,7 @@ $border-style: 1px solid $border-color;
 
 .appTable {
   white-space: nowrap;
+  margin-bottom: 0;
 
   td, th {
     border-color: $border-color;
