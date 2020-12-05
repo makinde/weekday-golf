@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Accordion, Card,
-} from 'react-bootstrap';
+import { Accordion, Card } from 'react-bootstrap';
 
 import { RoundForSummaryFragment } from '../../types';
 import RoundTable from './RoundTable';
@@ -14,7 +12,6 @@ type Props = {
 const RoundsSummary = ({ rounds }: Props) => (
   <Accordion defaultActiveKey={`${rounds[0].id}`}>
     <Card>
-
       <Card.Header>
         Recent Rounds
       </Card.Header>
