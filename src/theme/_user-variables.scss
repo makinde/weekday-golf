@@ -1,4 +1,4 @@
-// 
+//
 // user-variables.scss
 // Use this to overwrite Bootstrap and Dashkit variables
 //
@@ -6,3 +6,6 @@
 // Example of a variable override to change Dashkit's background color
 // Remove the "//" to comment it in and see it in action!
 // $body-bg: #12263F;
+
+$path-to-fonts: '/static/fonts';
+$path-to-img: '/static/img';
