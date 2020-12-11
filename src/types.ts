@@ -20,7 +20,7 @@ export type Scalars = {
   bigint: any;
   numeric: number;
   point: [number, number];
-  timestamp: any;
+  timestamp: string;
 };
 
 /** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
@@ -1228,6 +1228,10 @@ export type Player = {
   scores: Array<Score>;
   /** An aggregated array relationship */
   scores_aggregate: Score_Aggregate;
+  /** An array relationship */
+  scoringInfo: Array<Scoring_Info>;
+  /** An aggregated array relationship */
+  scoringInfo_aggregate: Scoring_Info_Aggregate;
   slug: Scalars['String'];
 };
 
@@ -1269,6 +1273,26 @@ export type PlayerScores_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Score_Order_By>>;
   where?: Maybe<Score_Bool_Exp>;
+};
+
+
+/** columns and relationships of "player" */
+export type PlayerScoringInfoArgs = {
+  distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Scoring_Info_Order_By>>;
+  where?: Maybe<Scoring_Info_Bool_Exp>;
+};
+
+
+/** columns and relationships of "player" */
+export type PlayerScoringInfo_AggregateArgs = {
+  distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Scoring_Info_Order_By>>;
+  where?: Maybe<Scoring_Info_Bool_Exp>;
 };
 
 /** aggregated selection of "player" */
@@ -1346,6 +1370,7 @@ export type Player_Bool_Exp = {
   nickname?: Maybe<String_Comparison_Exp>;
   playerRounds?: Maybe<Player_Round_Bool_Exp>;
   scores?: Maybe<Score_Bool_Exp>;
+  scoringInfo?: Maybe<Scoring_Info_Bool_Exp>;
   slug?: Maybe<String_Comparison_Exp>;
 };
 
@@ -1454,6 +1479,7 @@ export type Player_Order_By = {
   nickname?: Maybe<Order_By>;
   playerRounds_aggregate?: Maybe<Player_Round_Aggregate_Order_By>;
   scores_aggregate?: Maybe<Score_Aggregate_Order_By>;
+  scoringInfo_aggregate?: Maybe<Scoring_Info_Aggregate_Order_By>;
   slug?: Maybe<Order_By>;
 };
 
@@ -1469,9 +1495,11 @@ export type Player_Round = {
   /** An object relationship */
   course?: Maybe<Course>;
   courseId?: Maybe<Scalars['Int']>;
+  courseRank?: Maybe<Scalars['bigint']>;
   par?: Maybe<Scalars['bigint']>;
   /** An object relationship */
   player?: Maybe<Player>;
+  playerCourseRank?: Maybe<Scalars['bigint']>;
   playerId?: Maybe<Scalars['Int']>;
   relativeScore?: Maybe<Scalars['bigint']>;
   /** An object relationship */
@@ -1581,7 +1609,9 @@ export type Player_Round_Aggregate_Order_By = {
 export type Player_Round_Avg_Fields = {
   __typename?: 'player_round_avg_fields';
   courseId?: Maybe<Scalars['Float']>;
+  courseRank?: Maybe<Scalars['Float']>;
   par?: Maybe<Scalars['Float']>;
+  playerCourseRank?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
   relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
@@ -1594,7 +1624,9 @@ export type Player_Round_Avg_Fields = {
 /** order by avg() on columns of table "player_round" */
 export type Player_Round_Avg_Order_By = {
   courseId?: Maybe<Order_By>;
+  courseRank?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
@@ -1612,8 +1644,10 @@ export type Player_Round_Bool_Exp = {
   complete?: Maybe<Boolean_Comparison_Exp>;
   course?: Maybe<Course_Bool_Exp>;
   courseId?: Maybe<Int_Comparison_Exp>;
+  courseRank?: Maybe<Bigint_Comparison_Exp>;
   par?: Maybe<Bigint_Comparison_Exp>;
   player?: Maybe<Player_Bool_Exp>;
+  playerCourseRank?: Maybe<Bigint_Comparison_Exp>;
   playerId?: Maybe<Int_Comparison_Exp>;
   relativeScore?: Maybe<Bigint_Comparison_Exp>;
   round?: Maybe<Round_Bool_Exp>;
@@ -1631,7 +1665,9 @@ export type Player_Round_Bool_Exp = {
 export type Player_Round_Max_Fields = {
   __typename?: 'player_round_max_fields';
   courseId?: Maybe<Scalars['Int']>;
+  courseRank?: Maybe<Scalars['bigint']>;
   par?: Maybe<Scalars['bigint']>;
+  playerCourseRank?: Maybe<Scalars['bigint']>;
   playerId?: Maybe<Scalars['Int']>;
   relativeScore?: Maybe<Scalars['bigint']>;
   roundId?: Maybe<Scalars['Int']>;
@@ -1644,7 +1680,9 @@ export type Player_Round_Max_Fields = {
 /** order by max() on columns of table "player_round" */
 export type Player_Round_Max_Order_By = {
   courseId?: Maybe<Order_By>;
+  courseRank?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
@@ -1658,7 +1696,9 @@ export type Player_Round_Max_Order_By = {
 export type Player_Round_Min_Fields = {
   __typename?: 'player_round_min_fields';
   courseId?: Maybe<Scalars['Int']>;
+  courseRank?: Maybe<Scalars['bigint']>;
   par?: Maybe<Scalars['bigint']>;
+  playerCourseRank?: Maybe<Scalars['bigint']>;
   playerId?: Maybe<Scalars['Int']>;
   relativeScore?: Maybe<Scalars['bigint']>;
   roundId?: Maybe<Scalars['Int']>;
@@ -1671,7 +1711,9 @@ export type Player_Round_Min_Fields = {
 /** order by min() on columns of table "player_round" */
 export type Player_Round_Min_Order_By = {
   courseId?: Maybe<Order_By>;
+  courseRank?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
@@ -1686,8 +1728,10 @@ export type Player_Round_Order_By = {
   complete?: Maybe<Order_By>;
   course?: Maybe<Course_Order_By>;
   courseId?: Maybe<Order_By>;
+  courseRank?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
   player?: Maybe<Player_Order_By>;
+  playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   round?: Maybe<Round_Order_By>;
@@ -1708,7 +1752,11 @@ export enum Player_Round_Select_Column {
   /** column name */
   CourseId = 'courseId',
   /** column name */
+  CourseRank = 'courseRank',
+  /** column name */
   Par = 'par',
+  /** column name */
+  PlayerCourseRank = 'playerCourseRank',
   /** column name */
   PlayerId = 'playerId',
   /** column name */
@@ -1731,7 +1779,9 @@ export enum Player_Round_Select_Column {
 export type Player_Round_Stddev_Fields = {
   __typename?: 'player_round_stddev_fields';
   courseId?: Maybe<Scalars['Float']>;
+  courseRank?: Maybe<Scalars['Float']>;
   par?: Maybe<Scalars['Float']>;
+  playerCourseRank?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
   relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
@@ -1744,7 +1794,9 @@ export type Player_Round_Stddev_Fields = {
 /** order by stddev() on columns of table "player_round" */
 export type Player_Round_Stddev_Order_By = {
   courseId?: Maybe<Order_By>;
+  courseRank?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
@@ -1758,7 +1810,9 @@ export type Player_Round_Stddev_Order_By = {
 export type Player_Round_Stddev_Pop_Fields = {
   __typename?: 'player_round_stddev_pop_fields';
   courseId?: Maybe<Scalars['Float']>;
+  courseRank?: Maybe<Scalars['Float']>;
   par?: Maybe<Scalars['Float']>;
+  playerCourseRank?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
   relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
@@ -1771,7 +1825,9 @@ export type Player_Round_Stddev_Pop_Fields = {
 /** order by stddev_pop() on columns of table "player_round" */
 export type Player_Round_Stddev_Pop_Order_By = {
   courseId?: Maybe<Order_By>;
+  courseRank?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
@@ -1785,7 +1841,9 @@ export type Player_Round_Stddev_Pop_Order_By = {
 export type Player_Round_Stddev_Samp_Fields = {
   __typename?: 'player_round_stddev_samp_fields';
   courseId?: Maybe<Scalars['Float']>;
+  courseRank?: Maybe<Scalars['Float']>;
   par?: Maybe<Scalars['Float']>;
+  playerCourseRank?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
   relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
@@ -1798,7 +1856,9 @@ export type Player_Round_Stddev_Samp_Fields = {
 /** order by stddev_samp() on columns of table "player_round" */
 export type Player_Round_Stddev_Samp_Order_By = {
   courseId?: Maybe<Order_By>;
+  courseRank?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
@@ -1812,7 +1872,9 @@ export type Player_Round_Stddev_Samp_Order_By = {
 export type Player_Round_Sum_Fields = {
   __typename?: 'player_round_sum_fields';
   courseId?: Maybe<Scalars['Int']>;
+  courseRank?: Maybe<Scalars['bigint']>;
   par?: Maybe<Scalars['bigint']>;
+  playerCourseRank?: Maybe<Scalars['bigint']>;
   playerId?: Maybe<Scalars['Int']>;
   relativeScore?: Maybe<Scalars['bigint']>;
   roundId?: Maybe<Scalars['Int']>;
@@ -1825,7 +1887,9 @@ export type Player_Round_Sum_Fields = {
 /** order by sum() on columns of table "player_round" */
 export type Player_Round_Sum_Order_By = {
   courseId?: Maybe<Order_By>;
+  courseRank?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
@@ -1839,7 +1903,9 @@ export type Player_Round_Sum_Order_By = {
 export type Player_Round_Var_Pop_Fields = {
   __typename?: 'player_round_var_pop_fields';
   courseId?: Maybe<Scalars['Float']>;
+  courseRank?: Maybe<Scalars['Float']>;
   par?: Maybe<Scalars['Float']>;
+  playerCourseRank?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
   relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
@@ -1852,7 +1918,9 @@ export type Player_Round_Var_Pop_Fields = {
 /** order by var_pop() on columns of table "player_round" */
 export type Player_Round_Var_Pop_Order_By = {
   courseId?: Maybe<Order_By>;
+  courseRank?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
@@ -1866,7 +1934,9 @@ export type Player_Round_Var_Pop_Order_By = {
 export type Player_Round_Var_Samp_Fields = {
   __typename?: 'player_round_var_samp_fields';
   courseId?: Maybe<Scalars['Float']>;
+  courseRank?: Maybe<Scalars['Float']>;
   par?: Maybe<Scalars['Float']>;
+  playerCourseRank?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
   relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
@@ -1879,7 +1949,9 @@ export type Player_Round_Var_Samp_Fields = {
 /** order by var_samp() on columns of table "player_round" */
 export type Player_Round_Var_Samp_Order_By = {
   courseId?: Maybe<Order_By>;
+  courseRank?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
@@ -1893,7 +1965,9 @@ export type Player_Round_Var_Samp_Order_By = {
 export type Player_Round_Variance_Fields = {
   __typename?: 'player_round_variance_fields';
   courseId?: Maybe<Scalars['Float']>;
+  courseRank?: Maybe<Scalars['Float']>;
   par?: Maybe<Scalars['Float']>;
+  playerCourseRank?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
   relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
@@ -1906,7 +1980,9 @@ export type Player_Round_Variance_Fields = {
 /** order by variance() on columns of table "player_round" */
 export type Player_Round_Variance_Order_By = {
   courseId?: Maybe<Order_By>;
+  courseRank?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
@@ -2095,6 +2171,10 @@ export type Query_Root = {
   scoreStats: Score_Aggregate;
   /** fetch data from the table: "score" */
   scores: Array<Score>;
+  /** fetch data from the table: "scoring_info" */
+  scoringInfo: Array<Scoring_Info>;
+  /** fetch aggregated fields from the table: "scoring_info" */
+  scoring_info_aggregate: Scoring_Info_Aggregate;
   /** fetch aggregated fields from the table: "skins" */
   skinStats: Skins_Aggregate;
   /** fetch data from the table: "skins" */
@@ -2280,6 +2360,26 @@ export type Query_RootScoresArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Score_Order_By>>;
   where?: Maybe<Score_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootScoringInfoArgs = {
+  distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Scoring_Info_Order_By>>;
+  where?: Maybe<Scoring_Info_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootScoring_Info_AggregateArgs = {
+  distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Scoring_Info_Order_By>>;
+  where?: Maybe<Scoring_Info_Bool_Exp>;
 };
 
 
@@ -3267,6 +3367,445 @@ export type Score_Variance_Order_By = {
   score?: Maybe<Order_By>;
 };
 
+/** columns and relationships of "scoring_info" */
+export type Scoring_Info = {
+  __typename?: 'scoring_info';
+  courseId?: Maybe<Scalars['Int']>;
+  date?: Maybe<Scalars['timestamp']>;
+  holeNumber?: Maybe<Scalars['Int']>;
+  lifetimeAvgPutts?: Maybe<Scalars['numeric']>;
+  lifetimeAvgScore?: Maybe<Scalars['numeric']>;
+  playerId?: Maybe<Scalars['Int']>;
+  puttsTrend?: Maybe<Scalars['numeric']>;
+  roundId?: Maybe<Scalars['Int']>;
+  scoreTrend?: Maybe<Scalars['numeric']>;
+  trailingAvgPutts?: Maybe<Scalars['numeric']>;
+  trailingAvgScore?: Maybe<Scalars['numeric']>;
+  trailingCount?: Maybe<Scalars['bigint']>;
+};
+
+/** aggregated selection of "scoring_info" */
+export type Scoring_Info_Aggregate = {
+  __typename?: 'scoring_info_aggregate';
+  aggregate?: Maybe<Scoring_Info_Aggregate_Fields>;
+  nodes: Array<Scoring_Info>;
+};
+
+/** aggregate fields of "scoring_info" */
+export type Scoring_Info_Aggregate_Fields = {
+  __typename?: 'scoring_info_aggregate_fields';
+  avg?: Maybe<Scoring_Info_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Scoring_Info_Max_Fields>;
+  min?: Maybe<Scoring_Info_Min_Fields>;
+  stddev?: Maybe<Scoring_Info_Stddev_Fields>;
+  stddev_pop?: Maybe<Scoring_Info_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Scoring_Info_Stddev_Samp_Fields>;
+  sum?: Maybe<Scoring_Info_Sum_Fields>;
+  var_pop?: Maybe<Scoring_Info_Var_Pop_Fields>;
+  var_samp?: Maybe<Scoring_Info_Var_Samp_Fields>;
+  variance?: Maybe<Scoring_Info_Variance_Fields>;
+};
+
+
+/** aggregate fields of "scoring_info" */
+export type Scoring_Info_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Scoring_Info_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "scoring_info" */
+export type Scoring_Info_Aggregate_Order_By = {
+  avg?: Maybe<Scoring_Info_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Scoring_Info_Max_Order_By>;
+  min?: Maybe<Scoring_Info_Min_Order_By>;
+  stddev?: Maybe<Scoring_Info_Stddev_Order_By>;
+  stddev_pop?: Maybe<Scoring_Info_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Scoring_Info_Stddev_Samp_Order_By>;
+  sum?: Maybe<Scoring_Info_Sum_Order_By>;
+  var_pop?: Maybe<Scoring_Info_Var_Pop_Order_By>;
+  var_samp?: Maybe<Scoring_Info_Var_Samp_Order_By>;
+  variance?: Maybe<Scoring_Info_Variance_Order_By>;
+};
+
+/** aggregate avg on columns */
+export type Scoring_Info_Avg_Fields = {
+  __typename?: 'scoring_info_avg_fields';
+  courseId?: Maybe<Scalars['Float']>;
+  holeNumber?: Maybe<Scalars['Float']>;
+  lifetimeAvgPutts?: Maybe<Scalars['Float']>;
+  lifetimeAvgScore?: Maybe<Scalars['Float']>;
+  playerId?: Maybe<Scalars['Float']>;
+  puttsTrend?: Maybe<Scalars['Float']>;
+  roundId?: Maybe<Scalars['Float']>;
+  scoreTrend?: Maybe<Scalars['Float']>;
+  trailingAvgPutts?: Maybe<Scalars['Float']>;
+  trailingAvgScore?: Maybe<Scalars['Float']>;
+  trailingCount?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "scoring_info" */
+export type Scoring_Info_Avg_Order_By = {
+  courseId?: Maybe<Order_By>;
+  holeNumber?: Maybe<Order_By>;
+  lifetimeAvgPutts?: Maybe<Order_By>;
+  lifetimeAvgScore?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
+  puttsTrend?: Maybe<Order_By>;
+  roundId?: Maybe<Order_By>;
+  scoreTrend?: Maybe<Order_By>;
+  trailingAvgPutts?: Maybe<Order_By>;
+  trailingAvgScore?: Maybe<Order_By>;
+  trailingCount?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "scoring_info". All fields are combined with a logical 'AND'. */
+export type Scoring_Info_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Scoring_Info_Bool_Exp>>>;
+  _not?: Maybe<Scoring_Info_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Scoring_Info_Bool_Exp>>>;
+  courseId?: Maybe<Int_Comparison_Exp>;
+  date?: Maybe<Timestamp_Comparison_Exp>;
+  holeNumber?: Maybe<Int_Comparison_Exp>;
+  lifetimeAvgPutts?: Maybe<Numeric_Comparison_Exp>;
+  lifetimeAvgScore?: Maybe<Numeric_Comparison_Exp>;
+  playerId?: Maybe<Int_Comparison_Exp>;
+  puttsTrend?: Maybe<Numeric_Comparison_Exp>;
+  roundId?: Maybe<Int_Comparison_Exp>;
+  scoreTrend?: Maybe<Numeric_Comparison_Exp>;
+  trailingAvgPutts?: Maybe<Numeric_Comparison_Exp>;
+  trailingAvgScore?: Maybe<Numeric_Comparison_Exp>;
+  trailingCount?: Maybe<Bigint_Comparison_Exp>;
+};
+
+/** aggregate max on columns */
+export type Scoring_Info_Max_Fields = {
+  __typename?: 'scoring_info_max_fields';
+  courseId?: Maybe<Scalars['Int']>;
+  date?: Maybe<Scalars['timestamp']>;
+  holeNumber?: Maybe<Scalars['Int']>;
+  lifetimeAvgPutts?: Maybe<Scalars['numeric']>;
+  lifetimeAvgScore?: Maybe<Scalars['numeric']>;
+  playerId?: Maybe<Scalars['Int']>;
+  puttsTrend?: Maybe<Scalars['numeric']>;
+  roundId?: Maybe<Scalars['Int']>;
+  scoreTrend?: Maybe<Scalars['numeric']>;
+  trailingAvgPutts?: Maybe<Scalars['numeric']>;
+  trailingAvgScore?: Maybe<Scalars['numeric']>;
+  trailingCount?: Maybe<Scalars['bigint']>;
+};
+
+/** order by max() on columns of table "scoring_info" */
+export type Scoring_Info_Max_Order_By = {
+  courseId?: Maybe<Order_By>;
+  date?: Maybe<Order_By>;
+  holeNumber?: Maybe<Order_By>;
+  lifetimeAvgPutts?: Maybe<Order_By>;
+  lifetimeAvgScore?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
+  puttsTrend?: Maybe<Order_By>;
+  roundId?: Maybe<Order_By>;
+  scoreTrend?: Maybe<Order_By>;
+  trailingAvgPutts?: Maybe<Order_By>;
+  trailingAvgScore?: Maybe<Order_By>;
+  trailingCount?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Scoring_Info_Min_Fields = {
+  __typename?: 'scoring_info_min_fields';
+  courseId?: Maybe<Scalars['Int']>;
+  date?: Maybe<Scalars['timestamp']>;
+  holeNumber?: Maybe<Scalars['Int']>;
+  lifetimeAvgPutts?: Maybe<Scalars['numeric']>;
+  lifetimeAvgScore?: Maybe<Scalars['numeric']>;
+  playerId?: Maybe<Scalars['Int']>;
+  puttsTrend?: Maybe<Scalars['numeric']>;
+  roundId?: Maybe<Scalars['Int']>;
+  scoreTrend?: Maybe<Scalars['numeric']>;
+  trailingAvgPutts?: Maybe<Scalars['numeric']>;
+  trailingAvgScore?: Maybe<Scalars['numeric']>;
+  trailingCount?: Maybe<Scalars['bigint']>;
+};
+
+/** order by min() on columns of table "scoring_info" */
+export type Scoring_Info_Min_Order_By = {
+  courseId?: Maybe<Order_By>;
+  date?: Maybe<Order_By>;
+  holeNumber?: Maybe<Order_By>;
+  lifetimeAvgPutts?: Maybe<Order_By>;
+  lifetimeAvgScore?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
+  puttsTrend?: Maybe<Order_By>;
+  roundId?: Maybe<Order_By>;
+  scoreTrend?: Maybe<Order_By>;
+  trailingAvgPutts?: Maybe<Order_By>;
+  trailingAvgScore?: Maybe<Order_By>;
+  trailingCount?: Maybe<Order_By>;
+};
+
+/** ordering options when selecting data from "scoring_info" */
+export type Scoring_Info_Order_By = {
+  courseId?: Maybe<Order_By>;
+  date?: Maybe<Order_By>;
+  holeNumber?: Maybe<Order_By>;
+  lifetimeAvgPutts?: Maybe<Order_By>;
+  lifetimeAvgScore?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
+  puttsTrend?: Maybe<Order_By>;
+  roundId?: Maybe<Order_By>;
+  scoreTrend?: Maybe<Order_By>;
+  trailingAvgPutts?: Maybe<Order_By>;
+  trailingAvgScore?: Maybe<Order_By>;
+  trailingCount?: Maybe<Order_By>;
+};
+
+/** select columns of table "scoring_info" */
+export enum Scoring_Info_Select_Column {
+  /** column name */
+  CourseId = 'courseId',
+  /** column name */
+  Date = 'date',
+  /** column name */
+  HoleNumber = 'holeNumber',
+  /** column name */
+  LifetimeAvgPutts = 'lifetimeAvgPutts',
+  /** column name */
+  LifetimeAvgScore = 'lifetimeAvgScore',
+  /** column name */
+  PlayerId = 'playerId',
+  /** column name */
+  PuttsTrend = 'puttsTrend',
+  /** column name */
+  RoundId = 'roundId',
+  /** column name */
+  ScoreTrend = 'scoreTrend',
+  /** column name */
+  TrailingAvgPutts = 'trailingAvgPutts',
+  /** column name */
+  TrailingAvgScore = 'trailingAvgScore',
+  /** column name */
+  TrailingCount = 'trailingCount'
+}
+
+/** aggregate stddev on columns */
+export type Scoring_Info_Stddev_Fields = {
+  __typename?: 'scoring_info_stddev_fields';
+  courseId?: Maybe<Scalars['Float']>;
+  holeNumber?: Maybe<Scalars['Float']>;
+  lifetimeAvgPutts?: Maybe<Scalars['Float']>;
+  lifetimeAvgScore?: Maybe<Scalars['Float']>;
+  playerId?: Maybe<Scalars['Float']>;
+  puttsTrend?: Maybe<Scalars['Float']>;
+  roundId?: Maybe<Scalars['Float']>;
+  scoreTrend?: Maybe<Scalars['Float']>;
+  trailingAvgPutts?: Maybe<Scalars['Float']>;
+  trailingAvgScore?: Maybe<Scalars['Float']>;
+  trailingCount?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "scoring_info" */
+export type Scoring_Info_Stddev_Order_By = {
+  courseId?: Maybe<Order_By>;
+  holeNumber?: Maybe<Order_By>;
+  lifetimeAvgPutts?: Maybe<Order_By>;
+  lifetimeAvgScore?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
+  puttsTrend?: Maybe<Order_By>;
+  roundId?: Maybe<Order_By>;
+  scoreTrend?: Maybe<Order_By>;
+  trailingAvgPutts?: Maybe<Order_By>;
+  trailingAvgScore?: Maybe<Order_By>;
+  trailingCount?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Scoring_Info_Stddev_Pop_Fields = {
+  __typename?: 'scoring_info_stddev_pop_fields';
+  courseId?: Maybe<Scalars['Float']>;
+  holeNumber?: Maybe<Scalars['Float']>;
+  lifetimeAvgPutts?: Maybe<Scalars['Float']>;
+  lifetimeAvgScore?: Maybe<Scalars['Float']>;
+  playerId?: Maybe<Scalars['Float']>;
+  puttsTrend?: Maybe<Scalars['Float']>;
+  roundId?: Maybe<Scalars['Float']>;
+  scoreTrend?: Maybe<Scalars['Float']>;
+  trailingAvgPutts?: Maybe<Scalars['Float']>;
+  trailingAvgScore?: Maybe<Scalars['Float']>;
+  trailingCount?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "scoring_info" */
+export type Scoring_Info_Stddev_Pop_Order_By = {
+  courseId?: Maybe<Order_By>;
+  holeNumber?: Maybe<Order_By>;
+  lifetimeAvgPutts?: Maybe<Order_By>;
+  lifetimeAvgScore?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
+  puttsTrend?: Maybe<Order_By>;
+  roundId?: Maybe<Order_By>;
+  scoreTrend?: Maybe<Order_By>;
+  trailingAvgPutts?: Maybe<Order_By>;
+  trailingAvgScore?: Maybe<Order_By>;
+  trailingCount?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Scoring_Info_Stddev_Samp_Fields = {
+  __typename?: 'scoring_info_stddev_samp_fields';
+  courseId?: Maybe<Scalars['Float']>;
+  holeNumber?: Maybe<Scalars['Float']>;
+  lifetimeAvgPutts?: Maybe<Scalars['Float']>;
+  lifetimeAvgScore?: Maybe<Scalars['Float']>;
+  playerId?: Maybe<Scalars['Float']>;
+  puttsTrend?: Maybe<Scalars['Float']>;
+  roundId?: Maybe<Scalars['Float']>;
+  scoreTrend?: Maybe<Scalars['Float']>;
+  trailingAvgPutts?: Maybe<Scalars['Float']>;
+  trailingAvgScore?: Maybe<Scalars['Float']>;
+  trailingCount?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "scoring_info" */
+export type Scoring_Info_Stddev_Samp_Order_By = {
+  courseId?: Maybe<Order_By>;
+  holeNumber?: Maybe<Order_By>;
+  lifetimeAvgPutts?: Maybe<Order_By>;
+  lifetimeAvgScore?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
+  puttsTrend?: Maybe<Order_By>;
+  roundId?: Maybe<Order_By>;
+  scoreTrend?: Maybe<Order_By>;
+  trailingAvgPutts?: Maybe<Order_By>;
+  trailingAvgScore?: Maybe<Order_By>;
+  trailingCount?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Scoring_Info_Sum_Fields = {
+  __typename?: 'scoring_info_sum_fields';
+  courseId?: Maybe<Scalars['Int']>;
+  holeNumber?: Maybe<Scalars['Int']>;
+  lifetimeAvgPutts?: Maybe<Scalars['numeric']>;
+  lifetimeAvgScore?: Maybe<Scalars['numeric']>;
+  playerId?: Maybe<Scalars['Int']>;
+  puttsTrend?: Maybe<Scalars['numeric']>;
+  roundId?: Maybe<Scalars['Int']>;
+  scoreTrend?: Maybe<Scalars['numeric']>;
+  trailingAvgPutts?: Maybe<Scalars['numeric']>;
+  trailingAvgScore?: Maybe<Scalars['numeric']>;
+  trailingCount?: Maybe<Scalars['bigint']>;
+};
+
+/** order by sum() on columns of table "scoring_info" */
+export type Scoring_Info_Sum_Order_By = {
+  courseId?: Maybe<Order_By>;
+  holeNumber?: Maybe<Order_By>;
+  lifetimeAvgPutts?: Maybe<Order_By>;
+  lifetimeAvgScore?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
+  puttsTrend?: Maybe<Order_By>;
+  roundId?: Maybe<Order_By>;
+  scoreTrend?: Maybe<Order_By>;
+  trailingAvgPutts?: Maybe<Order_By>;
+  trailingAvgScore?: Maybe<Order_By>;
+  trailingCount?: Maybe<Order_By>;
+};
+
+/** aggregate var_pop on columns */
+export type Scoring_Info_Var_Pop_Fields = {
+  __typename?: 'scoring_info_var_pop_fields';
+  courseId?: Maybe<Scalars['Float']>;
+  holeNumber?: Maybe<Scalars['Float']>;
+  lifetimeAvgPutts?: Maybe<Scalars['Float']>;
+  lifetimeAvgScore?: Maybe<Scalars['Float']>;
+  playerId?: Maybe<Scalars['Float']>;
+  puttsTrend?: Maybe<Scalars['Float']>;
+  roundId?: Maybe<Scalars['Float']>;
+  scoreTrend?: Maybe<Scalars['Float']>;
+  trailingAvgPutts?: Maybe<Scalars['Float']>;
+  trailingAvgScore?: Maybe<Scalars['Float']>;
+  trailingCount?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "scoring_info" */
+export type Scoring_Info_Var_Pop_Order_By = {
+  courseId?: Maybe<Order_By>;
+  holeNumber?: Maybe<Order_By>;
+  lifetimeAvgPutts?: Maybe<Order_By>;
+  lifetimeAvgScore?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
+  puttsTrend?: Maybe<Order_By>;
+  roundId?: Maybe<Order_By>;
+  scoreTrend?: Maybe<Order_By>;
+  trailingAvgPutts?: Maybe<Order_By>;
+  trailingAvgScore?: Maybe<Order_By>;
+  trailingCount?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Scoring_Info_Var_Samp_Fields = {
+  __typename?: 'scoring_info_var_samp_fields';
+  courseId?: Maybe<Scalars['Float']>;
+  holeNumber?: Maybe<Scalars['Float']>;
+  lifetimeAvgPutts?: Maybe<Scalars['Float']>;
+  lifetimeAvgScore?: Maybe<Scalars['Float']>;
+  playerId?: Maybe<Scalars['Float']>;
+  puttsTrend?: Maybe<Scalars['Float']>;
+  roundId?: Maybe<Scalars['Float']>;
+  scoreTrend?: Maybe<Scalars['Float']>;
+  trailingAvgPutts?: Maybe<Scalars['Float']>;
+  trailingAvgScore?: Maybe<Scalars['Float']>;
+  trailingCount?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "scoring_info" */
+export type Scoring_Info_Var_Samp_Order_By = {
+  courseId?: Maybe<Order_By>;
+  holeNumber?: Maybe<Order_By>;
+  lifetimeAvgPutts?: Maybe<Order_By>;
+  lifetimeAvgScore?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
+  puttsTrend?: Maybe<Order_By>;
+  roundId?: Maybe<Order_By>;
+  scoreTrend?: Maybe<Order_By>;
+  trailingAvgPutts?: Maybe<Order_By>;
+  trailingAvgScore?: Maybe<Order_By>;
+  trailingCount?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Scoring_Info_Variance_Fields = {
+  __typename?: 'scoring_info_variance_fields';
+  courseId?: Maybe<Scalars['Float']>;
+  holeNumber?: Maybe<Scalars['Float']>;
+  lifetimeAvgPutts?: Maybe<Scalars['Float']>;
+  lifetimeAvgScore?: Maybe<Scalars['Float']>;
+  playerId?: Maybe<Scalars['Float']>;
+  puttsTrend?: Maybe<Scalars['Float']>;
+  roundId?: Maybe<Scalars['Float']>;
+  scoreTrend?: Maybe<Scalars['Float']>;
+  trailingAvgPutts?: Maybe<Scalars['Float']>;
+  trailingAvgScore?: Maybe<Scalars['Float']>;
+  trailingCount?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "scoring_info" */
+export type Scoring_Info_Variance_Order_By = {
+  courseId?: Maybe<Order_By>;
+  holeNumber?: Maybe<Order_By>;
+  lifetimeAvgPutts?: Maybe<Order_By>;
+  lifetimeAvgScore?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
+  puttsTrend?: Maybe<Order_By>;
+  roundId?: Maybe<Order_By>;
+  scoreTrend?: Maybe<Order_By>;
+  trailingAvgPutts?: Maybe<Order_By>;
+  trailingAvgScore?: Maybe<Order_By>;
+  trailingCount?: Maybe<Order_By>;
+};
+
 /** columns and relationships of "skins" */
 export type Skins = {
   __typename?: 'skins';
@@ -3618,6 +4157,10 @@ export type Subscription_Root = {
   scoreStats: Score_Aggregate;
   /** fetch data from the table: "score" */
   scores: Array<Score>;
+  /** fetch data from the table: "scoring_info" */
+  scoringInfo: Array<Scoring_Info>;
+  /** fetch aggregated fields from the table: "scoring_info" */
+  scoring_info_aggregate: Scoring_Info_Aggregate;
   /** fetch aggregated fields from the table: "skins" */
   skinStats: Skins_Aggregate;
   /** fetch data from the table: "skins" */
@@ -3803,6 +4346,26 @@ export type Subscription_RootScoresArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Score_Order_By>>;
   where?: Maybe<Score_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootScoringInfoArgs = {
+  distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Scoring_Info_Order_By>>;
+  where?: Maybe<Scoring_Info_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootScoring_Info_AggregateArgs = {
+  distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Scoring_Info_Order_By>>;
+  where?: Maybe<Scoring_Info_Bool_Exp>;
 };
 
 
@@ -4193,38 +4756,61 @@ export type PlayerRoundForChartFragment = (
   )> }
 );
 
-export type EntryForLeaderboardFragment = (
-  { __typename?: 'zz_leaderboard' }
-  & Pick<Zz_Leaderboard, 'rank'>
-  & { playerRound?: Maybe<(
-    { __typename?: 'player_round' }
-    & Pick<Player_Round, 'relativeScore'>
-    & { player?: Maybe<(
-      { __typename?: 'player' }
-      & Pick<Player, 'nickname' | 'slug'>
-    )>, round?: Maybe<(
-      { __typename?: 'round' }
-      & Pick<Round, 'id'>
-    )> }
+export type _PlayerRoundForLeaderboardFragment = (
+  { __typename?: 'player_round' }
+  & Pick<Player_Round, 'relativeScore'>
+  & { player?: Maybe<(
+    { __typename?: 'player' }
+    & Pick<Player, 'nickname' | 'slug'>
+  )>, round?: Maybe<(
+    { __typename?: 'round' }
+    & Pick<Round, 'date'>
   )> }
+);
+
+export type PlayerRoundForCourseLeaderboardFragment = (
+  { __typename?: 'player_round' }
+  & { rank: Player_Round['courseRank'] }
+  & _PlayerRoundForLeaderboardFragment
+);
+
+export type PlayerRoundForPlayerLeaderboardFragment = (
+  { __typename?: 'player_round' }
+  & { rank: Player_Round['playerCourseRank'] }
+  & _PlayerRoundForLeaderboardFragment
+);
+
+export type RoundForRoundCardFragment = (
+  { __typename?: 'round' }
+  & Pick<Round, 'date' | 'name' | 'skinsHoleBounty' | 'roundBounty'>
+  & RoundForTableFragment
 );
 
 export type RoundForTableFragment = (
   { __typename?: 'round' }
-  & Pick<Round, 'id' | 'date' | 'name' | 'roundBounty' | 'skinsHoleBounty'>
+  & Pick<Round, 'id' | 'date' | 'name'>
   & { course: (
     { __typename?: 'course' }
     & Pick<Course, 'name'>
     & { holes: Array<(
       { __typename?: 'hole' }
       & Pick<Hole, 'nickname' | 'number' | 'par'>
-    )> }
+    )>, holes_aggregate: (
+      { __typename?: 'hole_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'hole_aggregate_fields' }
+        & { sum?: Maybe<(
+          { __typename?: 'hole_sum_fields' }
+          & Pick<Hole_Sum_Fields, 'par'>
+        )> }
+      )> }
+    ) }
   ), playerRounds: Array<(
     { __typename?: 'player_round' }
     & Pick<Player_Round, 'relativeScore' | 'roundBountyWinner' | 'totalWinnings'>
     & { player?: Maybe<(
       { __typename?: 'player' }
-      & Pick<Player, 'nickname' | 'img' | 'id'>
+      & Pick<Player, 'nickname' | 'id'>
     )>, skins: Array<(
       { __typename?: 'skins' }
       & Pick<Skins, 'holeNumber' | 'won'>
@@ -4235,22 +4821,6 @@ export type RoundForTableFragment = (
   )> }
 );
 
-export type RoundForSummaryFragment = (
-  { __typename?: 'round' }
-  & Pick<Round, 'date' | 'name'>
-  & { course: (
-    { __typename?: 'course' }
-    & Pick<Course, 'name'>
-  ), playerRounds: Array<(
-    { __typename?: 'player_round' }
-    & { player?: Maybe<(
-      { __typename?: 'player' }
-      & Pick<Player, 'id' | 'img'>
-    )> }
-  )> }
-  & RoundForTableFragment
-);
-
 export type OverviewPageQueryVariables = Exact<{
   courseId: Scalars['Int'];
 }>;
@@ -4258,12 +4828,12 @@ export type OverviewPageQueryVariables = Exact<{
 
 export type OverviewPageQuery = (
   { __typename?: 'query_root' }
-  & { summaryRounds: Array<(
+  & { latestRounds: Array<(
     { __typename?: 'round' }
-    & RoundForSummaryFragment
-  )>, leaderboardEntries: Array<(
-    { __typename?: 'zz_leaderboard' }
-    & EntryForLeaderboardFragment
+    & RoundForRoundCardFragment
+  )>, leaderboardPlayerRounds: Array<(
+    { __typename?: 'player_round' }
+    & PlayerRoundForCourseLeaderboardFragment
   )> }
 );
 
@@ -4277,16 +4847,15 @@ export type DefaultCourseRoundsPageQuery = (
   & { course?: Maybe<(
     { __typename?: 'course' }
     & PageCourseFragment
+  )>, rounds: Array<(
+    { __typename?: 'round' }
+    & RoundForRoundCardFragment
   )>, roundsForChart: Array<(
     { __typename?: 'player_round' }
     & PlayerRoundForChartFragment
-  )>, leaderboardEntries: Array<(
-    { __typename?: 'zz_leaderboard' }
-    & EntryForLeaderboardFragment
-  )>, roundsForTable: Array<(
-    { __typename?: 'round' }
-    & Pick<Round, 'id' | 'date' | 'name'>
-    & RoundForTableFragment
+  )>, leaderboardPlayerRounds: Array<(
+    { __typename?: 'player_round' }
+    & PlayerRoundForCourseLeaderboardFragment
   )> }
 );
 
@@ -4351,34 +4920,48 @@ export const PlayerRoundForChartFragmentDoc = gql`
   }
 }
     `;
-export const EntryForLeaderboardFragmentDoc = gql`
-    fragment entryForLeaderboard on zz_leaderboard {
-  rank
-  playerRound {
-    player {
-      nickname
-      slug
-    }
-    relativeScore
-    round {
-      id
-    }
+export const _PlayerRoundForLeaderboardFragmentDoc = gql`
+    fragment _playerRoundForLeaderboard on player_round {
+  player {
+    nickname
+    slug
+  }
+  relativeScore
+  round {
+    date
   }
 }
     `;
+export const PlayerRoundForCourseLeaderboardFragmentDoc = gql`
+    fragment playerRoundForCourseLeaderboard on player_round {
+  rank: courseRank
+  ..._playerRoundForLeaderboard
+}
+    ${_PlayerRoundForLeaderboardFragmentDoc}`;
+export const PlayerRoundForPlayerLeaderboardFragmentDoc = gql`
+    fragment playerRoundForPlayerLeaderboard on player_round {
+  rank: playerCourseRank
+  ..._playerRoundForLeaderboard
+}
+    ${_PlayerRoundForLeaderboardFragmentDoc}`;
 export const RoundForTableFragmentDoc = gql`
     fragment roundForTable on round {
   id
   date
   name
-  roundBounty
-  skinsHoleBounty
   course {
     name
     holes(order_by: {number: asc}) {
       nickname
       number
       par
+    }
+    holes_aggregate {
+      aggregate {
+        sum {
+          par
+        }
+      }
     }
   }
   playerRounds(order_by: {relativeScore: asc}) {
@@ -4387,7 +4970,6 @@ export const RoundForTableFragmentDoc = gql`
     totalWinnings
     player {
       nickname
-      img
       id
     }
     skins {
@@ -4401,20 +4983,13 @@ export const RoundForTableFragmentDoc = gql`
   }
 }
     `;
-export const RoundForSummaryFragmentDoc = gql`
-    fragment roundForSummary on round {
+export const RoundForRoundCardFragmentDoc = gql`
+    fragment roundForRoundCard on round {
   ...roundForTable
   date
   name
-  course {
-    name
-  }
-  playerRounds(order_by: {relativeScore: asc}) {
-    player {
-      id
-      img
-    }
-  }
+  skinsHoleBounty
+  roundBounty
 }
     ${RoundForTableFragmentDoc}`;
 export const PageCourseFragmentDoc = gql`
@@ -4433,46 +5008,44 @@ export const PagePlayerFragmentDoc = gql`
     `;
 export const OverviewPageDocument = gql`
     query overviewPage($courseId: Int!) {
-  summaryRounds: rounds(
+  latestRounds: rounds(
     where: {courseId: {_eq: $courseId}}
     order_by: {date: desc}
-    limit: 5
+    limit: 1
   ) {
-    ...roundForSummary
+    ...roundForRoundCard
   }
-  leaderboardEntries: leaderboard(args: {course: $courseId, rank: 10}) {
-    ...entryForLeaderboard
+  leaderboardPlayerRounds: playerRounds(
+    where: {courseId: {_eq: $courseId}, courseRank: {_lte: 10}}
+  ) {
+    ...playerRoundForCourseLeaderboard
   }
 }
-    ${RoundForSummaryFragmentDoc}
-${EntryForLeaderboardFragmentDoc}`;
+    ${RoundForRoundCardFragmentDoc}
+${PlayerRoundForCourseLeaderboardFragmentDoc}`;
 export const DefaultCourseRoundsPageDocument = gql`
     query defaultCourseRoundsPage($courseId: Int!) {
   course(id: $courseId) {
     ...pageCourse
+  }
+  rounds(where: {courseId: {_eq: $courseId}}, order_by: {date: desc}) {
+    ...roundForRoundCard
   }
   roundsForChart: playerRounds(
     where: {courseId: {_eq: $courseId}, complete: {_eq: true}}
   ) {
     ...playerRoundForChart
   }
-  leaderboardEntries: leaderboard(args: {course: $courseId, rank: 10}) {
-    ...entryForLeaderboard
-  }
-  roundsForTable: rounds(
-    where: {courseId: {_eq: $courseId}}
-    order_by: {date: desc}
+  leaderboardPlayerRounds: playerRounds(
+    where: {courseId: {_eq: $courseId}, courseRank: {_lte: 10}}
   ) {
-    id
-    date
-    name
-    ...roundForTable
+    ...playerRoundForCourseLeaderboard
   }
 }
     ${PageCourseFragmentDoc}
+${RoundForRoundCardFragmentDoc}
 ${PlayerRoundForChartFragmentDoc}
-${EntryForLeaderboardFragmentDoc}
-${RoundForTableFragmentDoc}`;
+${PlayerRoundForCourseLeaderboardFragmentDoc}`;
 export const CourseSlugListingDocument = gql`
     query courseSlugListing {
   courses {

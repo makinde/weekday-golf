@@ -1,0 +1,20 @@
+fragment _playerRoundForLeaderboard on player_round {
+  player {
+    nickname
+    slug
+  }
+  relativeScore
+  round {
+    date
+  }
+}
+
+fragment playerRoundForCourseLeaderboard on player_round {
+  rank: courseRank
+  ..._playerRoundForLeaderboard
+}
+
+fragment playerRoundForPlayerLeaderboard on player_round {
+  rank: playerCourseRank
+  ..._playerRoundForLeaderboard
+}

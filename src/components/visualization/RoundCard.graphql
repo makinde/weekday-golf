@@ -1,0 +1,7 @@
+fragment roundForRoundCard on round {
+  ...roundForTable
+  date
+  name
+  skinsHoleBounty
+  roundBounty
+}

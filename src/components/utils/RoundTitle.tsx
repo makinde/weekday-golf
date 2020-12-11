@@ -1,8 +1,6 @@
 import React from 'react';
 import { parseISO } from 'date-fns';
 
-import CompactDate from './CompactDate';
-
 type Props = {
   date: string,
   name?: string,
@@ -23,10 +21,6 @@ const RoundTitle = ({ date, name }: Props) => {
   return (
     <>
       {displayName}
-      {' '}
-      on
-      {' '}
-      <CompactDate date={date} />
     </>
   );
 };

@@ -2,14 +2,19 @@ fragment roundForTable on round {
   id
   date
   name
-  roundBounty
-  skinsHoleBounty
   course {
     name
     holes(order_by: { number: asc }) {
       nickname
       number
       par
+    }
+    holes_aggregate {
+      aggregate {
+        sum {
+          par
+        }
+      }
     }
   }
   playerRounds(order_by: { relativeScore: asc }) {
@@ -18,7 +23,6 @@ fragment roundForTable on round {
     totalWinnings
     player {
       nickname
-      img
       id
     }
     skins {

@@ -1,15 +1,16 @@
-$border-color: rgba(0, 0, 0, 0.1);
+@import '../../../node_modules/bootstrap/scss/functions';
+@import '../../../node_modules/bootstrap/scss/mixins/breakpoints';
+@import '../../../node_modules/bootstrap/scss/variables';
+@import '../../theme/dashkit/variables';
 
-.table {
-  tr:last-child  td {
-    border-bottom: 1px solid $border-color;
+@include media-breakpoint-down(xs) {
+  .table:global(.table-sm) {
+    td, th {
+      padding: 0.5rem;
+    }
   }
 }
 
-.won, .wonViaPush {
-  border-bottom: 4px solid !important;
-}
-
 .won {
-  border-bottom-color: #28A745 !important;
+  border-bottom-color: $success !important;
 }

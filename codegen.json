@@ -28,7 +28,8 @@
           "date": "string",
           "numeric": "number",
           "point": "[number, number]",
-          "jsonb": "{ [key: string]: any }"
+          "jsonb": "{ [key: string]: any }",
+          "timestamp": "string"
         }
       }
     }

@@ -3,9 +3,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Container, Navbar, Nav } from 'react-bootstrap';
-import cx from 'classnames';
-
-import styles from './Layout.module.scss';
 
 const ITEMS = [
   { path: '', label: 'Overview' },
@@ -47,10 +44,13 @@ const Layout = ({ children, title }) => {
           type="image/png"
         />
         <link rel="manifest" href="/site.webmanifest" />
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossOrigin="anonymous" />
+        <link rel="preload" as="font" type="font/woff" crossOrigin="anonymous" href="/static/fonts/cerebrisans/cerebrisans-regular.woff" />
+        <link rel="preload" as="font" type="font/woff" crossOrigin="anonymous" href="/static/fonts/cerebrisans/cerebrisans-medium.woff" />
+        <link rel="preload" as="font" type="font/woff" crossOrigin="anonymous" href="/static/fonts/cerebrisans/cerebrisans-semibold.woff" />
+        <link rel="preload" as="font" type="font/woff" crossOrigin="anonymous" href="/static/fonts/feather/fonts/Feather.woff" />
       </Head>
       <Navbar
-        className={cx(styles.appNav, 'justify-content-between')}
+        className="justify-content-between"
         sticky="top"
       >
         <Container>

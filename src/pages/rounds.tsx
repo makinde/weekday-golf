@@ -5,18 +5,17 @@ import { Row, Col } from 'react-bootstrap';
 import sdk from '../sdk';
 import Layout from '../components/utils/Layout';
 import PlayerRoundsChart from '../components/Chart/PlayerRoundsChart';
-import Leaderboard from '../components/visualization/Leaderboard';
+import LeaderboardCard from '../components/visualization/LeaderboardCard';
 import { DefaultCourseRoundsPageQuery } from '../types';
-import RoundTable from '../components/visualization/RoundTable';
-import RoundTitle from '../components/utils/RoundTitle';
+import RoundCard from '../components/visualization/RoundCard';
 
 type Props = DefaultCourseRoundsPageQuery;
 
 const CourseRoundsPage: NextPage<Props> = ({
   course,
+  rounds,
   roundsForChart,
-  leaderboardEntries,
-  roundsForTable,
+  leaderboardPlayerRounds,
 }) => {
   const [focusedPlayerId, setFocusedPlayerId] = useState<number | null>(null);
   const [focusedRoundId, setFocusedRoundId] = useState<number | null>(null);
@@ -36,20 +35,13 @@ const CourseRoundsPage: NextPage<Props> = ({
             onPlayerFocus={setFocusedPlayerId}
             onRoundFocus={setFocusedRoundId}
           />
-          <Leaderboard
-            entries={leaderboardEntries}
-            focusedRoundId={focusedRoundId}
-            onRoundFocus={setFocusedRoundId}
+          <LeaderboardCard
+            playerRounds={leaderboardPlayerRounds}
           />
         </Col>
         <Col md={7}>
-          {roundsForTable.map((round) => (
-            <React.Fragment key={round.id}>
-              <h3>
-                <RoundTitle date={round.date} name={round.name} />
-              </h3>
-              <RoundTable round={round} />
-            </React.Fragment>
+          {rounds.map((round) => (
+            <RoundCard key={round.id} round={round} />
           ))}
         </Col>
       </Row>

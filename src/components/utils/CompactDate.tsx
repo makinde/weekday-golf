@@ -3,12 +3,18 @@ import { parseISO, format } from 'date-fns';
 
 type Props = {
   date: string,
+  dateFormat?: string,
+  yearFormat?: string,
 };
 
-const CompactDate = ({ date: stringDate }: Props) => {
+const CompactDate = ({
+  date: stringDate,
+  dateFormat = 'MMM do',
+  yearFormat = ', y',
+}: Props) => {
   const date = parseISO(stringDate);
   const isSameYear = date.getFullYear() === new Date().getFullYear();
-  const dateTpl = isSameYear ? 'MMM do' : 'MMM do, y';
+  const dateTpl = isSameYear ? dateFormat : `${dateFormat}${yearFormat}`;
 
   return <>{format(date, dateTpl)}</>;
 };
