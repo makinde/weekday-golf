@@ -5,6 +5,7 @@ import { RoundForRoundCardFragment } from '../../types';
 import RoundTable from './RoundTable';
 import RoundTitle from '../utils/RoundTitle';
 import CardHeaderTitle from '../utils/CardHeaderTitle';
+import CompactDate from '../utils/CompactDate';
 
 type Props = {
   round: RoundForRoundCardFragment,
@@ -20,21 +21,21 @@ const RoundCard = ({ round, title }: Props) => (
         </CardHeaderTitle>
       )}
 
-      <time className="small text-muted" dateTime="2019-06-09">
+      <Card.Text className="small text-muted">
         <i className="fe fe-clock mr-1" />
-        Jun 9
-      </time>
+        <CompactDate date={round.date} dateFormat="MMM d" yearFormat=" ''yy" />
+      </Card.Text>
     </Card.Header>
     <RoundTable round={round} className="table-nowrap card-table border-bottom" />
     <Card.Body>
       <div className="small text-muted">
         {round.skinsHoleBounty && (
-        <span>
-          $
-          {round.skinsHoleBounty}
-          /hole skin
-          {round.roundBounty && ','}
-        </span>
+          <span>
+            $
+            {round.skinsHoleBounty}
+            /hole skin
+            {round.roundBounty && ','}
+          </span>
         )}
         {round.roundBounty && (
           `$${round.roundBounty} round winner`

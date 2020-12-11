@@ -3,18 +3,8 @@ fragment roundForTable on round {
   date
   name
   course {
-    name
     holes(order_by: { number: asc }) {
-      nickname
-      number
-      par
-    }
-    holes_aggregate {
-      aggregate {
-        sum {
-          par
-        }
-      }
+      ...holeForScoresHeader
     }
   }
   playerRounds(order_by: { relativeScore: asc }) {

@@ -1,0 +1,5 @@
+fragment holeForScoresHeader on hole {
+  nickname
+  number
+  par
+}

@@ -47,28 +47,38 @@ const LeaderboardCard = ({ playerRounds, ...props }: Props) => {
                 <td>{rank}</td>
                 <td><RelativeScore value={relativeScore} /></td>
                 <td>
-                  {roundsForRank.map((
-                    { player: { nickname } }, idx,
-                  ) => (
-                    <React.Fragment key={nickname}>
-                      {idx !== 0 && (<br />)}
-                      {nickname}
-                    </React.Fragment>
-                  ))}
+                  {roundsForRank.map((playerRound, idx) => {
+                    const {
+                      player: { id: playerId, nickname },
+                      round: { id: roundId },
+                    } = playerRound;
+
+                    return (
+                      <React.Fragment key={`${playerId}-${roundId}`}>
+                        {idx !== 0 && (<br />)}
+                        {nickname}
+                      </React.Fragment>
+                    );
+                  })}
                 </td>
                 <td>
-                  {roundsForRank.map((
-                    { round: { date } }, idx,
-                  ) => (
-                    <React.Fragment key={`${relativeScore}-${date}`}>
-                      {idx !== 0 && (<br />)}
-                      <CompactDate
-                        date={date}
-                        dateFormat="MMM d"
-                        yearFormat=" ''yy"
-                      />
-                    </React.Fragment>
-                  ))}
+                  {roundsForRank.map((playerRound, idx) => {
+                    const {
+                      player: { id: playerId },
+                      round: { id: roundId, date },
+                    } = playerRound;
+
+                    return (
+                      <React.Fragment key={`${playerId}-${roundId}`}>
+                        {idx !== 0 && (<br />)}
+                        <CompactDate
+                          date={date}
+                          dateFormat="MMM d"
+                          yearFormat=" ''yy"
+                        />
+                      </React.Fragment>
+                    );
+                  })}
                 </td>
               </tr>
             );

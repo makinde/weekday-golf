@@ -1,10 +1,12 @@
 fragment _playerRoundForLeaderboard on player_round {
   player {
+    id
     nickname
     slug
   }
   relativeScore
   round {
+    id
     date
   }
 }

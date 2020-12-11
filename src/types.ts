@@ -1518,6 +1518,7 @@ export type Player_Round = {
   /** An aggregated array relationship */
   skins_aggregate: Skins_Aggregate;
   totalWinnings?: Maybe<Scalars['numeric']>;
+  winner?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -1659,6 +1660,7 @@ export type Player_Round_Bool_Exp = {
   skins?: Maybe<Skins_Bool_Exp>;
   skinsWinnings?: Maybe<Numeric_Comparison_Exp>;
   totalWinnings?: Maybe<Numeric_Comparison_Exp>;
+  winner?: Maybe<Boolean_Comparison_Exp>;
 };
 
 /** aggregate max on columns */
@@ -1743,6 +1745,7 @@ export type Player_Round_Order_By = {
   skinsWinnings?: Maybe<Order_By>;
   skins_aggregate?: Maybe<Skins_Aggregate_Order_By>;
   totalWinnings?: Maybe<Order_By>;
+  winner?: Maybe<Order_By>;
 };
 
 /** select columns of table "player_round" */
@@ -1772,7 +1775,9 @@ export enum Player_Round_Select_Column {
   /** column name */
   SkinsWinnings = 'skinsWinnings',
   /** column name */
-  TotalWinnings = 'totalWinnings'
+  TotalWinnings = 'totalWinnings',
+  /** column name */
+  Winner = 'winner'
 }
 
 /** aggregate stddev on columns */
@@ -4761,10 +4766,10 @@ export type _PlayerRoundForLeaderboardFragment = (
   & Pick<Player_Round, 'relativeScore'>
   & { player?: Maybe<(
     { __typename?: 'player' }
-    & Pick<Player, 'nickname' | 'slug'>
+    & Pick<Player, 'id' | 'nickname' | 'slug'>
   )>, round?: Maybe<(
     { __typename?: 'round' }
-    & Pick<Round, 'date'>
+    & Pick<Round, 'id' | 'date'>
   )> }
 );
 
@@ -4791,20 +4796,10 @@ export type RoundForTableFragment = (
   & Pick<Round, 'id' | 'date' | 'name'>
   & { course: (
     { __typename?: 'course' }
-    & Pick<Course, 'name'>
     & { holes: Array<(
       { __typename?: 'hole' }
-      & Pick<Hole, 'nickname' | 'number' | 'par'>
-    )>, holes_aggregate: (
-      { __typename?: 'hole_aggregate' }
-      & { aggregate?: Maybe<(
-        { __typename?: 'hole_aggregate_fields' }
-        & { sum?: Maybe<(
-          { __typename?: 'hole_sum_fields' }
-          & Pick<Hole_Sum_Fields, 'par'>
-        )> }
-      )> }
-    ) }
+      & HoleForScoresHeaderFragment
+    )> }
   ), playerRounds: Array<(
     { __typename?: 'player_round' }
     & Pick<Player_Round, 'relativeScore' | 'roundBountyWinner' | 'totalWinnings'>
@@ -4818,6 +4813,90 @@ export type RoundForTableFragment = (
       { __typename?: 'score' }
       & Pick<Score, 'holeNumber' | 'score'>
     )> }
+  )> }
+);
+
+export type HoleForScoresHeaderFragment = (
+  { __typename?: 'hole' }
+  & Pick<Hole, 'nickname' | 'number' | 'par'>
+);
+
+export type CoursesForIndexPagePathsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CoursesForIndexPagePathsQuery = (
+  { __typename?: 'query_root' }
+  & { courses: Array<(
+    { __typename?: 'course' }
+    & Pick<Course, 'slug'>
+  )> }
+);
+
+export type CourseForIndexPageSlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+export type CourseForIndexPageSlugQuery = (
+  { __typename?: 'query_root' }
+  & { courses: Array<(
+    { __typename?: 'course' }
+    & Pick<Course, 'id'>
+  )> }
+);
+
+export type InfoForIndexPageQueryVariables = Exact<{
+  courseId: Scalars['Int'];
+}>;
+
+
+export type InfoForIndexPageQuery = (
+  { __typename?: 'query_root' }
+  & { course?: Maybe<(
+    { __typename?: 'course' }
+    & Pick<Course, 'id' | 'name' | 'img'>
+  )>, latestRounds: Array<(
+    { __typename?: 'round' }
+    & RoundForRoundCardFragment
+  )>, leaderboardPlayerRounds: Array<(
+    { __typename?: 'player_round' }
+    & PlayerRoundForCourseLeaderboardFragment
+  )>, playersWithScoringStats: Array<(
+    { __typename?: 'player' }
+    & Pick<Player, 'id' | 'nickname'>
+    & { scoringInfo: Array<(
+      { __typename?: 'scoring_info' }
+      & Pick<Scoring_Info, 'holeNumber' | 'lifetimeAvgScore' | 'trailingAvgScore' | 'scoreTrend'>
+    )>, playerRoundsStats: (
+      { __typename?: 'player_round_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'player_round_aggregate_fields' }
+        & Pick<Player_Round_Aggregate_Fields, 'count'>
+      )> }
+    ) }
+  )>, playersWithParticipationStats: Array<(
+    { __typename?: 'player' }
+    & Pick<Player, 'slug' | 'nickname'>
+    & { playerRoundsStats: (
+      { __typename?: 'player_round_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'player_round_aggregate_fields' }
+        & Pick<Player_Round_Aggregate_Fields, 'count'>
+        & { avg?: Maybe<(
+          { __typename?: 'player_round_avg_fields' }
+          & Pick<Player_Round_Avg_Fields, 'relativeScore'>
+        )>, sum?: Maybe<(
+          { __typename?: 'player_round_sum_fields' }
+          & Pick<Player_Round_Sum_Fields, 'totalWinnings'>
+        )> }
+      )> }
+    ), winningStats: (
+      { __typename?: 'player_round_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'player_round_aggregate_fields' }
+        & Pick<Player_Round_Aggregate_Fields, 'count'>
+      )> }
+    ) }
   )> }
 );
 
@@ -4923,11 +5002,13 @@ export const PlayerRoundForChartFragmentDoc = gql`
 export const _PlayerRoundForLeaderboardFragmentDoc = gql`
     fragment _playerRoundForLeaderboard on player_round {
   player {
+    id
     nickname
     slug
   }
   relativeScore
   round {
+    id
     date
   }
 }
@@ -4944,24 +5025,21 @@ export const PlayerRoundForPlayerLeaderboardFragmentDoc = gql`
   ..._playerRoundForLeaderboard
 }
     ${_PlayerRoundForLeaderboardFragmentDoc}`;
+export const HoleForScoresHeaderFragmentDoc = gql`
+    fragment holeForScoresHeader on hole {
+  nickname
+  number
+  par
+}
+    `;
 export const RoundForTableFragmentDoc = gql`
     fragment roundForTable on round {
   id
   date
   name
   course {
-    name
     holes(order_by: {number: asc}) {
-      nickname
-      number
-      par
-    }
-    holes_aggregate {
-      aggregate {
-        sum {
-          par
-        }
-      }
+      ...holeForScoresHeader
     }
   }
   playerRounds(order_by: {relativeScore: asc}) {
@@ -4982,7 +5060,7 @@ export const RoundForTableFragmentDoc = gql`
     }
   }
 }
-    `;
+    ${HoleForScoresHeaderFragmentDoc}`;
 export const RoundForRoundCardFragmentDoc = gql`
     fragment roundForRoundCard on round {
   ...roundForTable
@@ -5006,6 +5084,79 @@ export const PagePlayerFragmentDoc = gql`
   slug
 }
     `;
+export const CoursesForIndexPagePathsDocument = gql`
+    query coursesForIndexPagePaths {
+  courses {
+    slug
+  }
+}
+    `;
+export const CourseForIndexPageSlugDocument = gql`
+    query courseForIndexPageSlug($slug: String!) {
+  courses(where: {slug: {_eq: $slug}}) {
+    id
+  }
+}
+    `;
+export const InfoForIndexPageDocument = gql`
+    query infoForIndexPage($courseId: Int!) {
+  course(id: $courseId) {
+    id
+    name
+    img
+  }
+  latestRounds: rounds(
+    where: {courseId: {_eq: $courseId}}
+    order_by: {date: desc}
+    limit: 1
+  ) {
+    ...roundForRoundCard
+  }
+  leaderboardPlayerRounds: playerRounds(
+    where: {courseId: {_eq: $courseId}, courseRank: {_lte: 10}}
+  ) {
+    ...playerRoundForCourseLeaderboard
+  }
+  playersWithScoringStats: players(where: {scores: {courseId: {_eq: $courseId}}}) {
+    id
+    nickname
+    scoringInfo(distinct_on: holeNumber, order_by: {holeNumber: asc, date: desc}) {
+      holeNumber
+      lifetimeAvgScore
+      trailingAvgScore
+      scoreTrend
+    }
+    playerRoundsStats: playerRounds_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+  playersWithParticipationStats: players(
+    where: {scores: {courseId: {_eq: $courseId}}}
+  ) {
+    slug
+    nickname
+    playerRoundsStats: playerRounds_aggregate {
+      aggregate {
+        count
+        avg {
+          relativeScore
+        }
+        sum {
+          totalWinnings
+        }
+      }
+    }
+    winningStats: playerRounds_aggregate(where: {winner: {_eq: true}}) {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+    ${RoundForRoundCardFragmentDoc}
+${PlayerRoundForCourseLeaderboardFragmentDoc}`;
 export const OverviewPageDocument = gql`
     query overviewPage($courseId: Int!) {
   latestRounds: rounds(
@@ -5074,6 +5225,15 @@ export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    coursesForIndexPagePaths(variables?: CoursesForIndexPagePathsQueryVariables): Promise<CoursesForIndexPagePathsQuery> {
+      return withWrapper(() => client.request<CoursesForIndexPagePathsQuery>(print(CoursesForIndexPagePathsDocument), variables));
+    },
+    courseForIndexPageSlug(variables: CourseForIndexPageSlugQueryVariables): Promise<CourseForIndexPageSlugQuery> {
+      return withWrapper(() => client.request<CourseForIndexPageSlugQuery>(print(CourseForIndexPageSlugDocument), variables));
+    },
+    infoForIndexPage(variables: InfoForIndexPageQueryVariables): Promise<InfoForIndexPageQuery> {
+      return withWrapper(() => client.request<InfoForIndexPageQuery>(print(InfoForIndexPageDocument), variables));
+    },
     overviewPage(variables: OverviewPageQueryVariables): Promise<OverviewPageQuery> {
       return withWrapper(() => client.request<OverviewPageQuery>(print(OverviewPageDocument), variables));
     },
