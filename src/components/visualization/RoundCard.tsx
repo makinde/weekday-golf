@@ -14,34 +14,41 @@ type Props = {
 
 const RoundCard = ({ round, title }: Props) => (
   <Card>
-    <Card.Header>
-      {title || (
-        <CardHeaderTitle>
-          <RoundTitle name={round.name} date={round.date} />
-        </CardHeaderTitle>
-      )}
+    {!round && (
+      <Card.Body>No round yet</Card.Body>
+    )}
+    {round && (
+      <>
+        <Card.Header>
+          {title || (
+          <CardHeaderTitle>
+            <RoundTitle name={round.name} date={round.date} />
+          </CardHeaderTitle>
+          )}
 
-      <Card.Text className="small text-muted">
-        <i className="fe fe-clock mr-1" />
-        <CompactDate date={round.date} dateFormat="MMM d" yearFormat=" ''yy" />
-      </Card.Text>
-    </Card.Header>
-    <RoundTable round={round} className="table-nowrap card-table border-bottom" />
-    <Card.Body>
-      <div className="small text-muted">
-        {round.skinsHoleBounty && (
-          <span>
-            $
-            {round.skinsHoleBounty}
-            /hole skin
-            {round.roundBounty && ','}
-          </span>
-        )}
-        {round.roundBounty && (
-          `$${round.roundBounty} round winner`
-        )}
-      </div>
-    </Card.Body>
+          <Card.Text className="small text-muted">
+            <i className="fe fe-clock mr-1" />
+            <CompactDate date={round.date} dateFormat="MMM d" yearFormat=" ''yy" />
+          </Card.Text>
+        </Card.Header>
+        <RoundTable round={round} className="table-nowrap card-table border-bottom" />
+        <Card.Body>
+          <div className="small text-muted">
+            {round.skinsHoleBounty && (
+            <span>
+              $
+              {round.skinsHoleBounty}
+              /hole skin
+              {round.roundBounty && ','}
+            </span>
+            )}
+            {round.roundBounty && (
+              `$${round.roundBounty} round winner`
+            )}
+          </div>
+        </Card.Body>
+      </>
+    )}
   </Card>
 );
 
