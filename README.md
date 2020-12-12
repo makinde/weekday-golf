@@ -1,5 +1,15 @@
 # 🏌🏾‍♂ Weekday Golf
-NextJS webapp for tracking and displaying the results of our golf games.
+A site (and maybe app) for friends to track their friendly golf rounds. More importantly, a place for friends to try and learn new technologies for building sites and apps.
+
+## Technologies
+- [NextJS](https://nextjs.org/docs/getting-started)
+- [TypeScript](https://www.typescriptlang.org/docs)
+- [GraphQL](https://graphql.org) (Endpoint built with [Hasura](https://hasura.io/docs/1.0/graphql/core/index.html) atop a Postgres DB). Ask for access.
+- [Vercel](https://vercel.com/docs) hosting
+- [CSS Modules](https://github.com/css-modules/css-modules)
+- [Bootstrap CSS](https://getbootstrap.com/docs/5.0/getting-started/introduction/) (using [React Bootstrap](https://react-bootstrap.github.io/components/alerts) with [Dashkit Theme](https://dashkit.goodthemes.co/docs/components.html))
+- [d3](https://github.com/d3/d3/wiki) for charts
+
 
 ## Contributing
 Contributions from Weekday Golf participants are welcome. You should already have access to evrything you need.
