@@ -4785,6 +4785,31 @@ export type PlayerRoundForPlayerLeaderboardFragment = (
   & _PlayerRoundForLeaderboardFragment
 );
 
+export type ParticipationStatsForCardFragment = (
+  { __typename?: 'player' }
+  & Pick<Player, 'id' | 'slug' | 'nickname'>
+  & { playerRoundsStats: (
+    { __typename?: 'player_round_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'player_round_aggregate_fields' }
+      & Pick<Player_Round_Aggregate_Fields, 'count'>
+      & { avg?: Maybe<(
+        { __typename?: 'player_round_avg_fields' }
+        & Pick<Player_Round_Avg_Fields, 'relativeScore'>
+      )>, sum?: Maybe<(
+        { __typename?: 'player_round_sum_fields' }
+        & Pick<Player_Round_Sum_Fields, 'totalWinnings'>
+      )> }
+    )> }
+  ), winningStats: (
+    { __typename?: 'player_round_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'player_round_aggregate_fields' }
+      & Pick<Player_Round_Aggregate_Fields, 'count'>
+    )> }
+  ) }
+);
+
 export type RoundForRoundCardFragment = (
   { __typename?: 'round' }
   & Pick<Round, 'date' | 'name' | 'skinsHoleBounty' | 'roundBounty'>
@@ -4821,6 +4846,21 @@ export type HoleForScoresHeaderFragment = (
   & Pick<Hole, 'nickname' | 'number' | 'par'>
 );
 
+export type ScoringStatsForCardFragment = (
+  { __typename?: 'player' }
+  & Pick<Player, 'id' | 'nickname'>
+  & { scoringInfo: Array<(
+    { __typename?: 'scoring_info' }
+    & Pick<Scoring_Info, 'holeNumber' | 'lifetimeAvgScore' | 'trailingAvgScore' | 'scoreTrend'>
+  )>, playerRoundsStats: (
+    { __typename?: 'player_round_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'player_round_aggregate_fields' }
+      & Pick<Player_Round_Aggregate_Fields, 'count'>
+    )> }
+  ) }
+);
+
 export type CoursesForIndexPagePathsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -4855,6 +4895,10 @@ export type InfoForIndexPageQuery = (
   & { course?: Maybe<(
     { __typename?: 'course' }
     & Pick<Course, 'id' | 'name' | 'img'>
+    & { holes: Array<(
+      { __typename?: 'hole' }
+      & HoleForScoresHeaderFragment
+    )> }
   )>, latestRounds: Array<(
     { __typename?: 'round' }
     & RoundForRoundCardFragment
@@ -4863,40 +4907,10 @@ export type InfoForIndexPageQuery = (
     & PlayerRoundForCourseLeaderboardFragment
   )>, playersWithScoringStats: Array<(
     { __typename?: 'player' }
-    & Pick<Player, 'id' | 'nickname'>
-    & { scoringInfo: Array<(
-      { __typename?: 'scoring_info' }
-      & Pick<Scoring_Info, 'holeNumber' | 'lifetimeAvgScore' | 'trailingAvgScore' | 'scoreTrend'>
-    )>, playerRoundsStats: (
-      { __typename?: 'player_round_aggregate' }
-      & { aggregate?: Maybe<(
-        { __typename?: 'player_round_aggregate_fields' }
-        & Pick<Player_Round_Aggregate_Fields, 'count'>
-      )> }
-    ) }
+    & ScoringStatsForCardFragment
   )>, playersWithParticipationStats: Array<(
     { __typename?: 'player' }
-    & Pick<Player, 'slug' | 'nickname'>
-    & { playerRoundsStats: (
-      { __typename?: 'player_round_aggregate' }
-      & { aggregate?: Maybe<(
-        { __typename?: 'player_round_aggregate_fields' }
-        & Pick<Player_Round_Aggregate_Fields, 'count'>
-        & { avg?: Maybe<(
-          { __typename?: 'player_round_avg_fields' }
-          & Pick<Player_Round_Avg_Fields, 'relativeScore'>
-        )>, sum?: Maybe<(
-          { __typename?: 'player_round_sum_fields' }
-          & Pick<Player_Round_Sum_Fields, 'totalWinnings'>
-        )> }
-      )> }
-    ), winningStats: (
-      { __typename?: 'player_round_aggregate' }
-      & { aggregate?: Maybe<(
-        { __typename?: 'player_round_aggregate_fields' }
-        & Pick<Player_Round_Aggregate_Fields, 'count'>
-      )> }
-    ) }
+    & ParticipationStatsForCardFragment
   )> }
 );
 
@@ -5025,6 +5039,29 @@ export const PlayerRoundForPlayerLeaderboardFragmentDoc = gql`
   ..._playerRoundForLeaderboard
 }
     ${_PlayerRoundForLeaderboardFragmentDoc}`;
+export const ParticipationStatsForCardFragmentDoc = gql`
+    fragment participationStatsForCard on player {
+  id
+  slug
+  nickname
+  playerRoundsStats: playerRounds_aggregate {
+    aggregate {
+      count
+      avg {
+        relativeScore
+      }
+      sum {
+        totalWinnings
+      }
+    }
+  }
+  winningStats: playerRounds_aggregate(where: {winner: {_eq: true}}) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
 export const HoleForScoresHeaderFragmentDoc = gql`
     fragment holeForScoresHeader on hole {
   nickname
@@ -5070,6 +5107,23 @@ export const RoundForRoundCardFragmentDoc = gql`
   roundBounty
 }
     ${RoundForTableFragmentDoc}`;
+export const ScoringStatsForCardFragmentDoc = gql`
+    fragment scoringStatsForCard on player {
+  id
+  nickname
+  scoringInfo(distinct_on: holeNumber, order_by: {holeNumber: asc, date: desc}) {
+    holeNumber
+    lifetimeAvgScore
+    trailingAvgScore
+    scoreTrend
+  }
+  playerRoundsStats: playerRounds_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
 export const PageCourseFragmentDoc = gql`
     fragment pageCourse on course {
   id
@@ -5104,6 +5158,9 @@ export const InfoForIndexPageDocument = gql`
     id
     name
     img
+    holes(order_by: {number: asc}) {
+      ...holeForScoresHeader
+    }
   }
   latestRounds: rounds(
     where: {courseId: {_eq: $courseId}}
@@ -5117,46 +5174,24 @@ export const InfoForIndexPageDocument = gql`
   ) {
     ...playerRoundForCourseLeaderboard
   }
-  playersWithScoringStats: players(where: {scores: {courseId: {_eq: $courseId}}}) {
-    id
-    nickname
-    scoringInfo(distinct_on: holeNumber, order_by: {holeNumber: asc, date: desc}) {
-      holeNumber
-      lifetimeAvgScore
-      trailingAvgScore
-      scoreTrend
-    }
-    playerRoundsStats: playerRounds_aggregate {
-      aggregate {
-        count
-      }
-    }
+  playersWithScoringStats: players(
+    where: {scores: {courseId: {_eq: $courseId}}}
+    order_by: {playerRounds_aggregate: {count: desc}}
+  ) {
+    ...scoringStatsForCard
   }
   playersWithParticipationStats: players(
     where: {scores: {courseId: {_eq: $courseId}}}
+    order_by: {playerRounds_aggregate: {count: desc}}
   ) {
-    slug
-    nickname
-    playerRoundsStats: playerRounds_aggregate {
-      aggregate {
-        count
-        avg {
-          relativeScore
-        }
-        sum {
-          totalWinnings
-        }
-      }
-    }
-    winningStats: playerRounds_aggregate(where: {winner: {_eq: true}}) {
-      aggregate {
-        count
-      }
-    }
+    ...participationStatsForCard
   }
 }
-    ${RoundForRoundCardFragmentDoc}
-${PlayerRoundForCourseLeaderboardFragmentDoc}`;
+    ${HoleForScoresHeaderFragmentDoc}
+${RoundForRoundCardFragmentDoc}
+${PlayerRoundForCourseLeaderboardFragmentDoc}
+${ScoringStatsForCardFragmentDoc}
+${ParticipationStatsForCardFragmentDoc}`;
 export const OverviewPageDocument = gql`
     query overviewPage($courseId: Int!) {
   latestRounds: rounds(

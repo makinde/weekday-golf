@@ -7,16 +7,17 @@ import { HoleForScoresHeaderFragment } from '../../types';
 type Props = {
   holes: HoleForScoresHeaderFragment[],
   id: string,
+  showTotal?: boolean,
 };
 
-const ScoresHeader = ({ holes, id }: Props) => {
+const ScoresHeader = ({ holes, id, showTotal = true }: Props) => {
   const firstPar = holes[0].par;
   const uniformPar = holes.every(({ par }) => par === firstPar);
 
   return (
     <thead>
       <tr>
-        <th className="border-right w-50">
+        <th className="border-right">
           {uniformPar && 'Name'}
           {!uniformPar && (
             <>
@@ -49,17 +50,19 @@ const ScoresHeader = ({ holes, id }: Props) => {
             )}
           </th>
         ))}
-        <th className="border-left">
-          Tot
-          {!uniformPar && (
+        {showTotal && (
+          <th className="border-left">
+            Tot
+            {!uniformPar && (
             <>
               <br />
               <span className="font-weight-light">
                 {sumBy(holes, 'par')}
               </span>
             </>
-          )}
-        </th>
+            )}
+          </th>
+        )}
       </tr>
     </thead>
   );

@@ -1,0 +1,23 @@
+fragment participationStatsForCard on player {
+  id
+  slug
+  nickname
+  playerRoundsStats: playerRounds_aggregate {
+    aggregate {
+      count
+      avg {
+        relativeScore
+      }
+      sum {
+        totalWinnings
+      }
+    }
+  }
+  winningStats: playerRounds_aggregate(
+    where: { winner: { _eq: true } }
+  ) {
+    aggregate {
+      count
+    }
+  }
+}

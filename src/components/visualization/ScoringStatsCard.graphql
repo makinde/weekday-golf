@@ -1,0 +1,18 @@
+fragment scoringStatsForCard on player {
+  id
+  nickname
+  scoringInfo(
+    distinct_on: holeNumber,
+    order_by: { holeNumber: asc, date: desc }
+  ) {
+    holeNumber
+    lifetimeAvgScore
+    trailingAvgScore
+    scoreTrend
+  }
+  playerRoundsStats: playerRounds_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
