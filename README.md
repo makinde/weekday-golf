@@ -12,17 +12,17 @@ A site (and maybe app) for friends to track their friendly golf rounds. More imp
 
 
 ## Contributing
-Contributions from Weekday Golf participants are welcome. You should already have access to evrything you need.
+Contributions from clwons and clown adjacent folks are welcome. Just holler at an existing contributor for access to Hasura, Vercel, or the code.
 
 ### Installation
 Clone the repo locally and install dependencies:
 ```sh
-$ git clone git@github.com:ericgio/weekday-golf.git
+$ git clone git@github.com:makinde/weekday-golf.git
 $ cd weekday-golf
 $ yarn install
 ```
 ### Environment Variables
-The app requires a couple env variables, which you can get from Eric G. or from the Heroku app.
+The app requires a couple env variables, which you can get from any past contributor.
 ```sh
 $ cp .env.example .env
 ```
@@ -32,32 +32,13 @@ Add the env vars to the `.env` file.
 ```sh
 $ yarn dev
 ```
-This script will build the static data, bundle the app, and start a local server. The location defaults to `localhost:3000` but you can change this by changing the `$PORT` variable to something else.
+This script will compile types for the \*.graphql files, and start a local server.  The location for the local server defaults to `localhost:3000` but you can change this by changing the `$PORT` variable to something else. It will also watch the graphql files for changes and recompute the types file on the fly. If you want to build the types one off, you can run `yarn generate`.
 
 ### Data
-Data from all the rounds are stored in a Google spreadsheet that everyone should be able to edit.
-
-To add new data:
-1. Create a new tab within the spreadsheet (or make a copy from an existing one).
-2. Name the tab so it corresponds to the ISO date of the round (YYYY-MM-DDThh:mm:ss)
-3. Add the round data in the proper format. The first 2 rows will be ignored, and the first column will be assumed to contain the participant's name.
-
-The app doesn't pull data from the spreadsheet on each page load. Instead, there is a build step that parses the spreadsheet, transforms the data, and generates 2 static JSON files to be used by the app for displaying the data. You can run this manually with `yarn run data`. On Heroku, the step will run automatically whenever the app is redeployed.
+Data from all the rounds are stored in a Postgres database. Hasura is a service that you point to a DB and it generates a graphql endpoing based on it (crazy, I know). We try to push a decent amount of things back to SQL/Hasura so the front end can mostly just worry about querying data in the shape it needs and rendering it. Ask for access to Hasura if you don't have it. You can use the GraphiQL interface provided to explore and add data.
 
 ### Deployment
-The Heroku app is connected to the Github repo and should automatically redeploy whenever a commit is pushed to `master`. If you just want to update the data, (eg: after adding a new round to the spreadhseet), redeploy the app manually by going to the "Deploy" tab in Heroku, scrolling to the bottom, and clicking the "Deploy Branch" button.
+Vercel is connected to this repository. Every pull request will automatically get a new URL to host the branch. That URL will be shown on the PR page by the Vercel bot. For now, the production add will redeploy whenever any data changes or any code is pushed.
 
-## To Do:
-
-### Stats
-- [X] highlight lowest score per hole
-- [X] rounds played by player
-- [X] Top rounds
-- [X] average round by player
-- [X] best/worst hole (overall, by player)
-- [ ] score distribution by player
-- [ ] skins won
-
-### App
-- [ ] data entry
-- [ ] calculate skins + payouts
+## New Ideas
+Feel free to come up with ideas, implement them, and send a PR. The easiest way to do this is to add a new thing as a new card. If you want to propose an idea or there's something you'd like to see, open an issue and someone else might pick it up.
