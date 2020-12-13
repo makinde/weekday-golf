@@ -13,7 +13,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "authors": [
-    "ericgio"
+    "makinde",
+    "ericgio",
+    "fzamore"
   ],
   "license": "MIT",
   "dependencies": {
