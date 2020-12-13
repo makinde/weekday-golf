@@ -37,6 +37,8 @@ This script will compile types for the \*.graphql files, and start a local serve
 ### Data
 Data from all the rounds are stored in a Postgres database. Hasura is a service that you point to a DB and it generates a graphql endpoing based on it (crazy, I know). We try to push a decent amount of things back to SQL/Hasura so the front end can mostly just worry about querying data in the shape it needs and rendering it. Ask for access to Hasura if you don't have it. You can use the GraphiQL interface provided to explore and add data.
 
+Data is queried using graphQL. All queries/fragments/mutations are in *.graphql files collocated with the typescript file that uses it. `yarn generate` looks at all these files and produces a strongly typed sdk and result types for all the queries, mutations, and fragments. In development, `yarn dev` will run this generation any time the files are touched, which is really convenient. 
+
 ### Deployment
 Vercel is connected to this repository. Every pull request will automatically get a new URL to host the branch. That URL will be shown on the PR page by the Vercel bot. For now, the production add will redeploy whenever any data changes or any code is pushed.
 
