@@ -839,13 +839,6 @@ export type Hole_Variance_Order_By = {
   par?: Maybe<Order_By>;
 };
 
-export type Leaderboard_Args = {
-  course?: Maybe<Scalars['Int']>;
-  player?: Maybe<Scalars['Int']>;
-  rank?: Maybe<Scalars['Int']>;
-  series?: Maybe<Scalars['Int']>;
-};
-
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
@@ -869,10 +862,6 @@ export type Mutation_Root = {
   deleteScore?: Maybe<Score>;
   /** delete data from the table: "score" */
   deleteScores?: Maybe<Score_Mutation_Response>;
-  /** delete data from the table: "zz_leaderboard" */
-  delete_zz_leaderboard?: Maybe<Zz_Leaderboard_Mutation_Response>;
-  /** delete single row from the table: "zz_leaderboard" */
-  delete_zz_leaderboard_by_pk?: Maybe<Zz_Leaderboard>;
   /** insert a single row into the table: "course" */
   insertCourse?: Maybe<Course>;
   /** insert data into the table: "course" */
@@ -893,10 +882,6 @@ export type Mutation_Root = {
   insertScore?: Maybe<Score>;
   /** insert data into the table: "score" */
   insertScores?: Maybe<Score_Mutation_Response>;
-  /** insert data into the table: "zz_leaderboard" */
-  insert_zz_leaderboard?: Maybe<Zz_Leaderboard_Mutation_Response>;
-  /** insert a single row into the table: "zz_leaderboard" */
-  insert_zz_leaderboard_one?: Maybe<Zz_Leaderboard>;
   /** update single row of the table: "course" */
   updateCourse?: Maybe<Course>;
   /** update data of the table: "course" */
@@ -917,10 +902,6 @@ export type Mutation_Root = {
   updateScore?: Maybe<Score>;
   /** update data of the table: "score" */
   updateScores?: Maybe<Score_Mutation_Response>;
-  /** update data of the table: "zz_leaderboard" */
-  update_zz_leaderboard?: Maybe<Zz_Leaderboard_Mutation_Response>;
-  /** update single row of the table: "zz_leaderboard" */
-  update_zz_leaderboard_by_pk?: Maybe<Zz_Leaderboard>;
 };
 
 
@@ -984,19 +965,6 @@ export type Mutation_RootDeleteScoreArgs = {
 /** mutation root */
 export type Mutation_RootDeleteScoresArgs = {
   where: Score_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Zz_LeaderboardArgs = {
-  where: Zz_Leaderboard_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Zz_Leaderboard_By_PkArgs = {
-  playerId: Scalars['Int'];
-  roundId: Scalars['Int'];
 };
 
 
@@ -1067,20 +1035,6 @@ export type Mutation_RootInsertScoreArgs = {
 export type Mutation_RootInsertScoresArgs = {
   objects: Array<Score_Insert_Input>;
   on_conflict?: Maybe<Score_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Zz_LeaderboardArgs = {
-  objects: Array<Zz_Leaderboard_Insert_Input>;
-  on_conflict?: Maybe<Zz_Leaderboard_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Zz_Leaderboard_OneArgs = {
-  object: Zz_Leaderboard_Insert_Input;
-  on_conflict?: Maybe<Zz_Leaderboard_On_Conflict>;
 };
 
 
@@ -1161,22 +1115,6 @@ export type Mutation_RootUpdateScoresArgs = {
   _inc?: Maybe<Score_Inc_Input>;
   _set?: Maybe<Score_Set_Input>;
   where: Score_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Zz_LeaderboardArgs = {
-  _inc?: Maybe<Zz_Leaderboard_Inc_Input>;
-  _set?: Maybe<Zz_Leaderboard_Set_Input>;
-  where: Zz_Leaderboard_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Zz_Leaderboard_By_PkArgs = {
-  _inc?: Maybe<Zz_Leaderboard_Inc_Input>;
-  _set?: Maybe<Zz_Leaderboard_Set_Input>;
-  pk_columns: Zz_Leaderboard_Pk_Columns_Input;
 };
 
 
@@ -2150,10 +2088,6 @@ export type Query_Root = {
   holeStats: Hole_Aggregate;
   /** fetch data from the table: "hole" */
   holes: Array<Hole>;
-  /** execute function "leaderboard" which returns "zz_leaderboard" */
-  leaderboard: Array<Zz_Leaderboard>;
-  /** execute function "leaderboard" and query aggregates on result of table type "zz_leaderboard" */
-  leaderboard_aggregate: Zz_Leaderboard_Aggregate;
   /** fetch data from the table: "player" using primary key columns */
   player?: Maybe<Player>;
   /** fetch aggregated fields from the table: "player_round" */
@@ -2184,12 +2118,6 @@ export type Query_Root = {
   skinStats: Skins_Aggregate;
   /** fetch data from the table: "skins" */
   skins: Array<Skins>;
-  /** fetch data from the table: "zz_leaderboard" */
-  zz_leaderboard: Array<Zz_Leaderboard>;
-  /** fetch aggregated fields from the table: "zz_leaderboard" */
-  zz_leaderboard_aggregate: Zz_Leaderboard_Aggregate;
-  /** fetch data from the table: "zz_leaderboard" using primary key columns */
-  zz_leaderboard_by_pk?: Maybe<Zz_Leaderboard>;
 };
 
 
@@ -2243,28 +2171,6 @@ export type Query_RootHolesArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Hole_Order_By>>;
   where?: Maybe<Hole_Bool_Exp>;
-};
-
-
-/** query root */
-export type Query_RootLeaderboardArgs = {
-  args: Leaderboard_Args;
-  distinct_on?: Maybe<Array<Zz_Leaderboard_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Zz_Leaderboard_Order_By>>;
-  where?: Maybe<Zz_Leaderboard_Bool_Exp>;
-};
-
-
-/** query root */
-export type Query_RootLeaderboard_AggregateArgs = {
-  args: Leaderboard_Args;
-  distinct_on?: Maybe<Array<Zz_Leaderboard_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Zz_Leaderboard_Order_By>>;
-  where?: Maybe<Zz_Leaderboard_Bool_Exp>;
 };
 
 
@@ -2405,33 +2311,6 @@ export type Query_RootSkinsArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Skins_Order_By>>;
   where?: Maybe<Skins_Bool_Exp>;
-};
-
-
-/** query root */
-export type Query_RootZz_LeaderboardArgs = {
-  distinct_on?: Maybe<Array<Zz_Leaderboard_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Zz_Leaderboard_Order_By>>;
-  where?: Maybe<Zz_Leaderboard_Bool_Exp>;
-};
-
-
-/** query root */
-export type Query_RootZz_Leaderboard_AggregateArgs = {
-  distinct_on?: Maybe<Array<Zz_Leaderboard_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Zz_Leaderboard_Order_By>>;
-  where?: Maybe<Zz_Leaderboard_Bool_Exp>;
-};
-
-
-/** query root */
-export type Query_RootZz_Leaderboard_By_PkArgs = {
-  playerId: Scalars['Int'];
-  roundId: Scalars['Int'];
 };
 
 /** columns and relationships of "round" */
@@ -4136,10 +4015,6 @@ export type Subscription_Root = {
   holeStats: Hole_Aggregate;
   /** fetch data from the table: "hole" */
   holes: Array<Hole>;
-  /** execute function "leaderboard" which returns "zz_leaderboard" */
-  leaderboard: Array<Zz_Leaderboard>;
-  /** execute function "leaderboard" and query aggregates on result of table type "zz_leaderboard" */
-  leaderboard_aggregate: Zz_Leaderboard_Aggregate;
   /** fetch data from the table: "player" using primary key columns */
   player?: Maybe<Player>;
   /** fetch aggregated fields from the table: "player_round" */
@@ -4170,12 +4045,6 @@ export type Subscription_Root = {
   skinStats: Skins_Aggregate;
   /** fetch data from the table: "skins" */
   skins: Array<Skins>;
-  /** fetch data from the table: "zz_leaderboard" */
-  zz_leaderboard: Array<Zz_Leaderboard>;
-  /** fetch aggregated fields from the table: "zz_leaderboard" */
-  zz_leaderboard_aggregate: Zz_Leaderboard_Aggregate;
-  /** fetch data from the table: "zz_leaderboard" using primary key columns */
-  zz_leaderboard_by_pk?: Maybe<Zz_Leaderboard>;
 };
 
 
@@ -4229,28 +4098,6 @@ export type Subscription_RootHolesArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Hole_Order_By>>;
   where?: Maybe<Hole_Bool_Exp>;
-};
-
-
-/** subscription root */
-export type Subscription_RootLeaderboardArgs = {
-  args: Leaderboard_Args;
-  distinct_on?: Maybe<Array<Zz_Leaderboard_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Zz_Leaderboard_Order_By>>;
-  where?: Maybe<Zz_Leaderboard_Bool_Exp>;
-};
-
-
-/** subscription root */
-export type Subscription_RootLeaderboard_AggregateArgs = {
-  args: Leaderboard_Args;
-  distinct_on?: Maybe<Array<Zz_Leaderboard_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Zz_Leaderboard_Order_By>>;
-  where?: Maybe<Zz_Leaderboard_Bool_Exp>;
 };
 
 
@@ -4394,33 +4241,6 @@ export type Subscription_RootSkinsArgs = {
 };
 
 
-/** subscription root */
-export type Subscription_RootZz_LeaderboardArgs = {
-  distinct_on?: Maybe<Array<Zz_Leaderboard_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Zz_Leaderboard_Order_By>>;
-  where?: Maybe<Zz_Leaderboard_Bool_Exp>;
-};
-
-
-/** subscription root */
-export type Subscription_RootZz_Leaderboard_AggregateArgs = {
-  distinct_on?: Maybe<Array<Zz_Leaderboard_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Zz_Leaderboard_Order_By>>;
-  where?: Maybe<Zz_Leaderboard_Bool_Exp>;
-};
-
-
-/** subscription root */
-export type Subscription_RootZz_Leaderboard_By_PkArgs = {
-  playerId: Scalars['Int'];
-  roundId: Scalars['Int'];
-};
-
-
 /** expression to compare columns of type timestamp. All fields are combined with logical 'AND'. */
 export type Timestamp_Comparison_Exp = {
   _eq?: Maybe<Scalars['timestamp']>;
@@ -4432,321 +4252,6 @@ export type Timestamp_Comparison_Exp = {
   _lte?: Maybe<Scalars['timestamp']>;
   _neq?: Maybe<Scalars['timestamp']>;
   _nin?: Maybe<Array<Scalars['timestamp']>>;
-};
-
-/** columns and relationships of "zz_leaderboard" */
-export type Zz_Leaderboard = {
-  __typename?: 'zz_leaderboard';
-  /** An object relationship */
-  player: Player;
-  playerId: Scalars['Int'];
-  /** An object relationship */
-  playerRound?: Maybe<Player_Round>;
-  rank: Scalars['bigint'];
-  /** An object relationship */
-  round: Round;
-  roundId: Scalars['Int'];
-};
-
-/** aggregated selection of "zz_leaderboard" */
-export type Zz_Leaderboard_Aggregate = {
-  __typename?: 'zz_leaderboard_aggregate';
-  aggregate?: Maybe<Zz_Leaderboard_Aggregate_Fields>;
-  nodes: Array<Zz_Leaderboard>;
-};
-
-/** aggregate fields of "zz_leaderboard" */
-export type Zz_Leaderboard_Aggregate_Fields = {
-  __typename?: 'zz_leaderboard_aggregate_fields';
-  avg?: Maybe<Zz_Leaderboard_Avg_Fields>;
-  count?: Maybe<Scalars['Int']>;
-  max?: Maybe<Zz_Leaderboard_Max_Fields>;
-  min?: Maybe<Zz_Leaderboard_Min_Fields>;
-  stddev?: Maybe<Zz_Leaderboard_Stddev_Fields>;
-  stddev_pop?: Maybe<Zz_Leaderboard_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Zz_Leaderboard_Stddev_Samp_Fields>;
-  sum?: Maybe<Zz_Leaderboard_Sum_Fields>;
-  var_pop?: Maybe<Zz_Leaderboard_Var_Pop_Fields>;
-  var_samp?: Maybe<Zz_Leaderboard_Var_Samp_Fields>;
-  variance?: Maybe<Zz_Leaderboard_Variance_Fields>;
-};
-
-
-/** aggregate fields of "zz_leaderboard" */
-export type Zz_Leaderboard_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Zz_Leaderboard_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "zz_leaderboard" */
-export type Zz_Leaderboard_Aggregate_Order_By = {
-  avg?: Maybe<Zz_Leaderboard_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Zz_Leaderboard_Max_Order_By>;
-  min?: Maybe<Zz_Leaderboard_Min_Order_By>;
-  stddev?: Maybe<Zz_Leaderboard_Stddev_Order_By>;
-  stddev_pop?: Maybe<Zz_Leaderboard_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Zz_Leaderboard_Stddev_Samp_Order_By>;
-  sum?: Maybe<Zz_Leaderboard_Sum_Order_By>;
-  var_pop?: Maybe<Zz_Leaderboard_Var_Pop_Order_By>;
-  var_samp?: Maybe<Zz_Leaderboard_Var_Samp_Order_By>;
-  variance?: Maybe<Zz_Leaderboard_Variance_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "zz_leaderboard" */
-export type Zz_Leaderboard_Arr_Rel_Insert_Input = {
-  data: Array<Zz_Leaderboard_Insert_Input>;
-  on_conflict?: Maybe<Zz_Leaderboard_On_Conflict>;
-};
-
-/** aggregate avg on columns */
-export type Zz_Leaderboard_Avg_Fields = {
-  __typename?: 'zz_leaderboard_avg_fields';
-  playerId?: Maybe<Scalars['Float']>;
-  rank?: Maybe<Scalars['Float']>;
-  roundId?: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "zz_leaderboard" */
-export type Zz_Leaderboard_Avg_Order_By = {
-  playerId?: Maybe<Order_By>;
-  rank?: Maybe<Order_By>;
-  roundId?: Maybe<Order_By>;
-};
-
-/** Boolean expression to filter rows from the table "zz_leaderboard". All fields are combined with a logical 'AND'. */
-export type Zz_Leaderboard_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Zz_Leaderboard_Bool_Exp>>>;
-  _not?: Maybe<Zz_Leaderboard_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Zz_Leaderboard_Bool_Exp>>>;
-  player?: Maybe<Player_Bool_Exp>;
-  playerId?: Maybe<Int_Comparison_Exp>;
-  playerRound?: Maybe<Player_Round_Bool_Exp>;
-  rank?: Maybe<Bigint_Comparison_Exp>;
-  round?: Maybe<Round_Bool_Exp>;
-  roundId?: Maybe<Int_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "zz_leaderboard" */
-export enum Zz_Leaderboard_Constraint {
-  /** unique or primary key constraint */
-  LeaderboardPkey = '_leaderboard_pkey'
-}
-
-/** input type for incrementing integer column in table "zz_leaderboard" */
-export type Zz_Leaderboard_Inc_Input = {
-  playerId?: Maybe<Scalars['Int']>;
-  rank?: Maybe<Scalars['bigint']>;
-  roundId?: Maybe<Scalars['Int']>;
-};
-
-/** input type for inserting data into table "zz_leaderboard" */
-export type Zz_Leaderboard_Insert_Input = {
-  player?: Maybe<Player_Obj_Rel_Insert_Input>;
-  playerId?: Maybe<Scalars['Int']>;
-  rank?: Maybe<Scalars['bigint']>;
-  round?: Maybe<Round_Obj_Rel_Insert_Input>;
-  roundId?: Maybe<Scalars['Int']>;
-};
-
-/** aggregate max on columns */
-export type Zz_Leaderboard_Max_Fields = {
-  __typename?: 'zz_leaderboard_max_fields';
-  playerId?: Maybe<Scalars['Int']>;
-  rank?: Maybe<Scalars['bigint']>;
-  roundId?: Maybe<Scalars['Int']>;
-};
-
-/** order by max() on columns of table "zz_leaderboard" */
-export type Zz_Leaderboard_Max_Order_By = {
-  playerId?: Maybe<Order_By>;
-  rank?: Maybe<Order_By>;
-  roundId?: Maybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type Zz_Leaderboard_Min_Fields = {
-  __typename?: 'zz_leaderboard_min_fields';
-  playerId?: Maybe<Scalars['Int']>;
-  rank?: Maybe<Scalars['bigint']>;
-  roundId?: Maybe<Scalars['Int']>;
-};
-
-/** order by min() on columns of table "zz_leaderboard" */
-export type Zz_Leaderboard_Min_Order_By = {
-  playerId?: Maybe<Order_By>;
-  rank?: Maybe<Order_By>;
-  roundId?: Maybe<Order_By>;
-};
-
-/** response of any mutation on the table "zz_leaderboard" */
-export type Zz_Leaderboard_Mutation_Response = {
-  __typename?: 'zz_leaderboard_mutation_response';
-  /** number of affected rows by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
-  returning: Array<Zz_Leaderboard>;
-};
-
-/** input type for inserting object relation for remote table "zz_leaderboard" */
-export type Zz_Leaderboard_Obj_Rel_Insert_Input = {
-  data: Zz_Leaderboard_Insert_Input;
-  on_conflict?: Maybe<Zz_Leaderboard_On_Conflict>;
-};
-
-/** on conflict condition type for table "zz_leaderboard" */
-export type Zz_Leaderboard_On_Conflict = {
-  constraint: Zz_Leaderboard_Constraint;
-  update_columns: Array<Zz_Leaderboard_Update_Column>;
-  where?: Maybe<Zz_Leaderboard_Bool_Exp>;
-};
-
-/** ordering options when selecting data from "zz_leaderboard" */
-export type Zz_Leaderboard_Order_By = {
-  player?: Maybe<Player_Order_By>;
-  playerId?: Maybe<Order_By>;
-  playerRound?: Maybe<Player_Round_Order_By>;
-  rank?: Maybe<Order_By>;
-  round?: Maybe<Round_Order_By>;
-  roundId?: Maybe<Order_By>;
-};
-
-/** primary key columns input for table: "zz_leaderboard" */
-export type Zz_Leaderboard_Pk_Columns_Input = {
-  playerId: Scalars['Int'];
-  roundId: Scalars['Int'];
-};
-
-/** select columns of table "zz_leaderboard" */
-export enum Zz_Leaderboard_Select_Column {
-  /** column name */
-  PlayerId = 'playerId',
-  /** column name */
-  Rank = 'rank',
-  /** column name */
-  RoundId = 'roundId'
-}
-
-/** input type for updating data in table "zz_leaderboard" */
-export type Zz_Leaderboard_Set_Input = {
-  playerId?: Maybe<Scalars['Int']>;
-  rank?: Maybe<Scalars['bigint']>;
-  roundId?: Maybe<Scalars['Int']>;
-};
-
-/** aggregate stddev on columns */
-export type Zz_Leaderboard_Stddev_Fields = {
-  __typename?: 'zz_leaderboard_stddev_fields';
-  playerId?: Maybe<Scalars['Float']>;
-  rank?: Maybe<Scalars['Float']>;
-  roundId?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev() on columns of table "zz_leaderboard" */
-export type Zz_Leaderboard_Stddev_Order_By = {
-  playerId?: Maybe<Order_By>;
-  rank?: Maybe<Order_By>;
-  roundId?: Maybe<Order_By>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Zz_Leaderboard_Stddev_Pop_Fields = {
-  __typename?: 'zz_leaderboard_stddev_pop_fields';
-  playerId?: Maybe<Scalars['Float']>;
-  rank?: Maybe<Scalars['Float']>;
-  roundId?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "zz_leaderboard" */
-export type Zz_Leaderboard_Stddev_Pop_Order_By = {
-  playerId?: Maybe<Order_By>;
-  rank?: Maybe<Order_By>;
-  roundId?: Maybe<Order_By>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Zz_Leaderboard_Stddev_Samp_Fields = {
-  __typename?: 'zz_leaderboard_stddev_samp_fields';
-  playerId?: Maybe<Scalars['Float']>;
-  rank?: Maybe<Scalars['Float']>;
-  roundId?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_samp() on columns of table "zz_leaderboard" */
-export type Zz_Leaderboard_Stddev_Samp_Order_By = {
-  playerId?: Maybe<Order_By>;
-  rank?: Maybe<Order_By>;
-  roundId?: Maybe<Order_By>;
-};
-
-/** aggregate sum on columns */
-export type Zz_Leaderboard_Sum_Fields = {
-  __typename?: 'zz_leaderboard_sum_fields';
-  playerId?: Maybe<Scalars['Int']>;
-  rank?: Maybe<Scalars['bigint']>;
-  roundId?: Maybe<Scalars['Int']>;
-};
-
-/** order by sum() on columns of table "zz_leaderboard" */
-export type Zz_Leaderboard_Sum_Order_By = {
-  playerId?: Maybe<Order_By>;
-  rank?: Maybe<Order_By>;
-  roundId?: Maybe<Order_By>;
-};
-
-/** update columns of table "zz_leaderboard" */
-export enum Zz_Leaderboard_Update_Column {
-  /** column name */
-  PlayerId = 'playerId',
-  /** column name */
-  Rank = 'rank',
-  /** column name */
-  RoundId = 'roundId'
-}
-
-/** aggregate var_pop on columns */
-export type Zz_Leaderboard_Var_Pop_Fields = {
-  __typename?: 'zz_leaderboard_var_pop_fields';
-  playerId?: Maybe<Scalars['Float']>;
-  rank?: Maybe<Scalars['Float']>;
-  roundId?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_pop() on columns of table "zz_leaderboard" */
-export type Zz_Leaderboard_Var_Pop_Order_By = {
-  playerId?: Maybe<Order_By>;
-  rank?: Maybe<Order_By>;
-  roundId?: Maybe<Order_By>;
-};
-
-/** aggregate var_samp on columns */
-export type Zz_Leaderboard_Var_Samp_Fields = {
-  __typename?: 'zz_leaderboard_var_samp_fields';
-  playerId?: Maybe<Scalars['Float']>;
-  rank?: Maybe<Scalars['Float']>;
-  roundId?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_samp() on columns of table "zz_leaderboard" */
-export type Zz_Leaderboard_Var_Samp_Order_By = {
-  playerId?: Maybe<Order_By>;
-  rank?: Maybe<Order_By>;
-  roundId?: Maybe<Order_By>;
-};
-
-/** aggregate variance on columns */
-export type Zz_Leaderboard_Variance_Fields = {
-  __typename?: 'zz_leaderboard_variance_fields';
-  playerId?: Maybe<Scalars['Float']>;
-  rank?: Maybe<Scalars['Float']>;
-  roundId?: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "zz_leaderboard" */
-export type Zz_Leaderboard_Variance_Order_By = {
-  playerId?: Maybe<Order_By>;
-  rank?: Maybe<Order_By>;
-  roundId?: Maybe<Order_By>;
 };
 
 export type PlayerRoundForChartFragment = (
