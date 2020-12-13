@@ -1,6 +1,9 @@
 query defaultCourseRoundsPage($courseId: Int!) {
   course(id: $courseId) {
-    ...pageCourse
+    id
+    slug
+    name
+    img
   }
 
   rounds(

@@ -4444,7 +4444,7 @@ export type DefaultCourseRoundsPageQuery = (
   { __typename?: 'query_root' }
   & { course?: Maybe<(
     { __typename?: 'course' }
-    & PageCourseFragment
+    & Pick<Course, 'id' | 'slug' | 'name' | 'img'>
   )>, rounds: Array<(
     { __typename?: 'round' }
     & RoundForRoundCardFragment
@@ -4454,53 +4454,6 @@ export type DefaultCourseRoundsPageQuery = (
   )>, leaderboardPlayerRounds: Array<(
     { __typename?: 'player_round' }
     & PlayerRoundForCourseLeaderboardFragment
-  )> }
-);
-
-export type CourseSlugListingQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CourseSlugListingQuery = (
-  { __typename?: 'query_root' }
-  & { courses: Array<(
-    { __typename?: 'course' }
-    & Pick<Course, 'slug'>
-  )> }
-);
-
-export type PageCourseFragment = (
-  { __typename?: 'course' }
-  & Pick<Course, 'id' | 'slug' | 'name' | 'img'>
-);
-
-export type PagePlayerFragment = (
-  { __typename?: 'player' }
-  & Pick<Player, 'id' | 'slug'>
-);
-
-export type CourseForPageQueryVariables = Exact<{
-  slug: Scalars['String'];
-}>;
-
-
-export type CourseForPageQuery = (
-  { __typename?: 'query_root' }
-  & { courses: Array<(
-    { __typename?: 'course' }
-    & PageCourseFragment
-  )> }
-);
-
-export type PlayerForPageQueryVariables = Exact<{
-  slug: Scalars['String'];
-}>;
-
-
-export type PlayerForPageQuery = (
-  { __typename?: 'query_root' }
-  & { players: Array<(
-    { __typename?: 'player' }
-    & PagePlayerFragment
   )> }
 );
 
@@ -4629,20 +4582,6 @@ export const ScoringStatsForCardFragmentDoc = gql`
   }
 }
     `;
-export const PageCourseFragmentDoc = gql`
-    fragment pageCourse on course {
-  id
-  slug
-  name
-  img
-}
-    `;
-export const PagePlayerFragmentDoc = gql`
-    fragment pagePlayer on player {
-  id
-  slug
-}
-    `;
 export const CoursesForIndexPagePathsDocument = gql`
     query coursesForIndexPagePaths {
   courses {
@@ -4717,7 +4656,10 @@ ${PlayerRoundForCourseLeaderboardFragmentDoc}`;
 export const DefaultCourseRoundsPageDocument = gql`
     query defaultCourseRoundsPage($courseId: Int!) {
   course(id: $courseId) {
-    ...pageCourse
+    id
+    slug
+    name
+    img
   }
   rounds(where: {courseId: {_eq: $courseId}}, order_by: {date: desc}) {
     ...roundForRoundCard
@@ -4733,31 +4675,9 @@ export const DefaultCourseRoundsPageDocument = gql`
     ...playerRoundForCourseLeaderboard
   }
 }
-    ${PageCourseFragmentDoc}
-${RoundForRoundCardFragmentDoc}
+    ${RoundForRoundCardFragmentDoc}
 ${PlayerRoundForChartFragmentDoc}
 ${PlayerRoundForCourseLeaderboardFragmentDoc}`;
-export const CourseSlugListingDocument = gql`
-    query courseSlugListing {
-  courses {
-    slug
-  }
-}
-    `;
-export const CourseForPageDocument = gql`
-    query courseForPage($slug: String!) {
-  courses(where: {slug: {_eq: $slug}}) {
-    ...pageCourse
-  }
-}
-    ${PageCourseFragmentDoc}`;
-export const PlayerForPageDocument = gql`
-    query playerForPage($slug: String!) {
-  players(where: {slug: {_eq: $slug}}) {
-    ...pagePlayer
-  }
-}
-    ${PagePlayerFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 
@@ -4779,15 +4699,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     defaultCourseRoundsPage(variables: DefaultCourseRoundsPageQueryVariables): Promise<DefaultCourseRoundsPageQuery> {
       return withWrapper(() => client.request<DefaultCourseRoundsPageQuery>(print(DefaultCourseRoundsPageDocument), variables));
-    },
-    courseSlugListing(variables?: CourseSlugListingQueryVariables): Promise<CourseSlugListingQuery> {
-      return withWrapper(() => client.request<CourseSlugListingQuery>(print(CourseSlugListingDocument), variables));
-    },
-    courseForPage(variables: CourseForPageQueryVariables): Promise<CourseForPageQuery> {
-      return withWrapper(() => client.request<CourseForPageQuery>(print(CourseForPageDocument), variables));
-    },
-    playerForPage(variables: PlayerForPageQueryVariables): Promise<PlayerForPageQuery> {
-      return withWrapper(() => client.request<PlayerForPageQuery>(print(PlayerForPageDocument), variables));
     }
   };
 }
