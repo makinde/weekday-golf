@@ -34,6 +34,8 @@ $ yarn dev
 ```
 This script will compile types for the \*.graphql files, and start a local server.  The location for the local server defaults to `localhost:3000` but you can change this by changing the `$PORT` variable to something else. It will also watch the graphql files for changes and recompute the types file on the fly. If you want to build the types one off, you can run `yarn generate`.
 
+The `dev` command also handles transpiling typescript on the fly, so you basically never need to worry about anything typescript specific. Just write TypeScript and it'll run.
+
 ### Data
 Data from all the rounds are stored in a Postgres database. Hasura is a service that you point to a DB and it generates a graphql endpoing based on it (crazy, I know). We try to push a decent amount of things back to SQL/Hasura so the front end can mostly just worry about querying data in the shape it needs and rendering it. Ask for access to Hasura if you don't have it. You can use the GraphiQL interface provided to explore and add data.
 
