@@ -4,4 +4,14 @@ const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
 
-module.exports = bundleAnalyzer({});
+module.exports = bundleAnalyzer({
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/marinerspoint',
+        permanent: false,
+      },
+    ];
+  },
+});
