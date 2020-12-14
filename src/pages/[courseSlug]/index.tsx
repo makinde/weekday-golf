@@ -49,7 +49,7 @@ const OverviewPage: NextPage<InfoForIndexPageQuery> = ({
             <CardHeaderTitle>
               Latest Round
               <Link href="/rounds">
-                <a className="small ml-3">
+                <a className="small ml-3 text-primary">
                   See all
                 </a>
               </Link>
