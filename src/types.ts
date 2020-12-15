@@ -4842,27 +4842,29 @@ export type HoleForScoresHeaderFragment = (
   & Pick<Hole, 'nickname' | 'number' | 'par'>
 );
 
-export type CourseForScoringStatsCardFragment = (
-  { __typename?: 'course' }
-  & Pick<Course, 'slug'>
-  & { holesForScoringStatsCard: Array<(
-    { __typename?: 'hole' }
-    & HoleForScoresHeaderFragment
-  )>, coursePlayers: Array<(
-    { __typename?: 'course_player' }
-    & { player?: Maybe<(
-      { __typename?: 'player' }
-      & Pick<Player, 'id' | 'slug' | 'nickname'>
-    )>, scoringInfo: Array<(
-      { __typename?: 'scoring_info' }
-      & Pick<Scoring_Info, 'holeNumber' | 'trailingAvgScore' | 'lifetimeAvgScore' | 'scoreTrend'>
-    )>, playerRounds_aggregate: (
-      { __typename?: 'player_round_aggregate' }
-      & { aggregate?: Maybe<(
-        { __typename?: 'player_round_aggregate_fields' }
-        & Pick<Player_Round_Aggregate_Fields, 'count'>
+export type ScoringStatsCardQueryVariables = Exact<{
+  courseId: Scalars['Int'];
+}>;
+
+
+export type ScoringStatsCardQuery = (
+  { __typename?: 'query_root' }
+  & { course?: Maybe<(
+    { __typename?: 'course' }
+    & Pick<Course, 'slug'>
+    & { holes: Array<(
+      { __typename?: 'hole' }
+      & HoleForScoresHeaderFragment
+    )>, coursePlayers: Array<(
+      { __typename?: 'course_player' }
+      & { player?: Maybe<(
+        { __typename?: 'player' }
+        & Pick<Player, 'id' | 'slug' | 'nickname'>
+      )>, scoringInfo: Array<(
+        { __typename?: 'scoring_info' }
+        & Pick<Scoring_Info, 'holeNumber' | 'trailingCount' | 'trailingAvgScore' | 'lifetimeAvgScore' | 'scoreTrend'>
       )> }
-    ) }
+    )> }
   )> }
 );
 
@@ -4886,7 +4888,6 @@ export type CourseIndexPageQuery = (
       { __typename?: 'course_player' }
       & CoursePlayerForParticipationStatsCardFragment
     )> }
-    & CourseForScoringStatsCardFragment
   )> }
 );
 
@@ -5025,27 +5026,25 @@ export const RoundForRoundCardFragmentDoc = gql`
   roundBounty
 }
     ${RoundForTableFragmentDoc}`;
-export const CourseForScoringStatsCardFragmentDoc = gql`
-    fragment courseForScoringStatsCard on course {
-  slug
-  holesForScoringStatsCard: holes(order_by: {number: asc}) {
-    ...holeForScoresHeader
-  }
-  coursePlayers(order_by: {playerRounds_aggregate: {count: desc}}) {
-    player {
-      id
-      slug
-      nickname
+export const ScoringStatsCardDocument = gql`
+    query scoringStatsCard($courseId: Int!) {
+  course(id: $courseId) {
+    slug
+    holes(order_by: {number: asc}) {
+      ...holeForScoresHeader
     }
-    scoringInfo(order_by: {holeNumber: asc, date: desc}, distinct_on: holeNumber) {
-      holeNumber
-      trailingAvgScore
-      lifetimeAvgScore
-      scoreTrend
-    }
-    playerRounds_aggregate {
-      aggregate {
-        count
+    coursePlayers(order_by: {scores_aggregate: {count: desc}}) {
+      player {
+        id
+        slug
+        nickname
+      }
+      scoringInfo(order_by: {holeNumber: asc, date: desc}, distinct_on: holeNumber) {
+        holeNumber
+        trailingCount
+        trailingAvgScore
+        lifetimeAvgScore
+        scoreTrend
       }
     }
   }
@@ -5057,7 +5056,6 @@ export const CourseIndexPageDocument = gql`
     id
     name
     img
-    ...courseForScoringStatsCard
     latestRounds: rounds(order_by: {date: desc}, limit: 1) {
       ...roundForRoundCard
     }
@@ -5069,8 +5067,7 @@ export const CourseIndexPageDocument = gql`
     }
   }
 }
-    ${CourseForScoringStatsCardFragmentDoc}
-${RoundForRoundCardFragmentDoc}
+    ${RoundForRoundCardFragmentDoc}
 ${PlayerRoundForCourseLeaderboardFragmentDoc}
 ${CoursePlayerForParticipationStatsCardFragmentDoc}`;
 export const DefaultCourseRoundsPageDocument = gql`
@@ -5105,6 +5102,9 @@ export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    scoringStatsCard(variables: ScoringStatsCardQueryVariables): Promise<ScoringStatsCardQuery> {
+      return withWrapper(() => client.request<ScoringStatsCardQuery>(print(ScoringStatsCardDocument), variables));
+    },
     courseIndexPage(variables: CourseIndexPageQueryVariables): Promise<CourseIndexPageQuery> {
       return withWrapper(() => client.request<CourseIndexPageQuery>(print(CourseIndexPageDocument), variables));
     },

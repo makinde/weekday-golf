@@ -72,7 +72,7 @@ const CourseIndexPage: NextPage<Props> = ({
         <ParticipationStatsCard coursePlayers={coursePlayers} />
       </Col>
       <Col xs={12}>
-        <ScoringStatsCard course={course} />
+        <ScoringStatsCard courseId={course.id} />
       </Col>
     </Row>
 
