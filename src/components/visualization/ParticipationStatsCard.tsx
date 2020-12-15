@@ -1,18 +1,19 @@
 import React from 'react';
 import { Card, Table } from 'react-bootstrap';
 import round from 'lodash/round';
+import Link from 'next/link';
 
 import RelativeScore from '../utils/RelativeScore';
 import CardHeaderTitle from '../utils/CardHeaderTitle';
 import WinningsPill from '../utils/WinningsPill';
 
-import { ParticipationStatsForCardFragment } from '../../types';
+import { CoursePlayerForParticipationStatsCardFragment } from '../../types';
 
 type Props = {
-  players: ParticipationStatsForCardFragment[],
+  coursePlayers: CoursePlayerForParticipationStatsCardFragment[],
 };
 
-const PlayerCourseStatsCard = ({ players }: Props) => (
+const PlayerCourseStatsCard = ({ coursePlayers }: Props) => (
   <Card>
     <Card.Header>
       <CardHeaderTitle>
@@ -30,14 +31,21 @@ const PlayerCourseStatsCard = ({ players }: Props) => (
         </tr>
       </thead>
       <tbody className="list">
-        {players.map((player) => {
-          const { id, nickname } = player;
-          const { playerRoundsStats: { aggregate: stats } } = player;
-          const { winningStats: { aggregate: { count: roundsWon } } } = player;
+        {coursePlayers.map((coursePlayer) => {
+          const { course: { slug: courseSlug } } = coursePlayer;
+          const { player: { id, nickname, slug: playerSlug } } = coursePlayer;
+          const { playerRoundsStats: { aggregate: stats } } = coursePlayer;
+          const { winningStats: { aggregate: { count: roundsWon } } } = coursePlayer;
 
           return (
             <tr key={id}>
-              <td>{nickname}</td>
+              <td>
+                <Link href={`/${courseSlug}/${playerSlug}`}>
+                  <a>
+                    {nickname}
+                  </a>
+                </Link>
+              </td>
               <td><RelativeScore value={round(stats.avg.relativeScore, 2)} /></td>
               <td>{stats.count}</td>
               <td>{roundsWon}</td>

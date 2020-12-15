@@ -1,7 +1,12 @@
-fragment participationStatsForCard on player {
-  id
-  slug
-  nickname
+fragment coursePlayerForParticipationStatsCard on course_player {
+  player {
+    id
+    slug
+    nickname
+  }
+  course {
+    slug
+  }
   playerRoundsStats: playerRounds_aggregate {
     aggregate {
       count

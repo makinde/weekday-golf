@@ -1,7 +1,10 @@
 import React from 'react';
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import {
+  NextPage, GetServerSideProps,
+} from 'next';
 import Link from 'next/link';
 import { Row, Col, Button } from 'react-bootstrap';
+import isEmpty from 'lodash/isEmpty';
 
 import sdk from '../../sdk';
 import Layout from '../../components/utils/Layout';
@@ -12,15 +15,20 @@ import RoundCard from '../../components/visualization/RoundCard';
 import LeaderboardCard from '../../components/visualization/LeaderboardCard';
 import ParticipationStatsCard from '../../components/visualization/ParticipationStatsCard';
 
-import { InfoForIndexPageQuery } from '../../types';
+import { CourseIndexPageQuery } from '../../types';
 import ScoringStatsCard from '../../components/visualization/ScoringStatsCard';
 
-const OverviewPage: NextPage<InfoForIndexPageQuery> = ({
+type Props = {
+  course:CourseIndexPageQuery['courses'][0]
+};
+
+const CourseIndexPage: NextPage<Props> = ({
   course,
-  latestRounds,
-  leaderboardPlayerRounds,
-  playersWithScoringStats,
-  playersWithParticipationStats,
+  course: {
+    latestRounds,
+    topPlayerRounds,
+    coursePlayers,
+  },
 }) => (
   <Layout title="Overview">
     <PageHeader>
@@ -58,13 +66,13 @@ const OverviewPage: NextPage<InfoForIndexPageQuery> = ({
         />
       </Col>
       <Col sm={4}>
-        <LeaderboardCard playerRounds={leaderboardPlayerRounds} />
+        <LeaderboardCard playerRounds={topPlayerRounds} />
       </Col>
       <Col xs={12}>
-        <ParticipationStatsCard players={playersWithParticipationStats} />
+        <ParticipationStatsCard coursePlayers={coursePlayers} />
       </Col>
       <Col xs={12}>
-        <ScoringStatsCard players={playersWithScoringStats} holes={course.holes} />
+        <ScoringStatsCard course={course} />
       </Col>
     </Row>
 
@@ -72,29 +80,26 @@ const OverviewPage: NextPage<InfoForIndexPageQuery> = ({
 );
 
 type PageQuery = { courseSlug: string };
-type StaticProps = GetStaticProps<InfoForIndexPageQuery, PageQuery>;
+type ServerSideProps = GetServerSideProps<Props, PageQuery>;
 
-const getStaticProps: StaticProps = async ({ params }) => {
+const getServerSideProps: ServerSideProps = async ({ params }) => {
   const { courseSlug: slug } = params;
-  const { courses } = await sdk.courseForIndexPageSlug({ slug });
-  const [{ id: courseId }] = courses;
+  const { courses } = await sdk.courseIndexPage({ slug });
+
+  if (isEmpty(courses)) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
-    props: await sdk.infoForIndexPage({ courseId }),
-  };
-};
-
-const getStaticPaths: GetStaticPaths<PageQuery> = async () => {
-  const { courses } = await sdk.coursesForIndexPagePaths();
-
-  return {
-    paths: courses.map((course) => ({ params: { courseSlug: course.slug } })),
-    fallback: false,
+    props: {
+      course: courses[0],
+    },
   };
 };
 
 export {
-  getStaticProps,
-  getStaticPaths,
-  OverviewPage as default,
+  getServerSideProps,
+  CourseIndexPage as default,
 };

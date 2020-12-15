@@ -123,6 +123,10 @@ export type Course = {
   scores: Array<Score>;
   /** An aggregated array relationship */
   scores_aggregate: Score_Aggregate;
+  /** An array relationship */
+  scoringInfo: Array<Scoring_Info>;
+  /** An aggregated array relationship */
+  scoringInfo_aggregate: Scoring_Info_Aggregate;
   slug: Scalars['String'];
 };
 
@@ -226,6 +230,26 @@ export type CourseScores_AggregateArgs = {
   where?: Maybe<Score_Bool_Exp>;
 };
 
+
+/** columns and relationships of "course" */
+export type CourseScoringInfoArgs = {
+  distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Scoring_Info_Order_By>>;
+  where?: Maybe<Scoring_Info_Bool_Exp>;
+};
+
+
+/** columns and relationships of "course" */
+export type CourseScoringInfo_AggregateArgs = {
+  distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Scoring_Info_Order_By>>;
+  where?: Maybe<Scoring_Info_Bool_Exp>;
+};
+
 /** aggregated selection of "course" */
 export type Course_Aggregate = {
   __typename?: 'course_aggregate';
@@ -302,6 +326,7 @@ export type Course_Bool_Exp = {
   playerRounds?: Maybe<Player_Round_Bool_Exp>;
   rounds?: Maybe<Round_Bool_Exp>;
   scores?: Maybe<Score_Bool_Exp>;
+  scoringInfo?: Maybe<Scoring_Info_Bool_Exp>;
   slug?: Maybe<String_Comparison_Exp>;
 };
 
@@ -397,6 +422,7 @@ export type Course_Order_By = {
   playerRounds_aggregate?: Maybe<Player_Round_Aggregate_Order_By>;
   rounds_aggregate?: Maybe<Round_Aggregate_Order_By>;
   scores_aggregate?: Maybe<Score_Aggregate_Order_By>;
+  scoringInfo_aggregate?: Maybe<Scoring_Info_Aggregate_Order_By>;
   slug?: Maybe<Order_By>;
 };
 
@@ -410,22 +436,22 @@ export type Course_Player = {
   __typename?: 'course_player';
   /** An object relationship */
   course?: Maybe<Course>;
-  course_id?: Maybe<Scalars['Int']>;
+  courseId?: Maybe<Scalars['Int']>;
   /** An object relationship */
   player?: Maybe<Player>;
+  playerId?: Maybe<Scalars['Int']>;
   /** An array relationship */
   playerRounds: Array<Player_Round>;
   /** An aggregated array relationship */
   playerRounds_aggregate: Player_Round_Aggregate;
-  player_id?: Maybe<Scalars['Int']>;
   /** An array relationship */
   scores: Array<Score>;
   /** An aggregated array relationship */
   scores_aggregate: Score_Aggregate;
   /** An array relationship */
-  scoringInfos: Array<Scoring_Info>;
+  scoringInfo: Array<Scoring_Info>;
   /** An aggregated array relationship */
-  scoringInfos_aggregate: Scoring_Info_Aggregate;
+  scoringInfo_aggregate: Scoring_Info_Aggregate;
   /** An array relationship */
   skins: Array<Skins>;
   /** An aggregated array relationship */
@@ -474,7 +500,7 @@ export type Course_PlayerScores_AggregateArgs = {
 
 
 /** columns and relationships of "course_player" */
-export type Course_PlayerScoringInfosArgs = {
+export type Course_PlayerScoringInfoArgs = {
   distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -484,7 +510,7 @@ export type Course_PlayerScoringInfosArgs = {
 
 
 /** columns and relationships of "course_player" */
-export type Course_PlayerScoringInfos_AggregateArgs = {
+export type Course_PlayerScoringInfo_AggregateArgs = {
   distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -560,14 +586,14 @@ export type Course_Player_Aggregate_Order_By = {
 /** aggregate avg on columns */
 export type Course_Player_Avg_Fields = {
   __typename?: 'course_player_avg_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  player_id?: Maybe<Scalars['Float']>;
+  courseId?: Maybe<Scalars['Float']>;
+  playerId?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "course_player" */
 export type Course_Player_Avg_Order_By = {
-  course_id?: Maybe<Order_By>;
-  player_id?: Maybe<Order_By>;
+  courseId?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "course_player". All fields are combined with a logical 'AND'. */
@@ -576,150 +602,150 @@ export type Course_Player_Bool_Exp = {
   _not?: Maybe<Course_Player_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Course_Player_Bool_Exp>>>;
   course?: Maybe<Course_Bool_Exp>;
-  course_id?: Maybe<Int_Comparison_Exp>;
+  courseId?: Maybe<Int_Comparison_Exp>;
   player?: Maybe<Player_Bool_Exp>;
+  playerId?: Maybe<Int_Comparison_Exp>;
   playerRounds?: Maybe<Player_Round_Bool_Exp>;
-  player_id?: Maybe<Int_Comparison_Exp>;
   scores?: Maybe<Score_Bool_Exp>;
-  scoringInfos?: Maybe<Scoring_Info_Bool_Exp>;
+  scoringInfo?: Maybe<Scoring_Info_Bool_Exp>;
   skins?: Maybe<Skins_Bool_Exp>;
 };
 
 /** aggregate max on columns */
 export type Course_Player_Max_Fields = {
   __typename?: 'course_player_max_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  player_id?: Maybe<Scalars['Int']>;
+  courseId?: Maybe<Scalars['Int']>;
+  playerId?: Maybe<Scalars['Int']>;
 };
 
 /** order by max() on columns of table "course_player" */
 export type Course_Player_Max_Order_By = {
-  course_id?: Maybe<Order_By>;
-  player_id?: Maybe<Order_By>;
+  courseId?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Course_Player_Min_Fields = {
   __typename?: 'course_player_min_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  player_id?: Maybe<Scalars['Int']>;
+  courseId?: Maybe<Scalars['Int']>;
+  playerId?: Maybe<Scalars['Int']>;
 };
 
 /** order by min() on columns of table "course_player" */
 export type Course_Player_Min_Order_By = {
-  course_id?: Maybe<Order_By>;
-  player_id?: Maybe<Order_By>;
+  courseId?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
 };
 
 /** ordering options when selecting data from "course_player" */
 export type Course_Player_Order_By = {
   course?: Maybe<Course_Order_By>;
-  course_id?: Maybe<Order_By>;
+  courseId?: Maybe<Order_By>;
   player?: Maybe<Player_Order_By>;
+  playerId?: Maybe<Order_By>;
   playerRounds_aggregate?: Maybe<Player_Round_Aggregate_Order_By>;
-  player_id?: Maybe<Order_By>;
   scores_aggregate?: Maybe<Score_Aggregate_Order_By>;
-  scoringInfos_aggregate?: Maybe<Scoring_Info_Aggregate_Order_By>;
+  scoringInfo_aggregate?: Maybe<Scoring_Info_Aggregate_Order_By>;
   skins_aggregate?: Maybe<Skins_Aggregate_Order_By>;
 };
 
 /** select columns of table "course_player" */
 export enum Course_Player_Select_Column {
   /** column name */
-  CourseId = 'course_id',
+  CourseId = 'courseId',
   /** column name */
-  PlayerId = 'player_id'
+  PlayerId = 'playerId'
 }
 
 /** aggregate stddev on columns */
 export type Course_Player_Stddev_Fields = {
   __typename?: 'course_player_stddev_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  player_id?: Maybe<Scalars['Float']>;
+  courseId?: Maybe<Scalars['Float']>;
+  playerId?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "course_player" */
 export type Course_Player_Stddev_Order_By = {
-  course_id?: Maybe<Order_By>;
-  player_id?: Maybe<Order_By>;
+  courseId?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Course_Player_Stddev_Pop_Fields = {
   __typename?: 'course_player_stddev_pop_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  player_id?: Maybe<Scalars['Float']>;
+  courseId?: Maybe<Scalars['Float']>;
+  playerId?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "course_player" */
 export type Course_Player_Stddev_Pop_Order_By = {
-  course_id?: Maybe<Order_By>;
-  player_id?: Maybe<Order_By>;
+  courseId?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Course_Player_Stddev_Samp_Fields = {
   __typename?: 'course_player_stddev_samp_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  player_id?: Maybe<Scalars['Float']>;
+  courseId?: Maybe<Scalars['Float']>;
+  playerId?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "course_player" */
 export type Course_Player_Stddev_Samp_Order_By = {
-  course_id?: Maybe<Order_By>;
-  player_id?: Maybe<Order_By>;
+  courseId?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
 };
 
 /** aggregate sum on columns */
 export type Course_Player_Sum_Fields = {
   __typename?: 'course_player_sum_fields';
-  course_id?: Maybe<Scalars['Int']>;
-  player_id?: Maybe<Scalars['Int']>;
+  courseId?: Maybe<Scalars['Int']>;
+  playerId?: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "course_player" */
 export type Course_Player_Sum_Order_By = {
-  course_id?: Maybe<Order_By>;
-  player_id?: Maybe<Order_By>;
+  courseId?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
 };
 
 /** aggregate var_pop on columns */
 export type Course_Player_Var_Pop_Fields = {
   __typename?: 'course_player_var_pop_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  player_id?: Maybe<Scalars['Float']>;
+  courseId?: Maybe<Scalars['Float']>;
+  playerId?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "course_player" */
 export type Course_Player_Var_Pop_Order_By = {
-  course_id?: Maybe<Order_By>;
-  player_id?: Maybe<Order_By>;
+  courseId?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Course_Player_Var_Samp_Fields = {
   __typename?: 'course_player_var_samp_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  player_id?: Maybe<Scalars['Float']>;
+  courseId?: Maybe<Scalars['Float']>;
+  playerId?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "course_player" */
 export type Course_Player_Var_Samp_Order_By = {
-  course_id?: Maybe<Order_By>;
-  player_id?: Maybe<Order_By>;
+  courseId?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Course_Player_Variance_Fields = {
   __typename?: 'course_player_variance_fields';
-  course_id?: Maybe<Scalars['Float']>;
-  player_id?: Maybe<Scalars['Float']>;
+  courseId?: Maybe<Scalars['Float']>;
+  playerId?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "course_player" */
 export type Course_Player_Variance_Order_By = {
-  course_id?: Maybe<Order_By>;
-  player_id?: Maybe<Order_By>;
+  courseId?: Maybe<Order_By>;
+  playerId?: Maybe<Order_By>;
 };
 
 /** select columns of table "course" */
@@ -4750,10 +4776,15 @@ export type PlayerRoundForPlayerLeaderboardFragment = (
   & _PlayerRoundForLeaderboardFragment
 );
 
-export type ParticipationStatsForCardFragment = (
-  { __typename?: 'player' }
-  & Pick<Player, 'id' | 'slug' | 'nickname'>
-  & { playerRoundsStats: (
+export type CoursePlayerForParticipationStatsCardFragment = (
+  { __typename?: 'course_player' }
+  & { player?: Maybe<(
+    { __typename?: 'player' }
+    & Pick<Player, 'id' | 'slug' | 'nickname'>
+  )>, course?: Maybe<(
+    { __typename?: 'course' }
+    & Pick<Course, 'slug'>
+  )>, playerRoundsStats: (
     { __typename?: 'player_round_aggregate' }
     & { aggregate?: Maybe<(
       { __typename?: 'player_round_aggregate_fields' }
@@ -4811,71 +4842,51 @@ export type HoleForScoresHeaderFragment = (
   & Pick<Hole, 'nickname' | 'number' | 'par'>
 );
 
-export type ScoringStatsForCardFragment = (
-  { __typename?: 'player' }
-  & Pick<Player, 'id' | 'nickname'>
-  & { scoringInfo: Array<(
-    { __typename?: 'scoring_info' }
-    & Pick<Scoring_Info, 'holeNumber' | 'lifetimeAvgScore' | 'trailingAvgScore' | 'scoreTrend'>
-  )>, playerRoundsStats: (
-    { __typename?: 'player_round_aggregate' }
-    & { aggregate?: Maybe<(
-      { __typename?: 'player_round_aggregate_fields' }
-      & Pick<Player_Round_Aggregate_Fields, 'count'>
-    )> }
-  ) }
-);
-
-export type CoursesForIndexPagePathsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CoursesForIndexPagePathsQuery = (
-  { __typename?: 'query_root' }
-  & { courses: Array<(
-    { __typename?: 'course' }
-    & Pick<Course, 'slug'>
+export type CourseForScoringStatsCardFragment = (
+  { __typename?: 'course' }
+  & Pick<Course, 'slug'>
+  & { holesForScoringStatsCard: Array<(
+    { __typename?: 'hole' }
+    & HoleForScoresHeaderFragment
+  )>, coursePlayers: Array<(
+    { __typename?: 'course_player' }
+    & { player?: Maybe<(
+      { __typename?: 'player' }
+      & Pick<Player, 'id' | 'slug' | 'nickname'>
+    )>, scoringInfo: Array<(
+      { __typename?: 'scoring_info' }
+      & Pick<Scoring_Info, 'holeNumber' | 'trailingAvgScore' | 'lifetimeAvgScore' | 'scoreTrend'>
+    )>, playerRounds_aggregate: (
+      { __typename?: 'player_round_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'player_round_aggregate_fields' }
+        & Pick<Player_Round_Aggregate_Fields, 'count'>
+      )> }
+    ) }
   )> }
 );
 
-export type CourseForIndexPageSlugQueryVariables = Exact<{
+export type CourseIndexPageQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type CourseForIndexPageSlugQuery = (
+export type CourseIndexPageQuery = (
   { __typename?: 'query_root' }
   & { courses: Array<(
     { __typename?: 'course' }
-    & Pick<Course, 'id'>
-  )> }
-);
-
-export type InfoForIndexPageQueryVariables = Exact<{
-  courseId: Scalars['Int'];
-}>;
-
-
-export type InfoForIndexPageQuery = (
-  { __typename?: 'query_root' }
-  & { course?: Maybe<(
-    { __typename?: 'course' }
     & Pick<Course, 'id' | 'name' | 'img'>
-    & { holes: Array<(
-      { __typename?: 'hole' }
-      & HoleForScoresHeaderFragment
+    & { latestRounds: Array<(
+      { __typename?: 'round' }
+      & RoundForRoundCardFragment
+    )>, topPlayerRounds: Array<(
+      { __typename?: 'player_round' }
+      & PlayerRoundForCourseLeaderboardFragment
+    )>, coursePlayers: Array<(
+      { __typename?: 'course_player' }
+      & CoursePlayerForParticipationStatsCardFragment
     )> }
-  )>, latestRounds: Array<(
-    { __typename?: 'round' }
-    & RoundForRoundCardFragment
-  )>, leaderboardPlayerRounds: Array<(
-    { __typename?: 'player_round' }
-    & PlayerRoundForCourseLeaderboardFragment
-  )>, playersWithScoringStats: Array<(
-    { __typename?: 'player' }
-    & ScoringStatsForCardFragment
-  )>, playersWithParticipationStats: Array<(
-    { __typename?: 'player' }
-    & ParticipationStatsForCardFragment
+    & CourseForScoringStatsCardFragment
   )> }
 );
 
@@ -4941,11 +4952,16 @@ export const PlayerRoundForPlayerLeaderboardFragmentDoc = gql`
   ..._playerRoundForLeaderboard
 }
     ${_PlayerRoundForLeaderboardFragmentDoc}`;
-export const ParticipationStatsForCardFragmentDoc = gql`
-    fragment participationStatsForCard on player {
-  id
-  slug
-  nickname
+export const CoursePlayerForParticipationStatsCardFragmentDoc = gql`
+    fragment coursePlayerForParticipationStatsCard on course_player {
+  player {
+    id
+    slug
+    nickname
+  }
+  course {
+    slug
+  }
   playerRoundsStats: playerRounds_aggregate {
     aggregate {
       count
@@ -5009,77 +5025,54 @@ export const RoundForRoundCardFragmentDoc = gql`
   roundBounty
 }
     ${RoundForTableFragmentDoc}`;
-export const ScoringStatsForCardFragmentDoc = gql`
-    fragment scoringStatsForCard on player {
-  id
-  nickname
-  scoringInfo(distinct_on: holeNumber, order_by: {holeNumber: asc, date: desc}) {
-    holeNumber
-    lifetimeAvgScore
-    trailingAvgScore
-    scoreTrend
+export const CourseForScoringStatsCardFragmentDoc = gql`
+    fragment courseForScoringStatsCard on course {
+  slug
+  holesForScoringStatsCard: holes(order_by: {number: asc}) {
+    ...holeForScoresHeader
   }
-  playerRoundsStats: playerRounds_aggregate {
-    aggregate {
-      count
+  coursePlayers(order_by: {playerRounds_aggregate: {count: desc}}) {
+    player {
+      id
+      slug
+      nickname
+    }
+    scoringInfo(order_by: {holeNumber: asc, date: desc}, distinct_on: holeNumber) {
+      holeNumber
+      trailingAvgScore
+      lifetimeAvgScore
+      scoreTrend
+    }
+    playerRounds_aggregate {
+      aggregate {
+        count
+      }
     }
   }
 }
-    `;
-export const CoursesForIndexPagePathsDocument = gql`
-    query coursesForIndexPagePaths {
-  courses {
-    slug
-  }
-}
-    `;
-export const CourseForIndexPageSlugDocument = gql`
-    query courseForIndexPageSlug($slug: String!) {
+    ${HoleForScoresHeaderFragmentDoc}`;
+export const CourseIndexPageDocument = gql`
+    query courseIndexPage($slug: String!) {
   courses(where: {slug: {_eq: $slug}}) {
-    id
-  }
-}
-    `;
-export const InfoForIndexPageDocument = gql`
-    query infoForIndexPage($courseId: Int!) {
-  course(id: $courseId) {
     id
     name
     img
-    holes(order_by: {number: asc}) {
-      ...holeForScoresHeader
+    ...courseForScoringStatsCard
+    latestRounds: rounds(order_by: {date: desc}, limit: 1) {
+      ...roundForRoundCard
+    }
+    topPlayerRounds: playerRounds(where: {courseRank: {_lte: 10}}) {
+      ...playerRoundForCourseLeaderboard
+    }
+    coursePlayers(order_by: {playerRounds_aggregate: {count: desc}}) {
+      ...coursePlayerForParticipationStatsCard
     }
   }
-  latestRounds: rounds(
-    where: {courseId: {_eq: $courseId}}
-    order_by: {date: desc}
-    limit: 1
-  ) {
-    ...roundForRoundCard
-  }
-  leaderboardPlayerRounds: playerRounds(
-    where: {courseId: {_eq: $courseId}, courseRank: {_lte: 10}}
-  ) {
-    ...playerRoundForCourseLeaderboard
-  }
-  playersWithScoringStats: players(
-    where: {scores: {courseId: {_eq: $courseId}}}
-    order_by: {playerRounds_aggregate: {count: desc}}
-  ) {
-    ...scoringStatsForCard
-  }
-  playersWithParticipationStats: players(
-    where: {scores: {courseId: {_eq: $courseId}}}
-    order_by: {playerRounds_aggregate: {count: desc}}
-  ) {
-    ...participationStatsForCard
-  }
 }
-    ${HoleForScoresHeaderFragmentDoc}
+    ${CourseForScoringStatsCardFragmentDoc}
 ${RoundForRoundCardFragmentDoc}
 ${PlayerRoundForCourseLeaderboardFragmentDoc}
-${ScoringStatsForCardFragmentDoc}
-${ParticipationStatsForCardFragmentDoc}`;
+${CoursePlayerForParticipationStatsCardFragmentDoc}`;
 export const DefaultCourseRoundsPageDocument = gql`
     query defaultCourseRoundsPage($courseId: Int!) {
   course(id: $courseId) {
@@ -5112,14 +5105,8 @@ export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    coursesForIndexPagePaths(variables?: CoursesForIndexPagePathsQueryVariables): Promise<CoursesForIndexPagePathsQuery> {
-      return withWrapper(() => client.request<CoursesForIndexPagePathsQuery>(print(CoursesForIndexPagePathsDocument), variables));
-    },
-    courseForIndexPageSlug(variables: CourseForIndexPageSlugQueryVariables): Promise<CourseForIndexPageSlugQuery> {
-      return withWrapper(() => client.request<CourseForIndexPageSlugQuery>(print(CourseForIndexPageSlugDocument), variables));
-    },
-    infoForIndexPage(variables: InfoForIndexPageQueryVariables): Promise<InfoForIndexPageQuery> {
-      return withWrapper(() => client.request<InfoForIndexPageQuery>(print(InfoForIndexPageDocument), variables));
+    courseIndexPage(variables: CourseIndexPageQueryVariables): Promise<CourseIndexPageQuery> {
+      return withWrapper(() => client.request<CourseIndexPageQuery>(print(CourseIndexPageDocument), variables));
     },
     defaultCourseRoundsPage(variables: DefaultCourseRoundsPageQueryVariables): Promise<DefaultCourseRoundsPageQuery> {
       return withWrapper(() => client.request<DefaultCourseRoundsPageQuery>(print(DefaultCourseRoundsPageDocument), variables));

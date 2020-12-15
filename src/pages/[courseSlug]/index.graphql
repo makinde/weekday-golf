@@ -1,53 +1,22 @@
-query coursesForIndexPagePaths {
-  courses {
-    slug
-  }
-}
-
-query courseForIndexPageSlug($slug: String!) {
+query courseIndexPage($slug: String!) {
   courses(where: { slug: { _eq: $slug} }) {
-    id
-  }
-}
-
-query infoForIndexPage($courseId: Int!) {
-  course(id: $courseId) {
     id
     name
     img
-    holes(order_by: { number: asc }) {
-      ...holeForScoresHeader
+    ...courseForScoringStatsCard
+
+    latestRounds: rounds(order_by: { date: desc }, limit: 1) {
+      ...roundForRoundCard
     }
-  }
 
-  latestRounds: rounds(
-    where: { courseId: { _eq: $courseId } },
-    order_by: { date: desc },
-    limit: 1,
-  ) {
-    ...roundForRoundCard
-  }
-
-  leaderboardPlayerRounds: playerRounds(
-    where: {
-      courseId: { _eq: $courseId },
-      courseRank: { _lte:10 }
+    topPlayerRounds: playerRounds(where: { courseRank: { _lte:10 } }) {
+      ...playerRoundForCourseLeaderboard
     }
-  ) {
-    ...playerRoundForCourseLeaderboard
-  }
 
-  playersWithScoringStats: players(
-    where: { scores: { courseId: { _eq: $courseId } } },
-    order_by: { playerRounds_aggregate: { count: desc } }
-  ) {
-    ...scoringStatsForCard
-  }
-
-  playersWithParticipationStats: players(
-    where: { scores: { courseId: { _eq: $courseId } } },
-    order_by: { playerRounds_aggregate: { count: desc } },
-  ) {
-    ...participationStatsForCard
+    coursePlayers(
+      order_by: { playerRounds_aggregate: { count: desc } },
+    ) {
+      ...coursePlayerForParticipationStatsCard
+    }
   }
 }

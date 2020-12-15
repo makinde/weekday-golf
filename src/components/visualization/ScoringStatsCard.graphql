@@ -1,18 +1,31 @@
-fragment scoringStatsForCard on player {
-  id
-  nickname
-  scoringInfo(
-    distinct_on: holeNumber,
-    order_by: { holeNumber: asc, date: desc }
-  ) {
-    holeNumber
-    lifetimeAvgScore
-    trailingAvgScore
-    scoreTrend
+fragment courseForScoringStatsCard on course {
+  slug
+
+  holesForScoringStatsCard: holes(order_by: { number: asc }) {
+    ...holeForScoresHeader
   }
-  playerRoundsStats: playerRounds_aggregate {
-    aggregate {
-      count
+
+  coursePlayers(
+      order_by: { playerRounds_aggregate: { count: desc } }
+  ) {
+    player {
+      id
+      slug
+      nickname
+    }
+    scoringInfo (
+      order_by: { holeNumber: asc, date: desc }
+      distinct_on: holeNumber,
+    ) {
+      holeNumber
+      trailingAvgScore
+      lifetimeAvgScore
+      scoreTrend
+    }
+    playerRounds_aggregate {
+      aggregate {
+        count
+      }
     }
   }
 }
