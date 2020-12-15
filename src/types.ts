@@ -4752,28 +4752,60 @@ export type PlayerRoundForChartFragment = (
   )> }
 );
 
-export type _PlayerRoundForLeaderboardFragment = (
+export type _LeaderboardCardCourseFragment = (
+  { __typename?: 'course' }
+  & Pick<Course, 'slug'>
+);
+
+export type _LeaderboardCardPlayerRoundFragment = (
   { __typename?: 'player_round' }
-  & Pick<Player_Round, 'relativeScore'>
+  & Pick<Player_Round, 'playerId' | 'roundId' | 'relativeScore'>
   & { player?: Maybe<(
     { __typename?: 'player' }
-    & Pick<Player, 'id' | 'nickname' | 'slug'>
+    & Pick<Player, 'nickname' | 'slug'>
   )>, round?: Maybe<(
     { __typename?: 'round' }
-    & Pick<Round, 'id' | 'date'>
+    & Pick<Round, 'date'>
   )> }
 );
 
-export type PlayerRoundForCourseLeaderboardFragment = (
-  { __typename?: 'player_round' }
-  & { rank: Player_Round['courseRank'] }
-  & _PlayerRoundForLeaderboardFragment
+export type LeaderboardCardQueryVariables = Exact<{
+  courseId: Scalars['Int'];
+  rankLimit: Scalars['bigint'];
+}>;
+
+
+export type LeaderboardCardQuery = (
+  { __typename?: 'query_root' }
+  & { course?: Maybe<(
+    { __typename?: 'course' }
+    & { playerRounds: Array<(
+      { __typename?: 'player_round' }
+      & { rank: Player_Round['courseRank'] }
+      & _LeaderboardCardPlayerRoundFragment
+    )> }
+    & _LeaderboardCardCourseFragment
+  )> }
 );
 
-export type PlayerRoundForPlayerLeaderboardFragment = (
-  { __typename?: 'player_round' }
-  & { rank: Player_Round['playerCourseRank'] }
-  & _PlayerRoundForLeaderboardFragment
+export type LeaderboardCardForPlayerQueryVariables = Exact<{
+  courseId: Scalars['Int'];
+  playerId?: Maybe<Scalars['Int']>;
+  rankLimit: Scalars['bigint'];
+}>;
+
+
+export type LeaderboardCardForPlayerQuery = (
+  { __typename?: 'query_root' }
+  & { course?: Maybe<(
+    { __typename?: 'course' }
+    & { playerRounds: Array<(
+      { __typename?: 'player_round' }
+      & { rank: Player_Round['playerCourseRank'] }
+      & _LeaderboardCardPlayerRoundFragment
+    )> }
+    & _LeaderboardCardCourseFragment
+  )> }
 );
 
 export type CoursePlayerForParticipationStatsCardFragment = (
@@ -4881,9 +4913,6 @@ export type CourseIndexPageQuery = (
     & { latestRounds: Array<(
       { __typename?: 'round' }
       & RoundForRoundCardFragment
-    )>, topPlayerRounds: Array<(
-      { __typename?: 'player_round' }
-      & PlayerRoundForCourseLeaderboardFragment
     )>, coursePlayers: Array<(
       { __typename?: 'course_player' }
       & CoursePlayerForParticipationStatsCardFragment
@@ -4907,9 +4936,6 @@ export type DefaultCourseRoundsPageQuery = (
   )>, roundsForChart: Array<(
     { __typename?: 'player_round' }
     & PlayerRoundForChartFragment
-  )>, leaderboardPlayerRounds: Array<(
-    { __typename?: 'player_round' }
-    & PlayerRoundForCourseLeaderboardFragment
   )> }
 );
 
@@ -4927,32 +4953,25 @@ export const PlayerRoundForChartFragmentDoc = gql`
   }
 }
     `;
-export const _PlayerRoundForLeaderboardFragmentDoc = gql`
-    fragment _playerRoundForLeaderboard on player_round {
+export const _LeaderboardCardCourseFragmentDoc = gql`
+    fragment _leaderboardCardCourse on course {
+  slug
+}
+    `;
+export const _LeaderboardCardPlayerRoundFragmentDoc = gql`
+    fragment _leaderboardCardPlayerRound on player_round {
+  playerId
+  roundId
   player {
-    id
     nickname
     slug
   }
   relativeScore
   round {
-    id
     date
   }
 }
     `;
-export const PlayerRoundForCourseLeaderboardFragmentDoc = gql`
-    fragment playerRoundForCourseLeaderboard on player_round {
-  rank: courseRank
-  ..._playerRoundForLeaderboard
-}
-    ${_PlayerRoundForLeaderboardFragmentDoc}`;
-export const PlayerRoundForPlayerLeaderboardFragmentDoc = gql`
-    fragment playerRoundForPlayerLeaderboard on player_round {
-  rank: playerCourseRank
-  ..._playerRoundForLeaderboard
-}
-    ${_PlayerRoundForLeaderboardFragmentDoc}`;
 export const CoursePlayerForParticipationStatsCardFragmentDoc = gql`
     fragment coursePlayerForParticipationStatsCard on course_player {
   player {
@@ -5026,6 +5045,32 @@ export const RoundForRoundCardFragmentDoc = gql`
   roundBounty
 }
     ${RoundForTableFragmentDoc}`;
+export const LeaderboardCardDocument = gql`
+    query leaderboardCard($courseId: Int!, $rankLimit: bigint!) {
+  course(id: $courseId) {
+    ..._leaderboardCardCourse
+    playerRounds(where: {courseRank: {_lte: $rankLimit}}) {
+      ..._leaderboardCardPlayerRound
+      rank: courseRank
+    }
+  }
+}
+    ${_LeaderboardCardCourseFragmentDoc}
+${_LeaderboardCardPlayerRoundFragmentDoc}`;
+export const LeaderboardCardForPlayerDocument = gql`
+    query leaderboardCardForPlayer($courseId: Int!, $playerId: Int, $rankLimit: bigint!) {
+  course(id: $courseId) {
+    ..._leaderboardCardCourse
+    playerRounds(
+      where: {playerId: {_eq: $playerId}, playerCourseRank: {_lte: $rankLimit}}
+    ) {
+      ..._leaderboardCardPlayerRound
+      rank: playerCourseRank
+    }
+  }
+}
+    ${_LeaderboardCardCourseFragmentDoc}
+${_LeaderboardCardPlayerRoundFragmentDoc}`;
 export const ScoringStatsCardDocument = gql`
     query scoringStatsCard($courseId: Int!) {
   course(id: $courseId) {
@@ -5059,16 +5104,12 @@ export const CourseIndexPageDocument = gql`
     latestRounds: rounds(order_by: {date: desc}, limit: 1) {
       ...roundForRoundCard
     }
-    topPlayerRounds: playerRounds(where: {courseRank: {_lte: 10}}) {
-      ...playerRoundForCourseLeaderboard
-    }
     coursePlayers(order_by: {playerRounds_aggregate: {count: desc}}) {
       ...coursePlayerForParticipationStatsCard
     }
   }
 }
     ${RoundForRoundCardFragmentDoc}
-${PlayerRoundForCourseLeaderboardFragmentDoc}
 ${CoursePlayerForParticipationStatsCardFragmentDoc}`;
 export const DefaultCourseRoundsPageDocument = gql`
     query defaultCourseRoundsPage($courseId: Int!) {
@@ -5086,15 +5127,9 @@ export const DefaultCourseRoundsPageDocument = gql`
   ) {
     ...playerRoundForChart
   }
-  leaderboardPlayerRounds: playerRounds(
-    where: {courseId: {_eq: $courseId}, courseRank: {_lte: 10}}
-  ) {
-    ...playerRoundForCourseLeaderboard
-  }
 }
     ${RoundForRoundCardFragmentDoc}
-${PlayerRoundForChartFragmentDoc}
-${PlayerRoundForCourseLeaderboardFragmentDoc}`;
+${PlayerRoundForChartFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 
@@ -5102,6 +5137,12 @@ export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    leaderboardCard(variables: LeaderboardCardQueryVariables): Promise<LeaderboardCardQuery> {
+      return withWrapper(() => client.request<LeaderboardCardQuery>(print(LeaderboardCardDocument), variables));
+    },
+    leaderboardCardForPlayer(variables: LeaderboardCardForPlayerQueryVariables): Promise<LeaderboardCardForPlayerQuery> {
+      return withWrapper(() => client.request<LeaderboardCardForPlayerQuery>(print(LeaderboardCardForPlayerDocument), variables));
+    },
     scoringStatsCard(variables: ScoringStatsCardQueryVariables): Promise<ScoringStatsCardQuery> {
       return withWrapper(() => client.request<ScoringStatsCardQuery>(print(ScoringStatsCardDocument), variables));
     },

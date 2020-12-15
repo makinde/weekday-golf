@@ -26,7 +26,6 @@ const CourseIndexPage: NextPage<Props> = ({
   course,
   course: {
     latestRounds,
-    topPlayerRounds,
     coursePlayers,
   },
 }) => (
@@ -66,7 +65,7 @@ const CourseIndexPage: NextPage<Props> = ({
         />
       </Col>
       <Col sm={4}>
-        <LeaderboardCard playerRounds={topPlayerRounds} />
+        <LeaderboardCard courseId={course.id} />
       </Col>
       <Col xs={12}>
         <ParticipationStatsCard coursePlayers={coursePlayers} />

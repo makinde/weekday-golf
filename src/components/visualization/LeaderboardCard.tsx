@@ -2,23 +2,37 @@ import React from 'react';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
 import { Card, Table } from 'react-bootstrap';
+import useSWR from 'swr';
 
+import Link from 'next/link';
 import RelativeScore from '../utils/RelativeScore';
 import CardHeaderTitle from '../utils/CardHeaderTitle';
 import CompactDate from '../utils/CompactDate';
+import sdk from '../../sdk';
 
-import {
-  PlayerRoundForCourseLeaderboardFragment,
-  PlayerRoundForPlayerLeaderboardFragment,
-} from '../../types';
-
-type PRFrag = PlayerRoundForCourseLeaderboardFragment |
-PlayerRoundForPlayerLeaderboardFragment;
 type Props = {
-  playerRounds: PRFrag[],
+  courseId: number,
+  playerId?: number,
+  rankLimit?: number,
 };
 
-const LeaderboardCard = ({ playerRounds, ...props }: Props) => {
+const LeaderboardCard = ({
+  courseId,
+  playerId,
+  rankLimit = 10,
+  ...props
+}: Props) => {
+  const { data } = useSWR(
+    `LeaderboardCard:${courseId},${playerId},${rankLimit}`,
+    () => (
+      playerId
+        ? sdk.leaderboardCardForPlayer({ courseId, playerId, rankLimit })
+        : sdk.leaderboardCard({ courseId, rankLimit })
+    ),
+  );
+  const { course } = data || {};
+  const { slug: courseSlug, playerRounds } = course || {};
+
   const playerRoundsByRank = groupBy(playerRounds, 'rank');
   const groupedRounds = sortBy(Object.values(playerRoundsByRank), '0.rank');
 
@@ -49,14 +63,19 @@ const LeaderboardCard = ({ playerRounds, ...props }: Props) => {
                 <td>
                   {roundsForRank.map((playerRound, idx) => {
                     const {
-                      player: { id: playerId, nickname },
-                      round: { id: roundId },
+                      playerId: pid,
+                      roundId,
+                      player: { nickname, slug: playerSlug },
                     } = playerRound;
 
                     return (
-                      <React.Fragment key={`${playerId}-${roundId}`}>
+                      <React.Fragment key={`${pid}-${roundId}`}>
                         {idx !== 0 && (<br />)}
-                        {nickname}
+                        <Link href={`/${courseSlug}/${playerSlug}`}>
+                          <a className="text-reset">
+                            {nickname}
+                          </a>
+                        </Link>
                       </React.Fragment>
                     );
                   })}
@@ -64,18 +83,23 @@ const LeaderboardCard = ({ playerRounds, ...props }: Props) => {
                 <td>
                   {roundsForRank.map((playerRound, idx) => {
                     const {
-                      player: { id: playerId },
-                      round: { id: roundId, date },
+                      playerId: pid,
+                      roundId,
+                      round: { date },
                     } = playerRound;
 
                     return (
-                      <React.Fragment key={`${playerId}-${roundId}`}>
+                      <React.Fragment key={`${pid}-${roundId}`}>
                         {idx !== 0 && (<br />)}
-                        <CompactDate
-                          date={date}
-                          dateFormat="MMM d"
-                          yearFormat=" ''yy"
-                        />
+                        <Link href={`/${courseSlug}/rounds#round-${roundId}`}>
+                          <a className="text-reset">
+                            <CompactDate
+                              date={date}
+                              dateFormat="MMM d"
+                              yearFormat=" ''yy"
+                            />
+                          </a>
+                        </Link>
                       </React.Fragment>
                     );
                   })}

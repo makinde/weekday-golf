@@ -21,14 +21,4 @@ query defaultCourseRoundsPage($courseId: Int!) {
   ) {
     ...playerRoundForChart
   }
-
-  leaderboardPlayerRounds: playerRounds(
-    where: {
-      courseId: { _eq: $courseId },
-      courseRank: { _lte:10 }
-    }
-  ) {
-    ...playerRoundForCourseLeaderboard
-  }
-
 }

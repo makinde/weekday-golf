@@ -8,10 +8,6 @@ query courseIndexPage($slug: String!) {
       ...roundForRoundCard
     }
 
-    topPlayerRounds: playerRounds(where: { courseRank: { _lte:10 } }) {
-      ...playerRoundForCourseLeaderboard
-    }
-
     coursePlayers(
       order_by: { playerRounds_aggregate: { count: desc } },
     ) {

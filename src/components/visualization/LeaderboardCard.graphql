@@ -1,22 +1,43 @@
-fragment _playerRoundForLeaderboard on player_round {
+fragment _leaderboardCardCourse on course {
+  slug
+}
+
+fragment _leaderboardCardPlayerRound on player_round {
+  playerId
+  roundId
   player {
-    id
     nickname
     slug
   }
   relativeScore
   round {
-    id
     date
   }
 }
 
-fragment playerRoundForCourseLeaderboard on player_round {
-  rank: courseRank
-  ..._playerRoundForLeaderboard
+query leaderboardCard($courseId: Int!,  $rankLimit: bigint!) {
+  course(id: $courseId) {
+    ..._leaderboardCardCourse
+    playerRounds(where: { courseRank: { _lte: $rankLimit } }) {
+      ..._leaderboardCardPlayerRound
+      rank: courseRank
+    }
+  }
 }
 
-fragment playerRoundForPlayerLeaderboard on player_round {
-  rank: playerCourseRank
-  ..._playerRoundForLeaderboard
+query leaderboardCardForPlayer(
+  $courseId: Int!,
+  $playerId: Int,
+  $rankLimit: bigint!,
+) {
+  course(id: $courseId) {
+    ..._leaderboardCardCourse
+    playerRounds(where: {
+      playerId: { _eq: $playerId },
+      playerCourseRank: { _lte: $rankLimit }
+    }) {
+      ..._leaderboardCardPlayerRound
+      rank: playerCourseRank
+    }
+  }
 }
