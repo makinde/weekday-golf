@@ -12,7 +12,7 @@ A site (and maybe app) for friends to track their friendly golf rounds. More imp
 
 
 ## Contributing
-Contributions from clwons and clown adjacent folks are welcome. Just holler at an existing contributor for access to Hasura, Vercel, or the code.
+Contributions from clowns and clown adjacent folks are welcome. Just holler at an existing contributor for access to Hasura, Vercel, or the code.
 
 ### Installation
 Clone the repo locally and install dependencies:
