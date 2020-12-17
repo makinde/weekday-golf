@@ -88,11 +88,11 @@ const ScoringStatsCard = ({ courseId }: Props) => {
                       </Link>
                     </td>
                     {scoringInfo.map((info) => (
-                      <td key={info.holeNumber}>
+                      <td key={info.holeNumber} className="position-relative">
                         {viewingRecent && info.trailingAvgScore}
                         {viewingAll && info.lifetimeAvgScore}
                         {Math.abs(info.scoreTrend) > TRENDING_CUTOFF && (
-                          <i className={cx('fe ml-2 mt-1 position-absolute', {
+                          <i className={cx('fe ml-1 mt-1 position-absolute', {
                             'fe-chevrons-up text-danger': info.scoreTrend > 0,
                             'fe-chevrons-down text-success': info.scoreTrend < 0,
                           })}
