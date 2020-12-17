@@ -31,22 +31,24 @@ const RoundCard = ({ round, title }: Props) => (
             <CompactDate date={round.date} dateFormat="MMM d" yearFormat=" ''yy" />
           </Card.Text>
         </Card.Header>
-        <RoundTable round={round} className="table-nowrap card-table border-bottom" />
-        <Card.Body>
-          <div className="small text-muted">
-            {round.skinsHoleBounty && (
-            <span>
-              $
-              {round.skinsHoleBounty}
-              /hole skin
-              {round.roundBounty && ','}
-            </span>
-            )}
-            {round.roundBounty && (
-              `$${round.roundBounty} round winner`
-            )}
-          </div>
-        </Card.Body>
+        <RoundTable round={round} className="table-nowrap card-table" />
+        {(round.skinsHoleBounty || round.roundBounty) && (
+          <Card.Body className="border-top">
+            <div className="small text-muted">
+              {round.skinsHoleBounty && (
+                <span>
+                  $
+                  {round.skinsHoleBounty}
+                  /hole skin
+                  {round.roundBounty && ','}
+                </span>
+              )}
+              {round.roundBounty && (
+                `$${round.roundBounty} round winner`
+              )}
+            </div>
+          </Card.Body>
+        )}
       </>
     )}
   </Card>
