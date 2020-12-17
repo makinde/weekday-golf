@@ -12,7 +12,7 @@ A site (and maybe app) for friends to track their friendly golf rounds. More imp
 
 
 ## Contributing
-Contributions from clowns and clown adjacent folks are welcome. Just holler at an existing contributor for access to Hasura, Vercel, or the code.
+Contributions from clowns and clown-adjacent folks are welcome. Just holler at an existing contributor for access to Hasura, Vercel, or the code.
 
 ### Installation
 Clone the repo locally and install dependencies:
@@ -37,7 +37,7 @@ This script will compile types for the \*.graphql files, and start a local serve
 The `dev` command also handles transpiling typescript on the fly, so you basically never need to worry about anything typescript specific. Just write TypeScript and it'll run.
 
 ### Data
-Data from all the rounds are stored in a Postgres database. Hasura is a service that you point to a DB and it generates a graphql endpoing based on it (crazy, I know). We try to push a decent amount of things back to SQL/Hasura so the front end can mostly just worry about querying data in the shape it needs and rendering it. Ask for access to Hasura if you don't have it. You can use the GraphiQL interface provided to explore and add data.
+Data from all the rounds are stored in a Postgres database. Hasura is a service that you point to a DB and it generates a graphql endpoint based on it (crazy, I know). We try to push a decent amount of things back to SQL/Hasura so the front end can mostly just worry about querying data in the shape it needs and rendering it. Ask for access to Hasura if you don't have it. You can use the GraphiQL interface provided to explore and add data.
 
 Data is queried using graphQL. All queries/fragments/mutations are in *.graphql files collocated with the typescript file that uses it. `yarn generate` looks at all these files and produces a strongly typed sdk and result types for all the queries, mutations, and fragments. In development, `yarn dev` will run this generation any time the files are touched, which is really convenient. 
 
