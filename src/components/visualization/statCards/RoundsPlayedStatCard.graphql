@@ -1,0 +1,21 @@
+query roundsPlayedStatCard($courseId: Int!) {
+  scope: course(id: $courseId) {
+    roundStats: rounds_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+
+query roundsPlayedStatCardForPlayer($courseId: Int!, $playerId: Int!) {
+  scope: player(id: $courseId) {
+    roundStats: playerRounds_aggregate(
+      where: { courseId: { _eq: $courseId } }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
+}

@@ -2440,7 +2440,7 @@ export type Query_Root = {
   /** fetch data from the table: "scoring_info" */
   scoringInfo: Array<Scoring_Info>;
   /** fetch aggregated fields from the table: "scoring_info" */
-  scoring_info_aggregate: Scoring_Info_Aggregate;
+  scoringStats: Scoring_Info_Aggregate;
   /** fetch aggregated fields from the table: "skins" */
   skinStats: Skins_Aggregate;
   /** fetch data from the table: "skins" */
@@ -2632,7 +2632,7 @@ export type Query_RootScoringInfoArgs = {
 
 
 /** query root */
-export type Query_RootScoring_Info_AggregateArgs = {
+export type Query_RootScoringStatsArgs = {
   distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -3581,6 +3581,7 @@ export type Scoring_Info = {
   lifetimeAvgScore?: Maybe<Scalars['numeric']>;
   playerId?: Maybe<Scalars['Int']>;
   puttsTrend?: Maybe<Scalars['numeric']>;
+  relativeScore?: Maybe<Scalars['Int']>;
   roundId?: Maybe<Scalars['Int']>;
   scoreTrend?: Maybe<Scalars['numeric']>;
   trailingAvgPutts?: Maybe<Scalars['numeric']>;
@@ -3639,6 +3640,7 @@ export type Scoring_Info_Avg_Fields = {
   lifetimeAvgScore?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
   puttsTrend?: Maybe<Scalars['Float']>;
+  relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
   scoreTrend?: Maybe<Scalars['Float']>;
   trailingAvgPutts?: Maybe<Scalars['Float']>;
@@ -3654,6 +3656,7 @@ export type Scoring_Info_Avg_Order_By = {
   lifetimeAvgScore?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   puttsTrend?: Maybe<Order_By>;
+  relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   scoreTrend?: Maybe<Order_By>;
   trailingAvgPutts?: Maybe<Order_By>;
@@ -3674,6 +3677,7 @@ export type Scoring_Info_Bool_Exp = {
   lifetimeAvgScore?: Maybe<Numeric_Comparison_Exp>;
   playerId?: Maybe<Int_Comparison_Exp>;
   puttsTrend?: Maybe<Numeric_Comparison_Exp>;
+  relativeScore?: Maybe<Int_Comparison_Exp>;
   roundId?: Maybe<Int_Comparison_Exp>;
   scoreTrend?: Maybe<Numeric_Comparison_Exp>;
   trailingAvgPutts?: Maybe<Numeric_Comparison_Exp>;
@@ -3690,6 +3694,7 @@ export type Scoring_Info_Max_Fields = {
   lifetimeAvgScore?: Maybe<Scalars['numeric']>;
   playerId?: Maybe<Scalars['Int']>;
   puttsTrend?: Maybe<Scalars['numeric']>;
+  relativeScore?: Maybe<Scalars['Int']>;
   roundId?: Maybe<Scalars['Int']>;
   scoreTrend?: Maybe<Scalars['numeric']>;
   trailingAvgPutts?: Maybe<Scalars['numeric']>;
@@ -3706,6 +3711,7 @@ export type Scoring_Info_Max_Order_By = {
   lifetimeAvgScore?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   puttsTrend?: Maybe<Order_By>;
+  relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   scoreTrend?: Maybe<Order_By>;
   trailingAvgPutts?: Maybe<Order_By>;
@@ -3722,6 +3728,7 @@ export type Scoring_Info_Min_Fields = {
   lifetimeAvgScore?: Maybe<Scalars['numeric']>;
   playerId?: Maybe<Scalars['Int']>;
   puttsTrend?: Maybe<Scalars['numeric']>;
+  relativeScore?: Maybe<Scalars['Int']>;
   roundId?: Maybe<Scalars['Int']>;
   scoreTrend?: Maybe<Scalars['numeric']>;
   trailingAvgPutts?: Maybe<Scalars['numeric']>;
@@ -3738,6 +3745,7 @@ export type Scoring_Info_Min_Order_By = {
   lifetimeAvgScore?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   puttsTrend?: Maybe<Order_By>;
+  relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   scoreTrend?: Maybe<Order_By>;
   trailingAvgPutts?: Maybe<Order_By>;
@@ -3755,6 +3763,7 @@ export type Scoring_Info_Order_By = {
   lifetimeAvgScore?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   puttsTrend?: Maybe<Order_By>;
+  relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   scoreTrend?: Maybe<Order_By>;
   trailingAvgPutts?: Maybe<Order_By>;
@@ -3779,6 +3788,8 @@ export enum Scoring_Info_Select_Column {
   /** column name */
   PuttsTrend = 'puttsTrend',
   /** column name */
+  RelativeScore = 'relativeScore',
+  /** column name */
   RoundId = 'roundId',
   /** column name */
   ScoreTrend = 'scoreTrend',
@@ -3798,6 +3809,7 @@ export type Scoring_Info_Stddev_Fields = {
   lifetimeAvgScore?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
   puttsTrend?: Maybe<Scalars['Float']>;
+  relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
   scoreTrend?: Maybe<Scalars['Float']>;
   trailingAvgPutts?: Maybe<Scalars['Float']>;
@@ -3813,6 +3825,7 @@ export type Scoring_Info_Stddev_Order_By = {
   lifetimeAvgScore?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   puttsTrend?: Maybe<Order_By>;
+  relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   scoreTrend?: Maybe<Order_By>;
   trailingAvgPutts?: Maybe<Order_By>;
@@ -3828,6 +3841,7 @@ export type Scoring_Info_Stddev_Pop_Fields = {
   lifetimeAvgScore?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
   puttsTrend?: Maybe<Scalars['Float']>;
+  relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
   scoreTrend?: Maybe<Scalars['Float']>;
   trailingAvgPutts?: Maybe<Scalars['Float']>;
@@ -3843,6 +3857,7 @@ export type Scoring_Info_Stddev_Pop_Order_By = {
   lifetimeAvgScore?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   puttsTrend?: Maybe<Order_By>;
+  relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   scoreTrend?: Maybe<Order_By>;
   trailingAvgPutts?: Maybe<Order_By>;
@@ -3858,6 +3873,7 @@ export type Scoring_Info_Stddev_Samp_Fields = {
   lifetimeAvgScore?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
   puttsTrend?: Maybe<Scalars['Float']>;
+  relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
   scoreTrend?: Maybe<Scalars['Float']>;
   trailingAvgPutts?: Maybe<Scalars['Float']>;
@@ -3873,6 +3889,7 @@ export type Scoring_Info_Stddev_Samp_Order_By = {
   lifetimeAvgScore?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   puttsTrend?: Maybe<Order_By>;
+  relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   scoreTrend?: Maybe<Order_By>;
   trailingAvgPutts?: Maybe<Order_By>;
@@ -3888,6 +3905,7 @@ export type Scoring_Info_Sum_Fields = {
   lifetimeAvgScore?: Maybe<Scalars['numeric']>;
   playerId?: Maybe<Scalars['Int']>;
   puttsTrend?: Maybe<Scalars['numeric']>;
+  relativeScore?: Maybe<Scalars['Int']>;
   roundId?: Maybe<Scalars['Int']>;
   scoreTrend?: Maybe<Scalars['numeric']>;
   trailingAvgPutts?: Maybe<Scalars['numeric']>;
@@ -3903,6 +3921,7 @@ export type Scoring_Info_Sum_Order_By = {
   lifetimeAvgScore?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   puttsTrend?: Maybe<Order_By>;
+  relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   scoreTrend?: Maybe<Order_By>;
   trailingAvgPutts?: Maybe<Order_By>;
@@ -3918,6 +3937,7 @@ export type Scoring_Info_Var_Pop_Fields = {
   lifetimeAvgScore?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
   puttsTrend?: Maybe<Scalars['Float']>;
+  relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
   scoreTrend?: Maybe<Scalars['Float']>;
   trailingAvgPutts?: Maybe<Scalars['Float']>;
@@ -3933,6 +3953,7 @@ export type Scoring_Info_Var_Pop_Order_By = {
   lifetimeAvgScore?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   puttsTrend?: Maybe<Order_By>;
+  relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   scoreTrend?: Maybe<Order_By>;
   trailingAvgPutts?: Maybe<Order_By>;
@@ -3948,6 +3969,7 @@ export type Scoring_Info_Var_Samp_Fields = {
   lifetimeAvgScore?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
   puttsTrend?: Maybe<Scalars['Float']>;
+  relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
   scoreTrend?: Maybe<Scalars['Float']>;
   trailingAvgPutts?: Maybe<Scalars['Float']>;
@@ -3963,6 +3985,7 @@ export type Scoring_Info_Var_Samp_Order_By = {
   lifetimeAvgScore?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   puttsTrend?: Maybe<Order_By>;
+  relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   scoreTrend?: Maybe<Order_By>;
   trailingAvgPutts?: Maybe<Order_By>;
@@ -3978,6 +4001,7 @@ export type Scoring_Info_Variance_Fields = {
   lifetimeAvgScore?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
   puttsTrend?: Maybe<Scalars['Float']>;
+  relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
   scoreTrend?: Maybe<Scalars['Float']>;
   trailingAvgPutts?: Maybe<Scalars['Float']>;
@@ -3993,6 +4017,7 @@ export type Scoring_Info_Variance_Order_By = {
   lifetimeAvgScore?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
   puttsTrend?: Maybe<Order_By>;
+  relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   scoreTrend?: Maybe<Order_By>;
   trailingAvgPutts?: Maybe<Order_By>;
@@ -4381,7 +4406,7 @@ export type Subscription_Root = {
   /** fetch data from the table: "scoring_info" */
   scoringInfo: Array<Scoring_Info>;
   /** fetch aggregated fields from the table: "scoring_info" */
-  scoring_info_aggregate: Scoring_Info_Aggregate;
+  scoringStats: Scoring_Info_Aggregate;
   /** fetch aggregated fields from the table: "skins" */
   skinStats: Skins_Aggregate;
   /** fetch data from the table: "skins" */
@@ -4573,7 +4598,7 @@ export type Subscription_RootScoringInfoArgs = {
 
 
 /** subscription root */
-export type Subscription_RootScoring_Info_AggregateArgs = {
+export type Subscription_RootScoringStatsArgs = {
   distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -4674,6 +4699,26 @@ export type RoundForTableFragment = (
   )> }
 );
 
+export type HoleForScoresHeaderFragment = Pick<Hole, 'nickname' | 'number' | 'par'>;
+
+export type ScoringStatsCardQueryVariables = Exact<{
+  courseId: Scalars['Int'];
+}>;
+
+
+export type ScoringStatsCardQuery = { course?: Maybe<(
+    Pick<Course, 'slug'>
+    & { holes: Array<HoleForScoresHeaderFragment>, coursePlayers: Array<{ player?: Maybe<Pick<Player, 'id' | 'slug' | 'nickname'>>, scoringInfo: Array<Pick<Scoring_Info, 'holeNumber' | 'trailingCount' | 'trailingAvgScore' | 'lifetimeAvgScore' | 'scoreTrend'>> }> }
+  )> };
+
+export type AverageScoreStatCardQueryVariables = Exact<{
+  courseId?: Maybe<Scalars['Int']>;
+  playerId?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type AverageScoreStatCardQuery = { playerRoundStats: { aggregate?: Maybe<{ avg?: Maybe<Pick<Player_Round_Avg_Fields, 'relativeScore'>> }> } };
+
 export type RoundsPlayedStatCardQueryVariables = Exact<{
   courseId: Scalars['Int'];
 }>;
@@ -4689,17 +4734,14 @@ export type RoundsPlayedStatCardForPlayerQueryVariables = Exact<{
 
 export type RoundsPlayedStatCardForPlayerQuery = { scope?: Maybe<{ roundStats: { aggregate?: Maybe<Pick<Player_Round_Aggregate_Fields, 'count'>> } }> };
 
-export type HoleForScoresHeaderFragment = Pick<Hole, 'nickname' | 'number' | 'par'>;
-
-export type ScoringStatsCardQueryVariables = Exact<{
-  courseId: Scalars['Int'];
+export type ScoreCountStatCardQueryVariables = Exact<{
+  courseId?: Maybe<Scalars['Int']>;
+  playerId?: Maybe<Scalars['Int']>;
+  relativeScoreCutoff?: Maybe<Scalars['Int']>;
 }>;
 
 
-export type ScoringStatsCardQuery = { course?: Maybe<(
-    Pick<Course, 'slug'>
-    & { holes: Array<HoleForScoresHeaderFragment>, coursePlayers: Array<{ player?: Maybe<Pick<Player, 'id' | 'slug' | 'nickname'>>, scoringInfo: Array<Pick<Scoring_Info, 'holeNumber' | 'trailingCount' | 'trailingAvgScore' | 'lifetimeAvgScore' | 'scoreTrend'>> }> }
-  )> };
+export type ScoreCountStatCardQuery = { scoringStats: { aggregate?: Maybe<Pick<Scoring_Info_Aggregate_Fields, 'count'>> } };
 
 export type CourseIndexPageQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -4850,28 +4892,6 @@ export const LeaderboardCardForPlayerDocument = gql`
 }
     ${_LeaderboardCardCourseFragmentDoc}
 ${_LeaderboardCardPlayerRoundFragmentDoc}`;
-export const RoundsPlayedStatCardDocument = gql`
-    query roundsPlayedStatCard($courseId: Int!) {
-  scope: course(id: $courseId) {
-    roundStats: rounds_aggregate {
-      aggregate {
-        count
-      }
-    }
-  }
-}
-    `;
-export const RoundsPlayedStatCardForPlayerDocument = gql`
-    query roundsPlayedStatCardForPlayer($courseId: Int!, $playerId: Int!) {
-  scope: player(id: $courseId) {
-    roundStats: playerRounds_aggregate(where: {courseId: {_eq: $courseId}}) {
-      aggregate {
-        count
-      }
-    }
-  }
-}
-    `;
 export const ScoringStatsCardDocument = gql`
     query scoringStatsCard($courseId: Int!) {
   course(id: $courseId) {
@@ -4896,6 +4916,52 @@ export const ScoringStatsCardDocument = gql`
   }
 }
     ${HoleForScoresHeaderFragmentDoc}`;
+export const AverageScoreStatCardDocument = gql`
+    query averageScoreStatCard($courseId: Int, $playerId: Int) {
+  playerRoundStats(
+    where: {courseId: {_eq: $courseId}, playerId: {_eq: $playerId}}
+  ) {
+    aggregate {
+      avg {
+        relativeScore
+      }
+    }
+  }
+}
+    `;
+export const RoundsPlayedStatCardDocument = gql`
+    query roundsPlayedStatCard($courseId: Int!) {
+  scope: course(id: $courseId) {
+    roundStats: rounds_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+    `;
+export const RoundsPlayedStatCardForPlayerDocument = gql`
+    query roundsPlayedStatCardForPlayer($courseId: Int!, $playerId: Int!) {
+  scope: player(id: $courseId) {
+    roundStats: playerRounds_aggregate(where: {courseId: {_eq: $courseId}}) {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+    `;
+export const ScoreCountStatCardDocument = gql`
+    query scoreCountStatCard($courseId: Int, $playerId: Int, $relativeScoreCutoff: Int) {
+  scoringStats(
+    where: {courseId: {_eq: $courseId}, playerId: {_eq: $playerId}, relativeScore: {_lte: $relativeScoreCutoff}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
 export const CourseIndexPageDocument = gql`
     query courseIndexPage($slug: String!) {
   courses(where: {slug: {_eq: $slug}}) {
@@ -4944,14 +5010,20 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     leaderboardCardForPlayer(variables: LeaderboardCardForPlayerQueryVariables): Promise<LeaderboardCardForPlayerQuery> {
       return withWrapper(() => client.request<LeaderboardCardForPlayerQuery>(print(LeaderboardCardForPlayerDocument), variables));
     },
+    scoringStatsCard(variables: ScoringStatsCardQueryVariables): Promise<ScoringStatsCardQuery> {
+      return withWrapper(() => client.request<ScoringStatsCardQuery>(print(ScoringStatsCardDocument), variables));
+    },
+    averageScoreStatCard(variables?: AverageScoreStatCardQueryVariables): Promise<AverageScoreStatCardQuery> {
+      return withWrapper(() => client.request<AverageScoreStatCardQuery>(print(AverageScoreStatCardDocument), variables));
+    },
     roundsPlayedStatCard(variables: RoundsPlayedStatCardQueryVariables): Promise<RoundsPlayedStatCardQuery> {
       return withWrapper(() => client.request<RoundsPlayedStatCardQuery>(print(RoundsPlayedStatCardDocument), variables));
     },
     roundsPlayedStatCardForPlayer(variables: RoundsPlayedStatCardForPlayerQueryVariables): Promise<RoundsPlayedStatCardForPlayerQuery> {
       return withWrapper(() => client.request<RoundsPlayedStatCardForPlayerQuery>(print(RoundsPlayedStatCardForPlayerDocument), variables));
     },
-    scoringStatsCard(variables: ScoringStatsCardQueryVariables): Promise<ScoringStatsCardQuery> {
-      return withWrapper(() => client.request<ScoringStatsCardQuery>(print(ScoringStatsCardDocument), variables));
+    scoreCountStatCard(variables?: ScoreCountStatCardQueryVariables): Promise<ScoreCountStatCardQuery> {
+      return withWrapper(() => client.request<ScoreCountStatCardQuery>(print(ScoreCountStatCardDocument), variables));
     },
     courseIndexPage(variables: CourseIndexPageQueryVariables): Promise<CourseIndexPageQuery> {
       return withWrapper(() => client.request<CourseIndexPageQuery>(print(CourseIndexPageDocument), variables));

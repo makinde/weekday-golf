@@ -1,0 +1,15 @@
+query averageScoreStatCard(
+  $courseId: Int,
+  $playerId: Int,
+) {
+  playerRoundStats(where: {
+    courseId: { _eq: $courseId },
+    playerId: { _eq: $playerId },
+  }) {
+    aggregate {
+      avg {
+        relativeScore
+      }
+    }
+  }
+}

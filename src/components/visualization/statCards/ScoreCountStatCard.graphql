@@ -1,0 +1,15 @@
+query scoreCountStatCard(
+  $courseId: Int,
+  $playerId: Int,
+  $relativeScoreCutoff: Int,
+) {
+  scoringStats(where: {
+    courseId: { _eq: $courseId },
+    playerId: { _eq: $playerId },
+    relativeScore: { _lte: $relativeScoreCutoff }
+  }) {
+    aggregate {
+      count
+    }
+  }
+}

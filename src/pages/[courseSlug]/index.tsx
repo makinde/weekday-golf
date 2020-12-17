@@ -14,9 +14,12 @@ import CardHeaderTitle from '../../components/utils/CardHeaderTitle';
 import RoundCard from '../../components/visualization/RoundCard';
 import LeaderboardCard from '../../components/visualization/LeaderboardCard';
 import ParticipationStatsCard from '../../components/visualization/ParticipationStatsCard';
+import ScoringStatsCard from '../../components/visualization/ScoringStatsCard';
+import RoundsPlayedStatCard from '../../components/visualization/statCards/RoundsPlayedStatCard';
+import ScoreCountStatCard from '../../components/visualization/statCards/ScoreCountStatCard';
 
 import { CourseIndexPageQuery } from '../../types';
-import ScoringStatsCard from '../../components/visualization/ScoringStatsCard';
+import AverageScoreStatCard from '../../components/visualization/statCards/AverageScoreStatCard';
 
 type Props = {
   course:CourseIndexPageQuery['courses'][0]
@@ -65,12 +68,17 @@ const CourseIndexPage: NextPage<Props> = ({
         />
       </Col>
       <Col sm={4}>
-        <LeaderboardCard courseId={course.id} />
+        <RoundsPlayedStatCard courseId={course.id} />
+        <AverageScoreStatCard courseId={course.id} />
+        <ScoreCountStatCard courseId={course.id} />
       </Col>
-      <Col xs={12}>
+      <Col sm={8}>
         <ParticipationStatsCard coursePlayers={coursePlayers} />
       </Col>
-      <Col xs={12}>
+      <Col sm={4}>
+        <LeaderboardCard courseId={course.id} />
+      </Col>
+      <Col>
         <ScoringStatsCard courseId={course.id} />
       </Col>
     </Row>
