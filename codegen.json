@@ -22,6 +22,7 @@
         "typescript-graphql-request"
       ],
       "config": {
+        "skipTypename": true,
         "scalars": {
           "_int4": "number",
           "_text": "string",

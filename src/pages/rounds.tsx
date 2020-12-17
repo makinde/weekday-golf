@@ -15,7 +15,6 @@ const CourseRoundsPage: NextPage<Props> = ({
   course,
   rounds,
   roundsForChart,
-  leaderboardPlayerRounds,
 }) => {
   const [focusedPlayerId, setFocusedPlayerId] = useState<number | null>(null);
   const [focusedRoundId, setFocusedRoundId] = useState<number | null>(null);
@@ -35,9 +34,7 @@ const CourseRoundsPage: NextPage<Props> = ({
             onPlayerFocus={setFocusedPlayerId}
             onRoundFocus={setFocusedRoundId}
           />
-          <LeaderboardCard
-            playerRounds={leaderboardPlayerRounds}
-          />
+          <LeaderboardCard courseId={course.id} />
         </Col>
         <Col md={7}>
           {rounds.map((round) => (
