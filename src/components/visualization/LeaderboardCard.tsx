@@ -30,8 +30,8 @@ const LeaderboardCard = ({
         : sdk.leaderboardCard({ courseId, rankLimit })
     ),
   );
-  const { course } = data || {};
-  const { slug: courseSlug, playerRounds } = course || {};
+
+  const { slug: courseSlug, playerRounds } = data?.course || {};
 
   const playerRoundsByRank = groupBy(playerRounds, 'rank');
   const groupedRounds = sortBy(Object.values(playerRoundsByRank), '0.rank');
