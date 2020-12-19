@@ -840,6 +840,7 @@ export type Hole = {
   /** An object relationship */
   course: Course;
   courseId: Scalars['Int'];
+  handicap?: Maybe<Scalars['Int']>;
   nickname?: Maybe<Scalars['String']>;
   number: Scalars['Int'];
   par: Scalars['Int'];
@@ -847,6 +848,7 @@ export type Hole = {
   scores: Array<Score>;
   /** An aggregated array relationship */
   scores_aggregate: Score_Aggregate;
+  yards?: Maybe<Scalars['Int']>;
 };
 
 
@@ -921,15 +923,19 @@ export type Hole_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Hole_Avg_Fields = {
   courseId?: Maybe<Scalars['Float']>;
+  handicap?: Maybe<Scalars['Float']>;
   number?: Maybe<Scalars['Float']>;
   par?: Maybe<Scalars['Float']>;
+  yards?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "hole" */
 export type Hole_Avg_Order_By = {
   courseId?: Maybe<Order_By>;
+  handicap?: Maybe<Order_By>;
   number?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  yards?: Maybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "hole". All fields are combined with a logical 'AND'. */
@@ -939,10 +945,12 @@ export type Hole_Bool_Exp = {
   _or?: Maybe<Array<Maybe<Hole_Bool_Exp>>>;
   course?: Maybe<Course_Bool_Exp>;
   courseId?: Maybe<Int_Comparison_Exp>;
+  handicap?: Maybe<Int_Comparison_Exp>;
   nickname?: Maybe<String_Comparison_Exp>;
   number?: Maybe<Int_Comparison_Exp>;
   par?: Maybe<Int_Comparison_Exp>;
   scores?: Maybe<Score_Bool_Exp>;
+  yards?: Maybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "hole" */
@@ -954,50 +962,62 @@ export enum Hole_Constraint {
 /** input type for incrementing integer column in table "hole" */
 export type Hole_Inc_Input = {
   courseId?: Maybe<Scalars['Int']>;
+  handicap?: Maybe<Scalars['Int']>;
   number?: Maybe<Scalars['Int']>;
   par?: Maybe<Scalars['Int']>;
+  yards?: Maybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "hole" */
 export type Hole_Insert_Input = {
   course?: Maybe<Course_Obj_Rel_Insert_Input>;
   courseId?: Maybe<Scalars['Int']>;
+  handicap?: Maybe<Scalars['Int']>;
   nickname?: Maybe<Scalars['String']>;
   number?: Maybe<Scalars['Int']>;
   par?: Maybe<Scalars['Int']>;
   scores?: Maybe<Score_Arr_Rel_Insert_Input>;
+  yards?: Maybe<Scalars['Int']>;
 };
 
 /** aggregate max on columns */
 export type Hole_Max_Fields = {
   courseId?: Maybe<Scalars['Int']>;
+  handicap?: Maybe<Scalars['Int']>;
   nickname?: Maybe<Scalars['String']>;
   number?: Maybe<Scalars['Int']>;
   par?: Maybe<Scalars['Int']>;
+  yards?: Maybe<Scalars['Int']>;
 };
 
 /** order by max() on columns of table "hole" */
 export type Hole_Max_Order_By = {
   courseId?: Maybe<Order_By>;
+  handicap?: Maybe<Order_By>;
   nickname?: Maybe<Order_By>;
   number?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  yards?: Maybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Hole_Min_Fields = {
   courseId?: Maybe<Scalars['Int']>;
+  handicap?: Maybe<Scalars['Int']>;
   nickname?: Maybe<Scalars['String']>;
   number?: Maybe<Scalars['Int']>;
   par?: Maybe<Scalars['Int']>;
+  yards?: Maybe<Scalars['Int']>;
 };
 
 /** order by min() on columns of table "hole" */
 export type Hole_Min_Order_By = {
   courseId?: Maybe<Order_By>;
+  handicap?: Maybe<Order_By>;
   nickname?: Maybe<Order_By>;
   number?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  yards?: Maybe<Order_By>;
 };
 
 /** response of any mutation on the table "hole" */
@@ -1025,10 +1045,12 @@ export type Hole_On_Conflict = {
 export type Hole_Order_By = {
   course?: Maybe<Course_Order_By>;
   courseId?: Maybe<Order_By>;
+  handicap?: Maybe<Order_By>;
   nickname?: Maybe<Order_By>;
   number?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
   scores_aggregate?: Maybe<Score_Aggregate_Order_By>;
+  yards?: Maybe<Order_By>;
 };
 
 /** primary key columns input for table: "hole" */
@@ -1042,75 +1064,97 @@ export enum Hole_Select_Column {
   /** column name */
   CourseId = 'courseId',
   /** column name */
+  Handicap = 'handicap',
+  /** column name */
   Nickname = 'nickname',
   /** column name */
   Number = 'number',
   /** column name */
-  Par = 'par'
+  Par = 'par',
+  /** column name */
+  Yards = 'yards'
 }
 
 /** input type for updating data in table "hole" */
 export type Hole_Set_Input = {
   courseId?: Maybe<Scalars['Int']>;
+  handicap?: Maybe<Scalars['Int']>;
   nickname?: Maybe<Scalars['String']>;
   number?: Maybe<Scalars['Int']>;
   par?: Maybe<Scalars['Int']>;
+  yards?: Maybe<Scalars['Int']>;
 };
 
 /** aggregate stddev on columns */
 export type Hole_Stddev_Fields = {
   courseId?: Maybe<Scalars['Float']>;
+  handicap?: Maybe<Scalars['Float']>;
   number?: Maybe<Scalars['Float']>;
   par?: Maybe<Scalars['Float']>;
+  yards?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "hole" */
 export type Hole_Stddev_Order_By = {
   courseId?: Maybe<Order_By>;
+  handicap?: Maybe<Order_By>;
   number?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  yards?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Hole_Stddev_Pop_Fields = {
   courseId?: Maybe<Scalars['Float']>;
+  handicap?: Maybe<Scalars['Float']>;
   number?: Maybe<Scalars['Float']>;
   par?: Maybe<Scalars['Float']>;
+  yards?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "hole" */
 export type Hole_Stddev_Pop_Order_By = {
   courseId?: Maybe<Order_By>;
+  handicap?: Maybe<Order_By>;
   number?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  yards?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Hole_Stddev_Samp_Fields = {
   courseId?: Maybe<Scalars['Float']>;
+  handicap?: Maybe<Scalars['Float']>;
   number?: Maybe<Scalars['Float']>;
   par?: Maybe<Scalars['Float']>;
+  yards?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "hole" */
 export type Hole_Stddev_Samp_Order_By = {
   courseId?: Maybe<Order_By>;
+  handicap?: Maybe<Order_By>;
   number?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  yards?: Maybe<Order_By>;
 };
 
 /** aggregate sum on columns */
 export type Hole_Sum_Fields = {
   courseId?: Maybe<Scalars['Int']>;
+  handicap?: Maybe<Scalars['Int']>;
   number?: Maybe<Scalars['Int']>;
   par?: Maybe<Scalars['Int']>;
+  yards?: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "hole" */
 export type Hole_Sum_Order_By = {
   courseId?: Maybe<Order_By>;
+  handicap?: Maybe<Order_By>;
   number?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  yards?: Maybe<Order_By>;
 };
 
 /** update columns of table "hole" */
@@ -1118,53 +1162,69 @@ export enum Hole_Update_Column {
   /** column name */
   CourseId = 'courseId',
   /** column name */
+  Handicap = 'handicap',
+  /** column name */
   Nickname = 'nickname',
   /** column name */
   Number = 'number',
   /** column name */
-  Par = 'par'
+  Par = 'par',
+  /** column name */
+  Yards = 'yards'
 }
 
 /** aggregate var_pop on columns */
 export type Hole_Var_Pop_Fields = {
   courseId?: Maybe<Scalars['Float']>;
+  handicap?: Maybe<Scalars['Float']>;
   number?: Maybe<Scalars['Float']>;
   par?: Maybe<Scalars['Float']>;
+  yards?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "hole" */
 export type Hole_Var_Pop_Order_By = {
   courseId?: Maybe<Order_By>;
+  handicap?: Maybe<Order_By>;
   number?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  yards?: Maybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Hole_Var_Samp_Fields = {
   courseId?: Maybe<Scalars['Float']>;
+  handicap?: Maybe<Scalars['Float']>;
   number?: Maybe<Scalars['Float']>;
   par?: Maybe<Scalars['Float']>;
+  yards?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "hole" */
 export type Hole_Var_Samp_Order_By = {
   courseId?: Maybe<Order_By>;
+  handicap?: Maybe<Order_By>;
   number?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  yards?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Hole_Variance_Fields = {
   courseId?: Maybe<Scalars['Float']>;
+  handicap?: Maybe<Scalars['Float']>;
   number?: Maybe<Scalars['Float']>;
   par?: Maybe<Scalars['Float']>;
+  yards?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "hole" */
 export type Hole_Variance_Order_By = {
   courseId?: Maybe<Order_By>;
+  handicap?: Maybe<Order_By>;
   number?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
+  yards?: Maybe<Order_By>;
 };
 
 /** mutation root */
