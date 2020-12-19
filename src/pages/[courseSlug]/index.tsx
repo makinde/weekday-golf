@@ -11,15 +11,15 @@ import Layout from '../../components/utils/Layout';
 import Avatar from '../../components/utils/Avatar';
 import PageHeader from '../../components/utils/PageHeader';
 import CardHeaderTitle from '../../components/utils/CardHeaderTitle';
-import RoundCard from '../../components/visualization/RoundCard';
-import LeaderboardCard from '../../components/visualization/LeaderboardCard';
-import ParticipationStatsCard from '../../components/visualization/ParticipationStatsCard';
-import ScoringStatsCard from '../../components/visualization/ScoringStatsCard';
-import RoundsPlayedStatCard from '../../components/visualization/statCards/RoundsPlayedStatCard';
-import ScoreCountStatCard from '../../components/visualization/statCards/ScoreCountStatCard';
+import RoundCard from '../../components/card/RoundCard';
+import LeaderboardCard from '../../components/card/LeaderboardCard';
+import ParticipationStatsCard from '../../components/card/ParticipationStatsCard';
+import ScoringStatsCard from '../../components/card/ScoringStatsCard';
+import RoundsPlayedStatCard from '../../components/card/statCard/RoundsPlayedStatCard';
+import ScoreCountStatCard from '../../components/card/statCard/ScoreCountStatCard';
 
 import { CourseIndexPageQuery } from '../../types';
-import AverageScoreStatCard from '../../components/visualization/statCards/AverageScoreStatCard';
+import AverageScoreStatCard from '../../components/card/statCard/AverageScoreStatCard';
 
 type Props = {
   course:CourseIndexPageQuery['courses'][0]

@@ -5,9 +5,9 @@ import { Row, Col } from 'react-bootstrap';
 import sdk from '../sdk';
 import Layout from '../components/utils/Layout';
 import PlayerRoundsChart from '../components/Chart/PlayerRoundsChart';
-import LeaderboardCard from '../components/visualization/LeaderboardCard';
+import LeaderboardCard from '../components/card/LeaderboardCard';
 import { DefaultCourseRoundsPageQuery } from '../types';
-import RoundCard from '../components/visualization/RoundCard';
+import RoundCard from '../components/card/RoundCard';
 
 type Props = DefaultCourseRoundsPageQuery;
 
