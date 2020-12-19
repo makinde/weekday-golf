@@ -23,7 +23,7 @@ const ScoreCountStatCard = ({
   return (
     <StatCard
       title="Par Or Better"
-      heading={data?.scoringStats?.aggregate?.count || '-'}
+      heading={data?.scoringStats?.aggregate?.count ?? '-'}
     />
   );
 };
