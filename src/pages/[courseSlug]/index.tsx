@@ -2,7 +2,6 @@ import React from 'react';
 import {
   NextPage, GetServerSideProps,
 } from 'next';
-import Link from 'next/link';
 import { Row, Col, Button } from 'react-bootstrap';
 import isEmpty from 'lodash/isEmpty';
 
@@ -10,8 +9,7 @@ import sdk from '../../sdk';
 import Layout from '../../components/utils/Layout';
 import Avatar from '../../components/utils/Avatar';
 import PageHeader from '../../components/utils/PageHeader';
-import CardHeaderTitle from '../../components/utils/CardHeaderTitle';
-import RoundCard from '../../components/card/RoundCard';
+import RoundCardList from '../../components/card/RoundCardList';
 import LeaderboardCard from '../../components/card/LeaderboardCard';
 import ParticipationStatsCard from '../../components/card/ParticipationStatsCard';
 import ScoringStatsCard from '../../components/card/ScoringStatsCard';
@@ -25,12 +23,7 @@ type Props = {
   course:CourseIndexPageQuery['courses'][0]
 };
 
-const CourseIndexPage: NextPage<Props> = ({
-  course,
-  course: {
-    latestRounds,
-  },
-}) => (
+const CourseIndexPage: NextPage<Props> = ({ course }) => (
   <Layout title="Overview">
     <PageHeader>
       <Row className="align-items-center">
@@ -52,19 +45,7 @@ const CourseIndexPage: NextPage<Props> = ({
     </PageHeader>
     <Row>
       <Col>
-        <RoundCard
-          round={latestRounds[0]}
-          title={(
-            <CardHeaderTitle>
-              Latest Round
-              <Link href="/rounds">
-                <a className="small ml-3 text-primary">
-                  See all
-                </a>
-              </Link>
-            </CardHeaderTitle>
-          )}
-        />
+        <RoundCardList courseId={course.id} limit={1} />
       </Col>
       <Col sm={4}>
         <RoundsPlayedStatCard courseId={course.id} />

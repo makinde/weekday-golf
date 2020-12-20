@@ -6,13 +6,6 @@ query defaultCourseRoundsPage($courseId: Int!) {
     img
   }
 
-  rounds(
-    where: { courseId: { _eq: $courseId } },
-    order_by: { date: desc },
-  ) {
-    ...roundForRoundCard
-  }
-
   roundsForChart: playerRounds(
     where: {
       courseId: { _eq: $courseId },

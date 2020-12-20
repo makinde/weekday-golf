@@ -4759,6 +4759,19 @@ export type RoundForRoundCardFragment = (
   & RoundForTableFragment
 );
 
+export type RoundCardListQueryVariables = Exact<{
+  courseId?: Maybe<Scalars['Int']>;
+  playerId?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type RoundCardListQuery = { rounds: Array<(
+    Pick<Round, 'id'>
+    & { course: Pick<Course, 'slug'> }
+    & RoundForRoundCardFragment
+  )> };
+
 export type RoundForTableFragment = (
   Pick<Round, 'id' | 'date' | 'name'>
   & { course: { holes: Array<HoleForScoresHeaderFragment> }, playerRounds: Array<(
@@ -4826,7 +4839,7 @@ export type DefaultCourseRoundsPageQueryVariables = Exact<{
 }>;
 
 
-export type DefaultCourseRoundsPageQuery = { course?: Maybe<Pick<Course, 'id' | 'slug' | 'name' | 'img'>>, rounds: Array<RoundForRoundCardFragment>, roundsForChart: Array<PlayerRoundForChartFragment> };
+export type DefaultCourseRoundsPageQuery = { course?: Maybe<Pick<Course, 'id' | 'slug' | 'name' | 'img'>>, roundsForChart: Array<PlayerRoundForChartFragment> };
 
 export const PlayerRoundForChartFragmentDoc = gql`
     fragment playerRoundForChart on player_round {
@@ -4962,6 +4975,21 @@ export const ParticipationStatsCardDocument = gql`
   }
 }
     `;
+export const RoundCardListDocument = gql`
+    query roundCardList($courseId: Int, $playerId: Int, $limit: Int) {
+  rounds(
+    where: {courseId: {_eq: $courseId}, playerRounds: {playerId: {_eq: $playerId}}}
+    order_by: {date: desc}
+    limit: $limit
+  ) {
+    id
+    course {
+      slug
+    }
+    ...roundForRoundCard
+  }
+}
+    ${RoundForRoundCardFragmentDoc}`;
 export const ScoringStatsCardDocument = gql`
     query scoringStatsCard($courseId: Int!) {
   course(id: $courseId) {
@@ -5052,17 +5080,13 @@ export const DefaultCourseRoundsPageDocument = gql`
     name
     img
   }
-  rounds(where: {courseId: {_eq: $courseId}}, order_by: {date: desc}) {
-    ...roundForRoundCard
-  }
   roundsForChart: playerRounds(
     where: {courseId: {_eq: $courseId}, complete: {_eq: true}}
   ) {
     ...playerRoundForChart
   }
 }
-    ${RoundForRoundCardFragmentDoc}
-${PlayerRoundForChartFragmentDoc}`;
+    ${PlayerRoundForChartFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 
@@ -5078,6 +5102,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     participationStatsCard(variables: ParticipationStatsCardQueryVariables): Promise<ParticipationStatsCardQuery> {
       return withWrapper(() => client.request<ParticipationStatsCardQuery>(print(ParticipationStatsCardDocument), variables));
+    },
+    roundCardList(variables?: RoundCardListQueryVariables): Promise<RoundCardListQuery> {
+      return withWrapper(() => client.request<RoundCardListQuery>(print(RoundCardListDocument), variables));
     },
     scoringStatsCard(variables: ScoringStatsCardQueryVariables): Promise<ScoringStatsCardQuery> {
       return withWrapper(() => client.request<ScoringStatsCardQuery>(print(ScoringStatsCardDocument), variables));

@@ -21,11 +21,10 @@ const RoundCard = ({ round, title }: Props) => (
       <>
         <Card.Header>
           {title || (
-          <CardHeaderTitle>
-            <RoundTitle name={round.name} date={round.date} />
-          </CardHeaderTitle>
+            <CardHeaderTitle>
+              <RoundTitle name={round.name} date={round.date} />
+            </CardHeaderTitle>
           )}
-
           <Card.Text className="small text-muted">
             <i className="fe fe-clock mr-1" />
             <CompactDate date={round.date} dateFormat="MMM d" yearFormat=" ''yy" />

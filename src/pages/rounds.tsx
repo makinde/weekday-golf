@@ -7,13 +7,12 @@ import Layout from '../components/utils/Layout';
 import PlayerRoundsChart from '../components/Chart/PlayerRoundsChart';
 import LeaderboardCard from '../components/card/LeaderboardCard';
 import { DefaultCourseRoundsPageQuery } from '../types';
-import RoundCard from '../components/card/RoundCard';
+import RoundCardList from '../components/card/RoundCardList';
 
 type Props = DefaultCourseRoundsPageQuery;
 
 const CourseRoundsPage: NextPage<Props> = ({
   course,
-  rounds,
   roundsForChart,
 }) => {
   const [focusedPlayerId, setFocusedPlayerId] = useState<number | null>(null);
@@ -37,9 +36,7 @@ const CourseRoundsPage: NextPage<Props> = ({
           <LeaderboardCard courseId={course.id} />
         </Col>
         <Col md={7}>
-          {rounds.map((round) => (
-            <RoundCard key={round.id} round={round} />
-          ))}
+          <RoundCardList courseId={course.id} />
         </Col>
       </Row>
     </Layout>
