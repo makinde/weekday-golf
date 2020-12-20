@@ -48,7 +48,7 @@ const LeaderboardCard = ({
           <tr>
             <th>Pos</th>
             <th>Rnd</th>
-            <th>Name</th>
+            {!playerId && (<th>Name</th>)}
             <th>Date</th>
           </tr>
         </thead>
@@ -60,26 +60,28 @@ const LeaderboardCard = ({
               <tr key={`${rank}`}>
                 <td>{rank}</td>
                 <td><RelativeScore value={relativeScore} /></td>
-                <td>
-                  {roundsForRank.map((playerRound, idx) => {
-                    const {
-                      playerId: pid,
-                      roundId,
-                      player: { nickname, slug: playerSlug },
-                    } = playerRound;
+                {!playerId && (
+                  <td>
+                    {roundsForRank.map((playerRound, idx) => {
+                      const {
+                        playerId: pid,
+                        roundId,
+                        player: { nickname, slug: playerSlug },
+                      } = playerRound;
 
-                    return (
-                      <React.Fragment key={`${pid}-${roundId}`}>
-                        {idx !== 0 && (<br />)}
-                        <Link href={`/${courseSlug}/${playerSlug}`}>
-                          <a className="text-reset">
-                            {nickname}
-                          </a>
-                        </Link>
-                      </React.Fragment>
-                    );
-                  })}
-                </td>
+                      return (
+                        <React.Fragment key={`${pid}-${roundId}`}>
+                          {idx !== 0 && (<br />)}
+                          <Link href={`/${courseSlug}/${playerSlug}`}>
+                            <a className="text-reset">
+                              {nickname}
+                            </a>
+                          </Link>
+                        </React.Fragment>
+                      );
+                    })}
+                  </td>
+                )}
                 <td>
                   {roundsForRank.map((playerRound, idx) => {
                     const {
