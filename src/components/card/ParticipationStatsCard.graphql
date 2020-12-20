@@ -1,28 +1,30 @@
-fragment coursePlayerForParticipationStatsCard on course_player {
-  player {
-    id
+query participationStatsCard($courseId: Int!) {
+  course(id: $courseId) {
     slug
-    nickname
-  }
-  course {
-    slug
-  }
-  playerRoundsStats: playerRounds_aggregate {
-    aggregate {
-      count
-      avg {
-        relativeScore
+    coursePlayers(order_by: { playerRounds_aggregate: { count: desc } }) {
+      player {
+        id
+        slug
+        nickname
       }
-      sum {
-        totalWinnings
+      playerRoundsStats: playerRounds_aggregate {
+        aggregate {
+          count
+          avg {
+            relativeScore
+          }
+          sum {
+            totalWinnings
+          }
+        }
       }
-    }
-  }
-  winningStats: playerRounds_aggregate(
-    where: { winner: { _eq: true } }
-  ) {
-    aggregate {
-      count
+      winningStats: playerRounds_aggregate(
+        where: { winner: { _eq: true } }
+      ) {
+        aggregate {
+          count
+        }
+      }
     }
   }
 }

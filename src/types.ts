@@ -4741,10 +4741,18 @@ export type LeaderboardCardForPlayerQuery = { course?: Maybe<(
     & _LeaderboardCardCourseFragment
   )> };
 
-export type CoursePlayerForParticipationStatsCardFragment = { player?: Maybe<Pick<Player, 'id' | 'slug' | 'nickname'>>, course?: Maybe<Pick<Course, 'slug'>>, playerRoundsStats: { aggregate?: Maybe<(
-      Pick<Player_Round_Aggregate_Fields, 'count'>
-      & { avg?: Maybe<Pick<Player_Round_Avg_Fields, 'relativeScore'>>, sum?: Maybe<Pick<Player_Round_Sum_Fields, 'totalWinnings'>> }
-    )> }, winningStats: { aggregate?: Maybe<Pick<Player_Round_Aggregate_Fields, 'count'>> } };
+export type ParticipationStatsCardQueryVariables = Exact<{
+  courseId: Scalars['Int'];
+}>;
+
+
+export type ParticipationStatsCardQuery = { course?: Maybe<(
+    Pick<Course, 'slug'>
+    & { coursePlayers: Array<{ player?: Maybe<Pick<Player, 'id' | 'slug' | 'nickname'>>, playerRoundsStats: { aggregate?: Maybe<(
+          Pick<Player_Round_Aggregate_Fields, 'count'>
+          & { avg?: Maybe<Pick<Player_Round_Avg_Fields, 'relativeScore'>>, sum?: Maybe<Pick<Player_Round_Sum_Fields, 'totalWinnings'>> }
+        )> }, winningStats: { aggregate?: Maybe<Pick<Player_Round_Aggregate_Fields, 'count'>> } }> }
+  )> };
 
 export type RoundForRoundCardFragment = (
   Pick<Round, 'date' | 'name' | 'skinsHoleBounty' | 'roundBounty'>
@@ -4810,7 +4818,7 @@ export type CourseIndexPageQueryVariables = Exact<{
 
 export type CourseIndexPageQuery = { courses: Array<(
     Pick<Course, 'id' | 'name' | 'img'>
-    & { latestRounds: Array<RoundForRoundCardFragment>, coursePlayers: Array<CoursePlayerForParticipationStatsCardFragment> }
+    & { latestRounds: Array<RoundForRoundCardFragment> }
   )> };
 
 export type DefaultCourseRoundsPageQueryVariables = Exact<{
@@ -4850,34 +4858,6 @@ export const _LeaderboardCardPlayerRoundFragmentDoc = gql`
   relativeScore
   round {
     date
-  }
-}
-    `;
-export const CoursePlayerForParticipationStatsCardFragmentDoc = gql`
-    fragment coursePlayerForParticipationStatsCard on course_player {
-  player {
-    id
-    slug
-    nickname
-  }
-  course {
-    slug
-  }
-  playerRoundsStats: playerRounds_aggregate {
-    aggregate {
-      count
-      avg {
-        relativeScore
-      }
-      sum {
-        totalWinnings
-      }
-    }
-  }
-  winningStats: playerRounds_aggregate(where: {winner: {_eq: true}}) {
-    aggregate {
-      count
-    }
   }
 }
     `;
@@ -4952,6 +4932,36 @@ export const LeaderboardCardForPlayerDocument = gql`
 }
     ${_LeaderboardCardCourseFragmentDoc}
 ${_LeaderboardCardPlayerRoundFragmentDoc}`;
+export const ParticipationStatsCardDocument = gql`
+    query participationStatsCard($courseId: Int!) {
+  course(id: $courseId) {
+    slug
+    coursePlayers(order_by: {playerRounds_aggregate: {count: desc}}) {
+      player {
+        id
+        slug
+        nickname
+      }
+      playerRoundsStats: playerRounds_aggregate {
+        aggregate {
+          count
+          avg {
+            relativeScore
+          }
+          sum {
+            totalWinnings
+          }
+        }
+      }
+      winningStats: playerRounds_aggregate(where: {winner: {_eq: true}}) {
+        aggregate {
+          count
+        }
+      }
+    }
+  }
+}
+    `;
 export const ScoringStatsCardDocument = gql`
     query scoringStatsCard($courseId: Int!) {
   course(id: $courseId) {
@@ -5031,13 +5041,9 @@ export const CourseIndexPageDocument = gql`
     latestRounds: rounds(order_by: {date: desc}, limit: 1) {
       ...roundForRoundCard
     }
-    coursePlayers(order_by: {playerRounds_aggregate: {count: desc}}) {
-      ...coursePlayerForParticipationStatsCard
-    }
   }
 }
-    ${RoundForRoundCardFragmentDoc}
-${CoursePlayerForParticipationStatsCardFragmentDoc}`;
+    ${RoundForRoundCardFragmentDoc}`;
 export const DefaultCourseRoundsPageDocument = gql`
     query defaultCourseRoundsPage($courseId: Int!) {
   course(id: $courseId) {
@@ -5069,6 +5075,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     leaderboardCardForPlayer(variables: LeaderboardCardForPlayerQueryVariables): Promise<LeaderboardCardForPlayerQuery> {
       return withWrapper(() => client.request<LeaderboardCardForPlayerQuery>(print(LeaderboardCardForPlayerDocument), variables));
+    },
+    participationStatsCard(variables: ParticipationStatsCardQueryVariables): Promise<ParticipationStatsCardQuery> {
+      return withWrapper(() => client.request<ParticipationStatsCardQuery>(print(ParticipationStatsCardDocument), variables));
     },
     scoringStatsCard(variables: ScoringStatsCardQueryVariables): Promise<ScoringStatsCardQuery> {
       return withWrapper(() => client.request<ScoringStatsCardQuery>(print(ScoringStatsCardDocument), variables));

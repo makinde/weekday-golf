@@ -7,11 +7,5 @@ query courseIndexPage($slug: String!) {
     latestRounds: rounds(order_by: { date: desc }, limit: 1) {
       ...roundForRoundCard
     }
-
-    coursePlayers(
-      order_by: { playerRounds_aggregate: { count: desc } },
-    ) {
-      ...coursePlayerForParticipationStatsCard
-    }
   }
 }
