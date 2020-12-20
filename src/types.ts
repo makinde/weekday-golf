@@ -4834,27 +4834,23 @@ export type CourseIndexPageQuery = { courses: Array<(
     & { latestRounds: Array<RoundForRoundCardFragment> }
   )> };
 
-export type DefaultCourseRoundsPageQueryVariables = Exact<{
-  courseId: Scalars['Int'];
+export type CourseForRoundsPageFragment = (
+  Pick<Course, 'id' | 'slug' | 'name' | 'img'>
+  & { playerRounds: Array<PlayerRoundForChartFragment> }
+);
+
+export type CourseRoundsPageQueryVariables = Exact<{
+  slug: Scalars['String'];
 }>;
 
 
-export type DefaultCourseRoundsPageQuery = { course?: Maybe<Pick<Course, 'id' | 'slug' | 'name' | 'img'>>, roundsForChart: Array<PlayerRoundForChartFragment> };
+export type CourseRoundsPageQuery = { courses: Array<CourseForRoundsPageFragment> };
 
-export const PlayerRoundForChartFragmentDoc = gql`
-    fragment playerRoundForChart on player_round {
-  relativeScore
-  player {
-    nickname
-    id
-    img
-  }
-  round {
-    date
-    id
-  }
-}
-    `;
+export type CourseRoundsPagePathsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CourseRoundsPagePathsQuery = { courses: Array<Pick<Course, 'slug'>> };
+
 export const _LeaderboardCardCourseFragmentDoc = gql`
     fragment _leaderboardCardCourse on course {
   slug
@@ -4919,6 +4915,31 @@ export const RoundForRoundCardFragmentDoc = gql`
   roundBounty
 }
     ${RoundForTableFragmentDoc}`;
+export const PlayerRoundForChartFragmentDoc = gql`
+    fragment playerRoundForChart on player_round {
+  relativeScore
+  player {
+    nickname
+    id
+    img
+  }
+  round {
+    date
+    id
+  }
+}
+    `;
+export const CourseForRoundsPageFragmentDoc = gql`
+    fragment courseForRoundsPage on course {
+  id
+  slug
+  name
+  img
+  playerRounds(where: {complete: {_eq: true}}) {
+    ...playerRoundForChart
+  }
+}
+    ${PlayerRoundForChartFragmentDoc}`;
 export const LeaderboardCardDocument = gql`
     query leaderboardCard($courseId: Int!, $rankLimit: bigint!) {
   course(id: $courseId) {
@@ -5072,21 +5093,20 @@ export const CourseIndexPageDocument = gql`
   }
 }
     ${RoundForRoundCardFragmentDoc}`;
-export const DefaultCourseRoundsPageDocument = gql`
-    query defaultCourseRoundsPage($courseId: Int!) {
-  course(id: $courseId) {
-    id
-    slug
-    name
-    img
-  }
-  roundsForChart: playerRounds(
-    where: {courseId: {_eq: $courseId}, complete: {_eq: true}}
-  ) {
-    ...playerRoundForChart
+export const CourseRoundsPageDocument = gql`
+    query courseRoundsPage($slug: String!) {
+  courses(where: {slug: {_eq: $slug}}) {
+    ...courseForRoundsPage
   }
 }
-    ${PlayerRoundForChartFragmentDoc}`;
+    ${CourseForRoundsPageFragmentDoc}`;
+export const CourseRoundsPagePathsDocument = gql`
+    query courseRoundsPagePaths {
+  courses {
+    slug
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 
@@ -5124,8 +5144,11 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     courseIndexPage(variables: CourseIndexPageQueryVariables): Promise<CourseIndexPageQuery> {
       return withWrapper(() => client.request<CourseIndexPageQuery>(print(CourseIndexPageDocument), variables));
     },
-    defaultCourseRoundsPage(variables: DefaultCourseRoundsPageQueryVariables): Promise<DefaultCourseRoundsPageQuery> {
-      return withWrapper(() => client.request<DefaultCourseRoundsPageQuery>(print(DefaultCourseRoundsPageDocument), variables));
+    courseRoundsPage(variables: CourseRoundsPageQueryVariables): Promise<CourseRoundsPageQuery> {
+      return withWrapper(() => client.request<CourseRoundsPageQuery>(print(CourseRoundsPageDocument), variables));
+    },
+    courseRoundsPagePaths(variables?: CourseRoundsPagePathsQueryVariables): Promise<CourseRoundsPagePathsQuery> {
+      return withWrapper(() => client.request<CourseRoundsPagePathsQuery>(print(CourseRoundsPagePathsDocument), variables));
     }
   };
 }

@@ -20,7 +20,7 @@ import { CourseIndexPageQuery } from '../../types';
 import AverageScoreStatCard from '../../components/card/statCard/AverageScoreStatCard';
 
 type Props = {
-  course:CourseIndexPageQuery['courses'][0]
+  course: CourseIndexPageQuery['courses'][0]
 };
 
 const CourseIndexPage: NextPage<Props> = ({ course }) => (
@@ -33,8 +33,8 @@ const CourseIndexPage: NextPage<Props> = ({ course }) => (
           </Col>
         )}
         <Col>
-          <PageHeader.PreTitle>Courses</PageHeader.PreTitle>
-          <PageHeader.Title>{course.name}</PageHeader.Title>
+          <PageHeader.PreTitle>{course.name}</PageHeader.PreTitle>
+          <PageHeader.Title>Overview</PageHeader.Title>
         </Col>
         <Col xs="auto">
           <Button variant="primary" href="#">

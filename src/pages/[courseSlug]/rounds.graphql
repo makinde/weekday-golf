@@ -1,0 +1,22 @@
+# Use a fragment so the type is easy to access in TypeScript
+fragment courseForRoundsPage on course {
+  id
+  slug
+  name
+  img
+  playerRounds(where: { complete: { _eq: true } }) {
+    ...playerRoundForChart
+  }
+}
+
+query courseRoundsPage($slug: String!) {
+  courses(where: { slug: { _eq: $slug } }) {
+    ...courseForRoundsPage
+  }
+}
+
+query courseRoundsPagePaths {
+  courses {
+    slug
+  }
+}
