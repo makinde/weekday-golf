@@ -48,7 +48,7 @@ const ParticipationStatsCard = ({ courseId }: Props) => {
               <tr key={id}>
                 <td>
                   <Link href={`/${courseSlug}/${playerSlug}`}>
-                    <a>
+                    <a className="text-reset">
                       {nickname}
                     </a>
                   </Link>
