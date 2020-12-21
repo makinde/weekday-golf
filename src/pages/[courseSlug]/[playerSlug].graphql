@@ -1,0 +1,33 @@
+fragment coursePlayerForPlayerPage on course_player {
+  courseId
+  playerId
+  player {
+    fullName
+    img
+  }
+  course {
+    name
+  }
+}
+
+query coursePlayerPage($courseSlug: String!, $playerSlug: String!) {
+  coursePlayers(
+    where: {
+      course: { slug: { _eq: $courseSlug } },
+      player: { slug: { _eq: $playerSlug } },
+    }
+  ) {
+    ...coursePlayerForPlayerPage
+  }
+}
+
+query coursePlayerStaticListing {
+  coursePlayers {
+    course {
+      slug
+    }
+    player {
+      slug
+    }
+  }
+}

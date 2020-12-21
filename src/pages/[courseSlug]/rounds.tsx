@@ -58,12 +58,6 @@ const getStaticProps: StaticProps = async ({ params }) => {
   const { courseSlug: slug } = params;
   const { courses } = await sdk.courseRoundsPage({ slug });
 
-  if (courses.length === 0) {
-    return {
-      notFound: true,
-    };
-  }
-
   return {
     props: {
       course: courses[0],

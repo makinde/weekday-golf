@@ -4824,6 +4824,24 @@ export type ScoreCountStatCardQueryVariables = Exact<{
 
 export type ScoreCountStatCardQuery = { scoringStats: { aggregate?: Maybe<Pick<Scoring_Info_Aggregate_Fields, 'count'>> } };
 
+export type CoursePlayerForPlayerPageFragment = (
+  Pick<Course_Player, 'courseId' | 'playerId'>
+  & { player?: Maybe<Pick<Player, 'fullName' | 'img'>>, course?: Maybe<Pick<Course, 'name'>> }
+);
+
+export type CoursePlayerPageQueryVariables = Exact<{
+  courseSlug: Scalars['String'];
+  playerSlug: Scalars['String'];
+}>;
+
+
+export type CoursePlayerPageQuery = { coursePlayers: Array<CoursePlayerForPlayerPageFragment> };
+
+export type CoursePlayerStaticListingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CoursePlayerStaticListingQuery = { coursePlayers: Array<{ course?: Maybe<Pick<Course, 'slug'>>, player?: Maybe<Pick<Player, 'slug'>> }> };
+
 export type CourseForIndexPageFragment = Pick<Course, 'id' | 'name' | 'img'>;
 
 export type CourseIndexPageQueryVariables = Exact<{
@@ -4919,6 +4937,19 @@ export const RoundForRoundCardFragmentDoc = gql`
   roundBounty
 }
     ${RoundForTableFragmentDoc}`;
+export const CoursePlayerForPlayerPageFragmentDoc = gql`
+    fragment coursePlayerForPlayerPage on course_player {
+  courseId
+  playerId
+  player {
+    fullName
+    img
+  }
+  course {
+    name
+  }
+}
+    `;
 export const CourseForIndexPageFragmentDoc = gql`
     fragment courseForIndexPage on course {
   id
@@ -5092,6 +5123,27 @@ export const ScoreCountStatCardDocument = gql`
   }
 }
     `;
+export const CoursePlayerPageDocument = gql`
+    query coursePlayerPage($courseSlug: String!, $playerSlug: String!) {
+  coursePlayers(
+    where: {course: {slug: {_eq: $courseSlug}}, player: {slug: {_eq: $playerSlug}}}
+  ) {
+    ...coursePlayerForPlayerPage
+  }
+}
+    ${CoursePlayerForPlayerPageFragmentDoc}`;
+export const CoursePlayerStaticListingDocument = gql`
+    query coursePlayerStaticListing {
+  coursePlayers {
+    course {
+      slug
+    }
+    player {
+      slug
+    }
+  }
+}
+    `;
 export const CourseIndexPageDocument = gql`
     query courseIndexPage($slug: String!) {
   courses(where: {slug: {_eq: $slug}}) {
@@ -5153,6 +5205,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     scoreCountStatCard(variables?: ScoreCountStatCardQueryVariables): Promise<ScoreCountStatCardQuery> {
       return withWrapper(() => client.request<ScoreCountStatCardQuery>(print(ScoreCountStatCardDocument), variables));
+    },
+    coursePlayerPage(variables: CoursePlayerPageQueryVariables): Promise<CoursePlayerPageQuery> {
+      return withWrapper(() => client.request<CoursePlayerPageQuery>(print(CoursePlayerPageDocument), variables));
+    },
+    coursePlayerStaticListing(variables?: CoursePlayerStaticListingQueryVariables): Promise<CoursePlayerStaticListingQuery> {
+      return withWrapper(() => client.request<CoursePlayerStaticListingQuery>(print(CoursePlayerStaticListingDocument), variables));
     },
     courseIndexPage(variables: CourseIndexPageQueryVariables): Promise<CourseIndexPageQuery> {
       return withWrapper(() => client.request<CourseIndexPageQuery>(print(CourseIndexPageDocument), variables));

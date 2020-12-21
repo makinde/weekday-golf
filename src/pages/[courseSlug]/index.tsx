@@ -1,7 +1,6 @@
 import React from 'react';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { Row, Col, Button } from 'react-bootstrap';
-import isEmpty from 'lodash/isEmpty';
 
 import sdk from '../../sdk';
 import Layout from '../../components/utils/Layout';
@@ -17,9 +16,9 @@ import ScoreCountStatCard from '../../components/card/statCard/ScoreCountStatCar
 import { CourseForIndexPageFragment } from '../../types';
 import AverageScoreStatCard from '../../components/card/statCard/AverageScoreStatCard';
 
-type Props = {
-  course: CourseForIndexPageFragment,
-};
+type PageQuery = { courseSlug: string };
+type ServerSideProps = GetStaticProps<Props, PageQuery>;
+type Props = { course: CourseForIndexPageFragment };
 
 const CourseIndexPage = ({ course }: Props) => (
   <Layout title="Overview">
@@ -64,18 +63,9 @@ const CourseIndexPage = ({ course }: Props) => (
   </Layout>
 );
 
-type PageQuery = { courseSlug: string };
-type ServerSideProps = GetStaticProps<Props, PageQuery>;
-
 const getStaticProps: ServerSideProps = async ({ params }) => {
   const { courseSlug: slug } = params;
   const { courses } = await sdk.courseIndexPage({ slug });
-
-  if (isEmpty(courses)) {
-    return {
-      notFound: true,
-    };
-  }
 
   return {
     props: {
