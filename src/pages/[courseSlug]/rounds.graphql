@@ -4,9 +4,6 @@ fragment courseForRoundsPage on course {
   slug
   name
   img
-  playerRounds(where: { complete: { _eq: true } }) {
-    ...playerRoundForChart
-  }
 }
 
 query courseRoundsPage($slug: String!) {

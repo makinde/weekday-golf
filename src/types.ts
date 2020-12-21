@@ -4875,10 +4875,7 @@ export type CourseSlugStaticListingVariables = Exact<{ [key: string]: never; }>;
 
 export type CourseSlugStaticListing = { courses: Array<Pick<Course, 'slug'>> };
 
-export type CourseForRoundsPage = (
-  Pick<Course, 'id' | 'slug' | 'name' | 'img'>
-  & { playerRounds: Array<PlayerRoundForChart> }
-);
+export type CourseForRoundsPage = Pick<Course, 'id' | 'slug' | 'name' | 'img'>;
 
 export type CourseRoundsPageVariables = Exact<{
   slug: Scalars['String'];
@@ -4892,6 +4889,20 @@ export type CourseRoundsPagePathsVariables = Exact<{ [key: string]: never; }>;
 
 export type CourseRoundsPagePaths = { courses: Array<Pick<Course, 'slug'>> };
 
+export const PlayerRoundForChart = gql`
+    fragment playerRoundForChart on player_round {
+  relativeScore
+  player {
+    nickname
+    id
+    img
+  }
+  round {
+    date
+    id
+  }
+}
+    `;
 export const _LeaderboardCardCourse = gql`
     fragment _leaderboardCardCourse on course {
   slug
@@ -4978,31 +4989,14 @@ export const CourseForIndexPage = gql`
   img
 }
     `;
-export const PlayerRoundForChart = gql`
-    fragment playerRoundForChart on player_round {
-  relativeScore
-  player {
-    nickname
-    id
-    img
-  }
-  round {
-    date
-    id
-  }
-}
-    `;
 export const CourseForRoundsPage = gql`
     fragment courseForRoundsPage on course {
   id
   slug
   name
   img
-  playerRounds(where: {complete: {_eq: true}}) {
-    ...playerRoundForChart
-  }
 }
-    ${PlayerRoundForChart}`;
+    `;
 export const LeaderboardCardDocument = gql`
     query leaderboardCard($courseId: Int!, $rankLimit: bigint!) {
   course(id: $courseId) {
