@@ -13,12 +13,12 @@ import ScoringStatsCard from '../../components/card/ScoringStatsCard';
 import RoundsPlayedStatCard from '../../components/card/statCard/RoundsPlayedStatCard';
 import ScoreCountStatCard from '../../components/card/statCard/ScoreCountStatCard';
 
-import { CourseForIndexPageFragment } from '../../types';
+import { CourseForIndexPage } from '../../types';
 import AverageScoreStatCard from '../../components/card/statCard/AverageScoreStatCard';
 
 type PageQuery = { courseSlug: string };
 type ServerSideProps = GetStaticProps<Props, PageQuery>;
-type Props = { course: CourseForIndexPageFragment };
+type Props = { course: CourseForIndexPage };
 
 const CourseIndexPage = ({ course }: Props) => (
   <Layout title="Overview">

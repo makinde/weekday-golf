@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 import { Table } from 'react-bootstrap';
 
-import { RoundForTableFragment } from '../../types';
+import { RoundForTable } from '../../types';
 import RelativeScore from '../utils/RelativeScore';
 import WinningsPill from '../utils/WinningsPill';
 import styles from './RoundTable.module.scss';
@@ -13,7 +13,7 @@ import ScoresHeader from './ScoresHeader';
 const WINNING_CLASS = 'border-bottom border-bottom-4';
 
 type Props = React.HTMLAttributes<any> & {
-  round: RoundForTableFragment,
+  round: RoundForTable,
 };
 
 const RoundTable = ({
@@ -38,7 +38,7 @@ const RoundTable = ({
         return (
           <tr key={player.id}>
             <td className="text-left border-right">
-              <Link href={`/player/${player.id}`}>
+              <Link href={`/${course.slug}/${player.slug}`}>
                 <a className="text-reset">
                   {player.nickname}
                 </a>

@@ -2,10 +2,10 @@ import React from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import sumBy from 'lodash/sumBy';
 
-import { HoleForScoresHeaderFragment } from '../../types';
+import { HoleForScoresHeader } from '../../types';
 
 type Props = {
-  holes: HoleForScoresHeaderFragment[],
+  holes: HoleForScoresHeader[],
   id: string,
   showTotal?: boolean,
 };

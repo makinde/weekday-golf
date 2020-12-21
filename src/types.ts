@@ -4700,53 +4700,53 @@ export type Timestamp_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['timestamp']>>;
 };
 
-export type PlayerRoundForChartFragment = (
+export type PlayerRoundForChart = (
   Pick<Player_Round, 'relativeScore'>
   & { player?: Maybe<Pick<Player, 'nickname' | 'id' | 'img'>>, round?: Maybe<Pick<Round, 'date' | 'id'>> }
 );
 
-export type _LeaderboardCardCourseFragment = Pick<Course, 'slug'>;
+export type _LeaderboardCardCourse = Pick<Course, 'slug'>;
 
-export type _LeaderboardCardPlayerRoundFragment = (
+export type _LeaderboardCardPlayerRound = (
   Pick<Player_Round, 'playerId' | 'roundId' | 'relativeScore'>
   & { player?: Maybe<Pick<Player, 'nickname' | 'slug'>>, round?: Maybe<Pick<Round, 'date'>> }
 );
 
-export type LeaderboardCardQueryVariables = Exact<{
+export type LeaderboardCardVariables = Exact<{
   courseId: Scalars['Int'];
   rankLimit: Scalars['bigint'];
 }>;
 
 
-export type LeaderboardCardQuery = { course?: Maybe<(
+export type LeaderboardCard = { course?: Maybe<(
     { playerRounds: Array<(
       { rank: Player_Round['courseRank'] }
-      & _LeaderboardCardPlayerRoundFragment
+      & _LeaderboardCardPlayerRound
     )> }
-    & _LeaderboardCardCourseFragment
+    & _LeaderboardCardCourse
   )> };
 
-export type LeaderboardCardForPlayerQueryVariables = Exact<{
+export type LeaderboardCardForPlayerVariables = Exact<{
   courseId: Scalars['Int'];
   playerId?: Maybe<Scalars['Int']>;
   rankLimit: Scalars['bigint'];
 }>;
 
 
-export type LeaderboardCardForPlayerQuery = { course?: Maybe<(
+export type LeaderboardCardForPlayer = { course?: Maybe<(
     { playerRounds: Array<(
       { rank: Player_Round['playerCourseRank'] }
-      & _LeaderboardCardPlayerRoundFragment
+      & _LeaderboardCardPlayerRound
     )> }
-    & _LeaderboardCardCourseFragment
+    & _LeaderboardCardCourse
   )> };
 
-export type ParticipationStatsCardQueryVariables = Exact<{
+export type ParticipationStatsCardVariables = Exact<{
   courseId: Scalars['Int'];
 }>;
 
 
-export type ParticipationStatsCardQuery = { course?: Maybe<(
+export type ParticipationStatsCard = { course?: Maybe<(
     Pick<Course, 'slug'>
     & { coursePlayers: Array<{ player?: Maybe<Pick<Player, 'id' | 'slug' | 'nickname'>>, playerRoundsStats: { aggregate?: Maybe<(
           Pick<Player_Round_Aggregate_Fields, 'count'>
@@ -4754,131 +4754,134 @@ export type ParticipationStatsCardQuery = { course?: Maybe<(
         )> }, winningStats: { aggregate?: Maybe<Pick<Player_Round_Aggregate_Fields, 'count'>> } }> }
   )> };
 
-export type RoundForRoundCardFragment = (
+export type RoundForRoundCard = (
   Pick<Round, 'date' | 'name' | 'skinsHoleBounty' | 'roundBounty'>
-  & RoundForTableFragment
+  & RoundForTable
 );
 
-export type RoundCardListQueryVariables = Exact<{
+export type RoundCardListVariables = Exact<{
   courseId?: Maybe<Scalars['Int']>;
   playerId?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
 }>;
 
 
-export type RoundCardListQuery = { rounds: Array<(
+export type RoundCardList = { rounds: Array<(
     Pick<Round, 'id'>
     & { course: Pick<Course, 'slug'> }
-    & RoundForRoundCardFragment
+    & RoundForRoundCard
   )> };
 
-export type RoundForTableFragment = (
+export type RoundForTable = (
   Pick<Round, 'id' | 'date' | 'name'>
-  & { course: { holes: Array<HoleForScoresHeaderFragment> }, playerRounds: Array<(
+  & { course: (
+    Pick<Course, 'slug'>
+    & { holes: Array<HoleForScoresHeader> }
+  ), playerRounds: Array<(
     Pick<Player_Round, 'relativeScore' | 'roundBountyWinner' | 'totalWinnings'>
-    & { player?: Maybe<Pick<Player, 'nickname' | 'id'>>, skins: Array<Pick<Skins, 'holeNumber' | 'won'>>, scores: Array<Pick<Score, 'holeNumber' | 'score'>> }
+    & { player?: Maybe<Pick<Player, 'nickname' | 'id' | 'slug'>>, skins: Array<Pick<Skins, 'holeNumber' | 'won'>>, scores: Array<Pick<Score, 'holeNumber' | 'score'>> }
   )> }
 );
 
-export type HoleForScoresHeaderFragment = Pick<Hole, 'nickname' | 'number' | 'par'>;
+export type HoleForScoresHeader = Pick<Hole, 'nickname' | 'number' | 'par'>;
 
-export type ScoringStatsCardQueryVariables = Exact<{
+export type ScoringStatsCardVariables = Exact<{
   courseId: Scalars['Int'];
 }>;
 
 
-export type ScoringStatsCardQuery = { course?: Maybe<(
+export type ScoringStatsCard = { course?: Maybe<(
     Pick<Course, 'slug'>
-    & { holes: Array<HoleForScoresHeaderFragment>, coursePlayers: Array<{ player?: Maybe<Pick<Player, 'id' | 'slug' | 'nickname'>>, scoringInfo: Array<Pick<Scoring_Info, 'holeNumber' | 'trailingCount' | 'trailingAvgScore' | 'lifetimeAvgScore' | 'scoreTrend'>> }> }
+    & { holes: Array<HoleForScoresHeader>, coursePlayers: Array<{ player?: Maybe<Pick<Player, 'id' | 'slug' | 'nickname'>>, scoringInfo: Array<Pick<Scoring_Info, 'holeNumber' | 'trailingCount' | 'trailingAvgScore' | 'lifetimeAvgScore' | 'scoreTrend'>> }> }
   )> };
 
-export type AverageScoreStatCardQueryVariables = Exact<{
+export type AverageScoreStatCardVariables = Exact<{
   courseId?: Maybe<Scalars['Int']>;
   playerId?: Maybe<Scalars['Int']>;
 }>;
 
 
-export type AverageScoreStatCardQuery = { playerRoundStats: { aggregate?: Maybe<{ avg?: Maybe<Pick<Player_Round_Avg_Fields, 'relativeScore'>> }> } };
+export type AverageScoreStatCard = { playerRoundStats: { aggregate?: Maybe<{ avg?: Maybe<Pick<Player_Round_Avg_Fields, 'relativeScore'>> }> } };
 
-export type RoundsPlayedStatCardQueryVariables = Exact<{
+export type RoundsPlayedStatCardVariables = Exact<{
   courseId: Scalars['Int'];
 }>;
 
 
-export type RoundsPlayedStatCardQuery = { scope?: Maybe<{ roundStats: { aggregate?: Maybe<Pick<Round_Aggregate_Fields, 'count'>> } }> };
+export type RoundsPlayedStatCard = { scope?: Maybe<{ roundStats: { aggregate?: Maybe<Pick<Round_Aggregate_Fields, 'count'>> } }> };
 
-export type RoundsPlayedStatCardForPlayerQueryVariables = Exact<{
+export type RoundsPlayedStatCardForPlayerVariables = Exact<{
   courseId: Scalars['Int'];
   playerId: Scalars['Int'];
 }>;
 
 
-export type RoundsPlayedStatCardForPlayerQuery = { scope?: Maybe<{ roundStats: { aggregate?: Maybe<Pick<Player_Round_Aggregate_Fields, 'count'>> } }> };
+export type RoundsPlayedStatCardForPlayer = { scope?: Maybe<{ roundStats: { aggregate?: Maybe<Pick<Player_Round_Aggregate_Fields, 'count'>> } }> };
 
-export type ScoreCountStatCardQueryVariables = Exact<{
+export type ScoreCountStatCardVariables = Exact<{
   courseId?: Maybe<Scalars['Int']>;
   playerId?: Maybe<Scalars['Int']>;
   relativeScoreCutoff?: Maybe<Scalars['Int']>;
 }>;
 
 
-export type ScoreCountStatCardQuery = { scoringStats: { aggregate?: Maybe<Pick<Scoring_Info_Aggregate_Fields, 'count'>> } };
+export type ScoreCountStatCard = { scoringStats: { aggregate?: Maybe<Pick<Scoring_Info_Aggregate_Fields, 'count'>> } };
 
-export type CoursePlayerForPlayerPageFragment = (
+export type CoursePlayerForPlayerPage = (
   Pick<Course_Player, 'courseId' | 'playerId'>
   & { player?: Maybe<Pick<Player, 'fullName' | 'img'>>, course?: Maybe<Pick<Course, 'name'>> }
 );
 
-export type CoursePlayerPageQueryVariables = Exact<{
+export type CoursePlayerPageVariables = Exact<{
   courseSlug: Scalars['String'];
   playerSlug: Scalars['String'];
 }>;
 
 
-export type CoursePlayerPageQuery = { coursePlayers: Array<CoursePlayerForPlayerPageFragment> };
+export type CoursePlayerPage = { coursePlayers: Array<CoursePlayerForPlayerPage> };
 
-export type CoursePlayerStaticListingQueryVariables = Exact<{ [key: string]: never; }>;
+export type CoursePlayerStaticListingVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CoursePlayerStaticListingQuery = { coursePlayers: Array<{ course?: Maybe<Pick<Course, 'slug'>>, player?: Maybe<Pick<Player, 'slug'>> }> };
+export type CoursePlayerStaticListing = { coursePlayers: Array<{ course?: Maybe<Pick<Course, 'slug'>>, player?: Maybe<Pick<Player, 'slug'>> }> };
 
-export type CourseForIndexPageFragment = Pick<Course, 'id' | 'name' | 'img'>;
+export type CourseForIndexPage = Pick<Course, 'id' | 'name' | 'img'>;
 
-export type CourseIndexPageQueryVariables = Exact<{
+export type CourseIndexPageVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type CourseIndexPageQuery = { courses: Array<CourseForIndexPageFragment> };
+export type CourseIndexPage = { courses: Array<CourseForIndexPage> };
 
-export type CourseSlugStaticListingQueryVariables = Exact<{ [key: string]: never; }>;
+export type CourseSlugStaticListingVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CourseSlugStaticListingQuery = { courses: Array<Pick<Course, 'slug'>> };
+export type CourseSlugStaticListing = { courses: Array<Pick<Course, 'slug'>> };
 
-export type CourseForRoundsPageFragment = (
+export type CourseForRoundsPage = (
   Pick<Course, 'id' | 'slug' | 'name' | 'img'>
-  & { playerRounds: Array<PlayerRoundForChartFragment> }
+  & { playerRounds: Array<PlayerRoundForChart> }
 );
 
-export type CourseRoundsPageQueryVariables = Exact<{
+export type CourseRoundsPageVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type CourseRoundsPageQuery = { courses: Array<CourseForRoundsPageFragment> };
+export type CourseRoundsPage = { courses: Array<CourseForRoundsPage> };
 
-export type CourseRoundsPagePathsQueryVariables = Exact<{ [key: string]: never; }>;
+export type CourseRoundsPagePathsVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CourseRoundsPagePathsQuery = { courses: Array<Pick<Course, 'slug'>> };
+export type CourseRoundsPagePaths = { courses: Array<Pick<Course, 'slug'>> };
 
-export const _LeaderboardCardCourseFragmentDoc = gql`
+export const _LeaderboardCardCourse = gql`
     fragment _leaderboardCardCourse on course {
   slug
 }
     `;
-export const _LeaderboardCardPlayerRoundFragmentDoc = gql`
+export const _LeaderboardCardPlayerRound = gql`
     fragment _leaderboardCardPlayerRound on player_round {
   playerId
   roundId
@@ -4892,19 +4895,20 @@ export const _LeaderboardCardPlayerRoundFragmentDoc = gql`
   }
 }
     `;
-export const HoleForScoresHeaderFragmentDoc = gql`
+export const HoleForScoresHeader = gql`
     fragment holeForScoresHeader on hole {
   nickname
   number
   par
 }
     `;
-export const RoundForTableFragmentDoc = gql`
+export const RoundForTable = gql`
     fragment roundForTable on round {
   id
   date
   name
   course {
+    slug
     holes(order_by: {number: asc}) {
       ...holeForScoresHeader
     }
@@ -4916,6 +4920,7 @@ export const RoundForTableFragmentDoc = gql`
     player {
       nickname
       id
+      slug
     }
     skins {
       holeNumber
@@ -4927,8 +4932,8 @@ export const RoundForTableFragmentDoc = gql`
     }
   }
 }
-    ${HoleForScoresHeaderFragmentDoc}`;
-export const RoundForRoundCardFragmentDoc = gql`
+    ${HoleForScoresHeader}`;
+export const RoundForRoundCard = gql`
     fragment roundForRoundCard on round {
   ...roundForTable
   date
@@ -4936,8 +4941,8 @@ export const RoundForRoundCardFragmentDoc = gql`
   skinsHoleBounty
   roundBounty
 }
-    ${RoundForTableFragmentDoc}`;
-export const CoursePlayerForPlayerPageFragmentDoc = gql`
+    ${RoundForTable}`;
+export const CoursePlayerForPlayerPage = gql`
     fragment coursePlayerForPlayerPage on course_player {
   courseId
   playerId
@@ -4950,14 +4955,14 @@ export const CoursePlayerForPlayerPageFragmentDoc = gql`
   }
 }
     `;
-export const CourseForIndexPageFragmentDoc = gql`
+export const CourseForIndexPage = gql`
     fragment courseForIndexPage on course {
   id
   name
   img
 }
     `;
-export const PlayerRoundForChartFragmentDoc = gql`
+export const PlayerRoundForChart = gql`
     fragment playerRoundForChart on player_round {
   relativeScore
   player {
@@ -4971,7 +4976,7 @@ export const PlayerRoundForChartFragmentDoc = gql`
   }
 }
     `;
-export const CourseForRoundsPageFragmentDoc = gql`
+export const CourseForRoundsPage = gql`
     fragment courseForRoundsPage on course {
   id
   slug
@@ -4981,7 +4986,7 @@ export const CourseForRoundsPageFragmentDoc = gql`
     ...playerRoundForChart
   }
 }
-    ${PlayerRoundForChartFragmentDoc}`;
+    ${PlayerRoundForChart}`;
 export const LeaderboardCardDocument = gql`
     query leaderboardCard($courseId: Int!, $rankLimit: bigint!) {
   course(id: $courseId) {
@@ -4992,8 +4997,8 @@ export const LeaderboardCardDocument = gql`
     }
   }
 }
-    ${_LeaderboardCardCourseFragmentDoc}
-${_LeaderboardCardPlayerRoundFragmentDoc}`;
+    ${_LeaderboardCardCourse}
+${_LeaderboardCardPlayerRound}`;
 export const LeaderboardCardForPlayerDocument = gql`
     query leaderboardCardForPlayer($courseId: Int!, $playerId: Int, $rankLimit: bigint!) {
   course(id: $courseId) {
@@ -5006,8 +5011,8 @@ export const LeaderboardCardForPlayerDocument = gql`
     }
   }
 }
-    ${_LeaderboardCardCourseFragmentDoc}
-${_LeaderboardCardPlayerRoundFragmentDoc}`;
+    ${_LeaderboardCardCourse}
+${_LeaderboardCardPlayerRound}`;
 export const ParticipationStatsCardDocument = gql`
     query participationStatsCard($courseId: Int!) {
   course(id: $courseId) {
@@ -5052,7 +5057,7 @@ export const RoundCardListDocument = gql`
     ...roundForRoundCard
   }
 }
-    ${RoundForRoundCardFragmentDoc}`;
+    ${RoundForRoundCard}`;
 export const ScoringStatsCardDocument = gql`
     query scoringStatsCard($courseId: Int!) {
   course(id: $courseId) {
@@ -5076,7 +5081,7 @@ export const ScoringStatsCardDocument = gql`
     }
   }
 }
-    ${HoleForScoresHeaderFragmentDoc}`;
+    ${HoleForScoresHeader}`;
 export const AverageScoreStatCardDocument = gql`
     query averageScoreStatCard($courseId: Int, $playerId: Int) {
   playerRoundStats(
@@ -5103,7 +5108,7 @@ export const RoundsPlayedStatCardDocument = gql`
     `;
 export const RoundsPlayedStatCardForPlayerDocument = gql`
     query roundsPlayedStatCardForPlayer($courseId: Int!, $playerId: Int!) {
-  scope: player(id: $courseId) {
+  scope: player(id: $playerId) {
     roundStats: playerRounds_aggregate(where: {courseId: {_eq: $courseId}}) {
       aggregate {
         count
@@ -5131,7 +5136,7 @@ export const CoursePlayerPageDocument = gql`
     ...coursePlayerForPlayerPage
   }
 }
-    ${CoursePlayerForPlayerPageFragmentDoc}`;
+    ${CoursePlayerForPlayerPage}`;
 export const CoursePlayerStaticListingDocument = gql`
     query coursePlayerStaticListing {
   coursePlayers {
@@ -5150,7 +5155,7 @@ export const CourseIndexPageDocument = gql`
     ...courseForIndexPage
   }
 }
-    ${CourseForIndexPageFragmentDoc}`;
+    ${CourseForIndexPage}`;
 export const CourseSlugStaticListingDocument = gql`
     query courseSlugStaticListing {
   courses {
@@ -5164,7 +5169,7 @@ export const CourseRoundsPageDocument = gql`
     ...courseForRoundsPage
   }
 }
-    ${CourseForRoundsPageFragmentDoc}`;
+    ${CourseForRoundsPage}`;
 export const CourseRoundsPagePathsDocument = gql`
     query courseRoundsPagePaths {
   courses {
@@ -5179,50 +5184,50 @@ export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    leaderboardCard(variables: LeaderboardCardQueryVariables): Promise<LeaderboardCardQuery> {
-      return withWrapper(() => client.request<LeaderboardCardQuery>(print(LeaderboardCardDocument), variables));
+    leaderboardCard(variables: LeaderboardCardVariables): Promise<LeaderboardCard> {
+      return withWrapper(() => client.request<LeaderboardCard>(print(LeaderboardCardDocument), variables));
     },
-    leaderboardCardForPlayer(variables: LeaderboardCardForPlayerQueryVariables): Promise<LeaderboardCardForPlayerQuery> {
-      return withWrapper(() => client.request<LeaderboardCardForPlayerQuery>(print(LeaderboardCardForPlayerDocument), variables));
+    leaderboardCardForPlayer(variables: LeaderboardCardForPlayerVariables): Promise<LeaderboardCardForPlayer> {
+      return withWrapper(() => client.request<LeaderboardCardForPlayer>(print(LeaderboardCardForPlayerDocument), variables));
     },
-    participationStatsCard(variables: ParticipationStatsCardQueryVariables): Promise<ParticipationStatsCardQuery> {
-      return withWrapper(() => client.request<ParticipationStatsCardQuery>(print(ParticipationStatsCardDocument), variables));
+    participationStatsCard(variables: ParticipationStatsCardVariables): Promise<ParticipationStatsCard> {
+      return withWrapper(() => client.request<ParticipationStatsCard>(print(ParticipationStatsCardDocument), variables));
     },
-    roundCardList(variables?: RoundCardListQueryVariables): Promise<RoundCardListQuery> {
-      return withWrapper(() => client.request<RoundCardListQuery>(print(RoundCardListDocument), variables));
+    roundCardList(variables?: RoundCardListVariables): Promise<RoundCardList> {
+      return withWrapper(() => client.request<RoundCardList>(print(RoundCardListDocument), variables));
     },
-    scoringStatsCard(variables: ScoringStatsCardQueryVariables): Promise<ScoringStatsCardQuery> {
-      return withWrapper(() => client.request<ScoringStatsCardQuery>(print(ScoringStatsCardDocument), variables));
+    scoringStatsCard(variables: ScoringStatsCardVariables): Promise<ScoringStatsCard> {
+      return withWrapper(() => client.request<ScoringStatsCard>(print(ScoringStatsCardDocument), variables));
     },
-    averageScoreStatCard(variables?: AverageScoreStatCardQueryVariables): Promise<AverageScoreStatCardQuery> {
-      return withWrapper(() => client.request<AverageScoreStatCardQuery>(print(AverageScoreStatCardDocument), variables));
+    averageScoreStatCard(variables?: AverageScoreStatCardVariables): Promise<AverageScoreStatCard> {
+      return withWrapper(() => client.request<AverageScoreStatCard>(print(AverageScoreStatCardDocument), variables));
     },
-    roundsPlayedStatCard(variables: RoundsPlayedStatCardQueryVariables): Promise<RoundsPlayedStatCardQuery> {
-      return withWrapper(() => client.request<RoundsPlayedStatCardQuery>(print(RoundsPlayedStatCardDocument), variables));
+    roundsPlayedStatCard(variables: RoundsPlayedStatCardVariables): Promise<RoundsPlayedStatCard> {
+      return withWrapper(() => client.request<RoundsPlayedStatCard>(print(RoundsPlayedStatCardDocument), variables));
     },
-    roundsPlayedStatCardForPlayer(variables: RoundsPlayedStatCardForPlayerQueryVariables): Promise<RoundsPlayedStatCardForPlayerQuery> {
-      return withWrapper(() => client.request<RoundsPlayedStatCardForPlayerQuery>(print(RoundsPlayedStatCardForPlayerDocument), variables));
+    roundsPlayedStatCardForPlayer(variables: RoundsPlayedStatCardForPlayerVariables): Promise<RoundsPlayedStatCardForPlayer> {
+      return withWrapper(() => client.request<RoundsPlayedStatCardForPlayer>(print(RoundsPlayedStatCardForPlayerDocument), variables));
     },
-    scoreCountStatCard(variables?: ScoreCountStatCardQueryVariables): Promise<ScoreCountStatCardQuery> {
-      return withWrapper(() => client.request<ScoreCountStatCardQuery>(print(ScoreCountStatCardDocument), variables));
+    scoreCountStatCard(variables?: ScoreCountStatCardVariables): Promise<ScoreCountStatCard> {
+      return withWrapper(() => client.request<ScoreCountStatCard>(print(ScoreCountStatCardDocument), variables));
     },
-    coursePlayerPage(variables: CoursePlayerPageQueryVariables): Promise<CoursePlayerPageQuery> {
-      return withWrapper(() => client.request<CoursePlayerPageQuery>(print(CoursePlayerPageDocument), variables));
+    coursePlayerPage(variables: CoursePlayerPageVariables): Promise<CoursePlayerPage> {
+      return withWrapper(() => client.request<CoursePlayerPage>(print(CoursePlayerPageDocument), variables));
     },
-    coursePlayerStaticListing(variables?: CoursePlayerStaticListingQueryVariables): Promise<CoursePlayerStaticListingQuery> {
-      return withWrapper(() => client.request<CoursePlayerStaticListingQuery>(print(CoursePlayerStaticListingDocument), variables));
+    coursePlayerStaticListing(variables?: CoursePlayerStaticListingVariables): Promise<CoursePlayerStaticListing> {
+      return withWrapper(() => client.request<CoursePlayerStaticListing>(print(CoursePlayerStaticListingDocument), variables));
     },
-    courseIndexPage(variables: CourseIndexPageQueryVariables): Promise<CourseIndexPageQuery> {
-      return withWrapper(() => client.request<CourseIndexPageQuery>(print(CourseIndexPageDocument), variables));
+    courseIndexPage(variables: CourseIndexPageVariables): Promise<CourseIndexPage> {
+      return withWrapper(() => client.request<CourseIndexPage>(print(CourseIndexPageDocument), variables));
     },
-    courseSlugStaticListing(variables?: CourseSlugStaticListingQueryVariables): Promise<CourseSlugStaticListingQuery> {
-      return withWrapper(() => client.request<CourseSlugStaticListingQuery>(print(CourseSlugStaticListingDocument), variables));
+    courseSlugStaticListing(variables?: CourseSlugStaticListingVariables): Promise<CourseSlugStaticListing> {
+      return withWrapper(() => client.request<CourseSlugStaticListing>(print(CourseSlugStaticListingDocument), variables));
     },
-    courseRoundsPage(variables: CourseRoundsPageQueryVariables): Promise<CourseRoundsPageQuery> {
-      return withWrapper(() => client.request<CourseRoundsPageQuery>(print(CourseRoundsPageDocument), variables));
+    courseRoundsPage(variables: CourseRoundsPageVariables): Promise<CourseRoundsPage> {
+      return withWrapper(() => client.request<CourseRoundsPage>(print(CourseRoundsPageDocument), variables));
     },
-    courseRoundsPagePaths(variables?: CourseRoundsPagePathsQueryVariables): Promise<CourseRoundsPagePathsQuery> {
-      return withWrapper(() => client.request<CourseRoundsPagePathsQuery>(print(CourseRoundsPagePathsDocument), variables));
+    courseRoundsPagePaths(variables?: CourseRoundsPagePathsVariables): Promise<CourseRoundsPagePaths> {
+      return withWrapper(() => client.request<CourseRoundsPagePaths>(print(CourseRoundsPagePathsDocument), variables));
     }
   };
 }

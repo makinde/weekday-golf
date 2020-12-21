@@ -7,13 +7,13 @@ import sdk from '../../sdk';
 import Layout from '../../components/utils/Layout';
 import PlayerRoundsChart from '../../components/Chart/PlayerRoundsChart';
 import LeaderboardCard from '../../components/card/LeaderboardCard';
-import { CourseForRoundsPageFragment } from '../../types';
+import { CourseForRoundsPage } from '../../types';
 import RoundCardList from '../../components/card/RoundCardList';
 import PageHeader from '../../components/utils/PageHeader';
 
-type Props = {
-  course: CourseForRoundsPageFragment,
-};
+type PageQuery = { courseSlug: string };
+type StaticProps = GetStaticProps<Props, PageQuery>;
+type Props = { course: CourseForRoundsPage };
 
 const CourseRoundsPage = ({ course }: Props) => {
   const [focusedPlayerId, setFocusedPlayerId] = useState<number | null>(null);
@@ -50,9 +50,6 @@ const CourseRoundsPage = ({ course }: Props) => {
     </Layout>
   );
 };
-
-type PageQuery = { courseSlug: string };
-type StaticProps = GetStaticProps<Props, PageQuery>;
 
 const getStaticProps: StaticProps = async ({ params }) => {
   const { courseSlug: slug } = params;

@@ -14,7 +14,7 @@ import Line from './Line';
 import useResizeObserver from './useResizeObserver';
 import CompactDate from '../utils/CompactDate';
 
-import { PlayerRoundForChartFragment } from '../../types';
+import { PlayerRoundForChart } from '../../types';
 
 import styles from './styles/PlayerRoundsChart.module.scss';
 
@@ -30,7 +30,7 @@ const MARGIN = {
 const PADDING = 1;
 
 type Props = {
-  playerRounds: PlayerRoundForChartFragment[],
+  playerRounds: PlayerRoundForChart[],
   focusedPlayerId?: number,
   focusedRoundId?: number,
   onPlayerFocus?: (playerId: number | null) => void,
@@ -77,14 +77,14 @@ const RoundsChart = ({
           />
           <Axis
             axis={yAxis}
-            className={cx(styles.axis, styles.yAxis)}
+            className={styles.yAxis}
           />
           {!!focusedPlayerId && (
             <Line
               className="focusedPlayer"
               data={filter(playerRounds, ['player.id', focusedPlayerId])}
-              x={(d: PlayerRoundForChartFragment) => xScale(d.round.id)}
-              y={(d: PlayerRoundForChartFragment) => yScale(d.relativeScore)}
+              x={(d: PlayerRoundForChart) => xScale(d.round.id)}
+              y={(d: PlayerRoundForChart) => yScale(d.relativeScore)}
             />
           )}
           {playerRounds.map(({ round, player, relativeScore }) => {

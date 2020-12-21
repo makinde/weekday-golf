@@ -11,12 +11,12 @@ import LeaderboardCard from '../../components/card/LeaderboardCard';
 import RoundsPlayedStatCard from '../../components/card/statCard/RoundsPlayedStatCard';
 import ScoreCountStatCard from '../../components/card/statCard/ScoreCountStatCard';
 
-import { CoursePlayerForPlayerPageFragment } from '../../types';
+import { CoursePlayerForPlayerPage } from '../../types';
 import AverageScoreStatCard from '../../components/card/statCard/AverageScoreStatCard';
 
 type PageQuery = { courseSlug: string, playerSlug: string };
 type ServerSideProps = GetStaticProps<Props, PageQuery>;
-type Props = { coursePlayer: CoursePlayerForPlayerPageFragment };
+type Props = { coursePlayer: CoursePlayerForPlayerPage };
 
 const CoursePlayerPage = ({
   coursePlayer: {

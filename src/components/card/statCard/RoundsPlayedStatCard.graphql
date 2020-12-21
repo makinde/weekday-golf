@@ -9,7 +9,7 @@ query roundsPlayedStatCard($courseId: Int!) {
 }
 
 query roundsPlayedStatCardForPlayer($courseId: Int!, $playerId: Int!) {
-  scope: player(id: $courseId) {
+  scope: player(id: $playerId) {
     roundStats: playerRounds_aggregate(
       where: { courseId: { _eq: $courseId } }
     ) {

@@ -1,14 +1,14 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 
-import { RoundForRoundCardFragment } from '../../types';
+import { RoundForRoundCard } from '../../types';
 import RoundTable from './RoundTable';
 import RoundTitle from '../utils/RoundTitle';
 import CardHeaderTitle from '../utils/CardHeaderTitle';
 import CompactDate from '../utils/CompactDate';
 
 type Props = {
-  round: RoundForRoundCardFragment,
+  round: RoundForRoundCard,
   title?: React.ReactNode,
 };
 
