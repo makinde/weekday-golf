@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  NextPage, GetServerSideProps,
-} from 'next';
+import { GetStaticProps, GetStaticPaths } from 'next';
 import { Row, Col, Button } from 'react-bootstrap';
 import isEmpty from 'lodash/isEmpty';
 
@@ -16,14 +14,14 @@ import ScoringStatsCard from '../../components/card/ScoringStatsCard';
 import RoundsPlayedStatCard from '../../components/card/statCard/RoundsPlayedStatCard';
 import ScoreCountStatCard from '../../components/card/statCard/ScoreCountStatCard';
 
-import { CourseIndexPageQuery } from '../../types';
+import { CourseForIndexPageFragment } from '../../types';
 import AverageScoreStatCard from '../../components/card/statCard/AverageScoreStatCard';
 
 type Props = {
-  course: CourseIndexPageQuery['courses'][0]
+  course: CourseForIndexPageFragment,
 };
 
-const CourseIndexPage: NextPage<Props> = ({ course }) => (
+const CourseIndexPage = ({ course }: Props) => (
   <Layout title="Overview">
     <PageHeader>
       <Row className="align-items-center">
@@ -67,9 +65,9 @@ const CourseIndexPage: NextPage<Props> = ({ course }) => (
 );
 
 type PageQuery = { courseSlug: string };
-type ServerSideProps = GetServerSideProps<Props, PageQuery>;
+type ServerSideProps = GetStaticProps<Props, PageQuery>;
 
-const getServerSideProps: ServerSideProps = async ({ params }) => {
+const getStaticProps: ServerSideProps = async ({ params }) => {
   const { courseSlug: slug } = params;
   const { courses } = await sdk.courseIndexPage({ slug });
 
@@ -86,7 +84,17 @@ const getServerSideProps: ServerSideProps = async ({ params }) => {
   };
 };
 
+const getStaticPaths: GetStaticPaths<PageQuery> = async () => {
+  const { courses } = await sdk.courseSlugStaticListing();
+
+  return {
+    paths: courses.map(({ slug }) => ({ params: { courseSlug: slug } })),
+    fallback: false,
+  };
+};
+
 export {
-  getServerSideProps,
+  getStaticProps,
+  getStaticPaths,
   CourseIndexPage as default,
 };

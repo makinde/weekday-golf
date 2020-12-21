@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import { GetStaticProps } from 'next';
 import { Row, Col } from 'react-bootstrap';
 
+import { getStaticPaths } from './index';
 import sdk from '../../sdk';
 import Layout from '../../components/utils/Layout';
 import PlayerRoundsChart from '../../components/Chart/PlayerRoundsChart';
@@ -14,7 +15,7 @@ type Props = {
   course: CourseForRoundsPageFragment,
 };
 
-const CourseRoundsPage: NextPage<Props> = ({ course }) => {
+const CourseRoundsPage = ({ course }: Props) => {
   const [focusedPlayerId, setFocusedPlayerId] = useState<number | null>(null);
   const [focusedRoundId, setFocusedRoundId] = useState<number | null>(null);
 
@@ -68,15 +69,6 @@ const getStaticProps: StaticProps = async ({ params }) => {
       course: courses[0],
     },
     revalidate: 60,
-  };
-};
-
-const getStaticPaths: GetStaticPaths<PageQuery> = async () => {
-  const { courses } = await sdk.courseRoundsPagePaths();
-
-  return {
-    paths: courses.map(({ slug }) => ({ params: { courseSlug: slug } })),
-    fallback: false,
   };
 };
 

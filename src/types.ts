@@ -4824,15 +4824,19 @@ export type ScoreCountStatCardQueryVariables = Exact<{
 
 export type ScoreCountStatCardQuery = { scoringStats: { aggregate?: Maybe<Pick<Scoring_Info_Aggregate_Fields, 'count'>> } };
 
+export type CourseForIndexPageFragment = Pick<Course, 'id' | 'name' | 'img'>;
+
 export type CourseIndexPageQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type CourseIndexPageQuery = { courses: Array<(
-    Pick<Course, 'id' | 'name' | 'img'>
-    & { latestRounds: Array<RoundForRoundCardFragment> }
-  )> };
+export type CourseIndexPageQuery = { courses: Array<CourseForIndexPageFragment> };
+
+export type CourseSlugStaticListingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CourseSlugStaticListingQuery = { courses: Array<Pick<Course, 'slug'>> };
 
 export type CourseForRoundsPageFragment = (
   Pick<Course, 'id' | 'slug' | 'name' | 'img'>
@@ -4915,6 +4919,13 @@ export const RoundForRoundCardFragmentDoc = gql`
   roundBounty
 }
     ${RoundForTableFragmentDoc}`;
+export const CourseForIndexPageFragmentDoc = gql`
+    fragment courseForIndexPage on course {
+  id
+  name
+  img
+}
+    `;
 export const PlayerRoundForChartFragmentDoc = gql`
     fragment playerRoundForChart on player_round {
   relativeScore
@@ -5084,15 +5095,17 @@ export const ScoreCountStatCardDocument = gql`
 export const CourseIndexPageDocument = gql`
     query courseIndexPage($slug: String!) {
   courses(where: {slug: {_eq: $slug}}) {
-    id
-    name
-    img
-    latestRounds: rounds(order_by: {date: desc}, limit: 1) {
-      ...roundForRoundCard
-    }
+    ...courseForIndexPage
   }
 }
-    ${RoundForRoundCardFragmentDoc}`;
+    ${CourseForIndexPageFragmentDoc}`;
+export const CourseSlugStaticListingDocument = gql`
+    query courseSlugStaticListing {
+  courses {
+    slug
+  }
+}
+    `;
 export const CourseRoundsPageDocument = gql`
     query courseRoundsPage($slug: String!) {
   courses(where: {slug: {_eq: $slug}}) {
@@ -5143,6 +5156,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     courseIndexPage(variables: CourseIndexPageQueryVariables): Promise<CourseIndexPageQuery> {
       return withWrapper(() => client.request<CourseIndexPageQuery>(print(CourseIndexPageDocument), variables));
+    },
+    courseSlugStaticListing(variables?: CourseSlugStaticListingQueryVariables): Promise<CourseSlugStaticListingQuery> {
+      return withWrapper(() => client.request<CourseSlugStaticListingQuery>(print(CourseSlugStaticListingDocument), variables));
     },
     courseRoundsPage(variables: CourseRoundsPageQueryVariables): Promise<CourseRoundsPageQuery> {
       return withWrapper(() => client.request<CourseRoundsPageQuery>(print(CourseRoundsPageDocument), variables));

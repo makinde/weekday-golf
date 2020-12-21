@@ -1,11 +1,17 @@
+fragment courseForIndexPage on course {
+  id
+  name
+  img
+}
+
 query courseIndexPage($slug: String!) {
   courses(where: { slug: { _eq: $slug} }) {
-    id
-    name
-    img
+    ...courseForIndexPage
+  }
+}
 
-    latestRounds: rounds(order_by: { date: desc }, limit: 1) {
-      ...roundForRoundCard
-    }
+query courseSlugStaticListing {
+  courses {
+    slug
   }
 }
