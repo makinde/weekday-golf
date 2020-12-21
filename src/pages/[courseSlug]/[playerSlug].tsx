@@ -10,9 +10,11 @@ import RoundCardList from '../../components/card/RoundCardList';
 import LeaderboardCard from '../../components/card/LeaderboardCard';
 import RoundsPlayedStatCard from '../../components/card/statCard/RoundsPlayedStatCard';
 import ScoreCountStatCard from '../../components/card/statCard/ScoreCountStatCard';
+import AverageScoreStatCard from '../../components/card/statCard/AverageScoreStatCard';
+import WinningsStatCard from '../../components/card/statCard/WinningsStatCard';
+import RoundsWonStatCard from '../../components/card/statCard/RoundsWonStatCard';
 
 import { CoursePlayerForPlayerPage } from '../../types';
-import AverageScoreStatCard from '../../components/card/statCard/AverageScoreStatCard';
 
 type PageQuery = { courseSlug: string, playerSlug: string };
 type ServerSideProps = GetStaticProps<Props, PageQuery>;
@@ -42,6 +44,8 @@ const CoursePlayerPage = ({
         <RoundsPlayedStatCard courseId={courseId} playerId={playerId} />
         <AverageScoreStatCard courseId={courseId} playerId={playerId} />
         <ScoreCountStatCard courseId={courseId} playerId={playerId} />
+        <WinningsStatCard courseId={courseId} playerId={playerId} />
+        <RoundsWonStatCard courseId={courseId} playerId={playerId} />
         <LeaderboardCard courseId={courseId} playerId={playerId} />
       </Col>
       <Col>

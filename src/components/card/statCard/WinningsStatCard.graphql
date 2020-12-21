@@ -1,0 +1,12 @@
+query winningsStatCard($courseId: Int!, $playerId: Int!) {
+  playerRoundStats(where: {
+    courseId: { _eq: $courseId },
+    playerId: { _eq: $playerId },
+  }) {
+    aggregate {
+      sum {
+        totalWinnings
+      }
+    }
+  }
+}

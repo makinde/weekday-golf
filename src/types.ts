@@ -4818,6 +4818,14 @@ export type RoundsPlayedStatCardForPlayerVariables = Exact<{
 
 export type RoundsPlayedStatCardForPlayer = { scope?: Maybe<{ roundStats: { aggregate?: Maybe<Pick<Player_Round_Aggregate_Fields, 'count'>> } }> };
 
+export type RoundsWonStatCardVariables = Exact<{
+  courseId: Scalars['Int'];
+  playerId: Scalars['Int'];
+}>;
+
+
+export type RoundsWonStatCard = { playerRoundStats: { aggregate?: Maybe<Pick<Player_Round_Aggregate_Fields, 'count'>> } };
+
 export type ScoreCountStatCardVariables = Exact<{
   courseId?: Maybe<Scalars['Int']>;
   playerId?: Maybe<Scalars['Int']>;
@@ -4826,6 +4834,14 @@ export type ScoreCountStatCardVariables = Exact<{
 
 
 export type ScoreCountStatCard = { scoringStats: { aggregate?: Maybe<Pick<Scoring_Info_Aggregate_Fields, 'count'>> } };
+
+export type WinningsStatCardVariables = Exact<{
+  courseId: Scalars['Int'];
+  playerId: Scalars['Int'];
+}>;
+
+
+export type WinningsStatCard = { playerRoundStats: { aggregate?: Maybe<{ sum?: Maybe<Pick<Player_Round_Sum_Fields, 'totalWinnings'>> }> } };
 
 export type CoursePlayerForPlayerPage = (
   Pick<Course_Player, 'courseId' | 'playerId'>
@@ -5117,6 +5133,17 @@ export const RoundsPlayedStatCardForPlayerDocument = gql`
   }
 }
     `;
+export const RoundsWonStatCardDocument = gql`
+    query roundsWonStatCard($courseId: Int!, $playerId: Int!) {
+  playerRoundStats(
+    where: {courseId: {_eq: $courseId}, playerId: {_eq: $playerId}, winner: {_eq: true}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
 export const ScoreCountStatCardDocument = gql`
     query scoreCountStatCard($courseId: Int, $playerId: Int, $relativeScoreCutoff: Int) {
   scoringStats(
@@ -5124,6 +5151,19 @@ export const ScoreCountStatCardDocument = gql`
   ) {
     aggregate {
       count
+    }
+  }
+}
+    `;
+export const WinningsStatCardDocument = gql`
+    query winningsStatCard($courseId: Int!, $playerId: Int!) {
+  playerRoundStats(
+    where: {courseId: {_eq: $courseId}, playerId: {_eq: $playerId}}
+  ) {
+    aggregate {
+      sum {
+        totalWinnings
+      }
     }
   }
 }
@@ -5208,8 +5248,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     roundsPlayedStatCardForPlayer(variables: RoundsPlayedStatCardForPlayerVariables): Promise<RoundsPlayedStatCardForPlayer> {
       return withWrapper(() => client.request<RoundsPlayedStatCardForPlayer>(print(RoundsPlayedStatCardForPlayerDocument), variables));
     },
+    roundsWonStatCard(variables: RoundsWonStatCardVariables): Promise<RoundsWonStatCard> {
+      return withWrapper(() => client.request<RoundsWonStatCard>(print(RoundsWonStatCardDocument), variables));
+    },
     scoreCountStatCard(variables?: ScoreCountStatCardVariables): Promise<ScoreCountStatCard> {
       return withWrapper(() => client.request<ScoreCountStatCard>(print(ScoreCountStatCardDocument), variables));
+    },
+    winningsStatCard(variables: WinningsStatCardVariables): Promise<WinningsStatCard> {
+      return withWrapper(() => client.request<WinningsStatCard>(print(WinningsStatCardDocument), variables));
     },
     coursePlayerPage(variables: CoursePlayerPageVariables): Promise<CoursePlayerPage> {
       return withWrapper(() => client.request<CoursePlayerPage>(print(CoursePlayerPageDocument), variables));
