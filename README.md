@@ -21,6 +21,7 @@ We are the target users, and also some other folks (potentially our friends/fami
 - To add a new visualization, add a new card and stick it on a page. If you aren't sure of its value, start with it lower on the page and we can move it as we use it and assess its value.
 - If you'd like to rework an entire page, perhaps start buy copying it and adding a nav link to the page, e.g. "Rounds (beta)". That way we can use it and compare with the old one, and over time merge/delete one of them.
 - If you'd like to overhaul the entire site structurally and have a completely new way to organize everything, maybe create a subsite and we can add a link to it at the top so people can switch between the standard one and the experimental one.
+- If you're not sure which bucket your new thing fits into, you can ask ahead of time, or you can submit a PR and we'll comment with how it can fit into one of the above buckets.
 
 ### Installation
 Clone the repo locally and install dependencies:
