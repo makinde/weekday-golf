@@ -10,6 +10,12 @@ A site/app for a small number of small groups to track their golf rounds. More i
 - [Bootstrap CSS](https://getbootstrap.com/docs/5.0/getting-started/introduction/) (using [React Bootstrap](https://react-bootstrap.github.io/components/alerts) with [Dashkit Theme](https://dashkit.goodthemes.co/docs/components.html))
 - [d3](https://github.com/d3/d3/wiki) for charts (being deprecated for ChartJs)
 
+## Features
+- Fast. This does need to be balanced with simplicity and other things, but generally we try to make this production level performance.
+- Supports multiple courses. The site allows people to enter scores from different courses with different pars.
+- Intimate. It's designed for a small number of small groups. So it's cool to have nicknames, pictures, and lists of all the courses. Those things wouldn't scale to even hundreds of users, but whatevs.
+- Too much data :P . The site allows you to fig into more stats than you probably want to know about your golf
+- (Coming soon) Data Entry. You can track rounds directly on the site/app.
 
 ## Contributing
 Contributions from clowns and clown-adjacent folks are welcome. Just holler at an existing contributor for access to Hasura, Vercel, or the code.
