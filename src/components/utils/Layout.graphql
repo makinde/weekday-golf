@@ -1,0 +1,15 @@
+query layout {
+  courses(order_by: {scores_aggregate: {count: desc}}) {
+    id
+    name
+    slug
+    coursePlayers(order_by: {scores_aggregate: {count: desc}}) {
+      player {
+        id
+        fullName
+        img
+        slug
+      }
+    }
+  }
+}

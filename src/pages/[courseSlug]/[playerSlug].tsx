@@ -25,7 +25,11 @@ const CoursePlayerPage = ({
     courseId, course, playerId, player,
   },
 }: Props) => (
-  <Layout title="Overview">
+  <Layout
+    title="Overview"
+    focusedCourseId={courseId}
+    focusedPlayerId={playerId}
+  >
     <PageHeader>
       <Row className="align-items-center">
         {!!player.img && (
@@ -52,7 +56,6 @@ const CoursePlayerPage = ({
         <RoundCardList courseId={courseId} playerId={playerId} />
       </Col>
     </Row>
-
   </Layout>
 );
 

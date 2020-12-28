@@ -3,7 +3,7 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import { Row, Col, Button } from 'react-bootstrap';
 
 import sdk from '../../sdk';
-import Layout from '../../components/utils/Layout';
+import Layout, { CoursePage } from '../../components/utils/Layout';
 import Avatar from '../../components/utils/Avatar';
 import PageHeader from '../../components/utils/PageHeader';
 import RoundCardList from '../../components/card/RoundCardList';
@@ -21,7 +21,11 @@ type ServerSideProps = GetStaticProps<Props, PageQuery>;
 type Props = { course: CourseForIndexPage };
 
 const CourseIndexPage = ({ course }: Props) => (
-  <Layout title="Overview">
+  <Layout
+    title="Overview"
+    focusedCourseId={course.id}
+    focusedCoursePage={CoursePage.Overview}
+  >
     <PageHeader>
       <Row className="align-items-center">
         {!!course.img && (

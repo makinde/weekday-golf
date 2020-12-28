@@ -4843,6 +4843,14 @@ export type WinningsStatCardVariables = Exact<{
 
 export type WinningsStatCard = { playerRoundStats: { aggregate?: Maybe<{ sum?: Maybe<Pick<Player_Round_Sum_Fields, 'totalWinnings'>> }> } };
 
+export type LayoutVariables = Exact<{ [key: string]: never; }>;
+
+
+export type Layout = { courses: Array<(
+    Pick<Course, 'id' | 'name' | 'slug'>
+    & { coursePlayers: Array<{ player?: Maybe<Pick<Player, 'id' | 'fullName' | 'img' | 'slug'>> }> }
+  )> };
+
 export type CoursePlayerForPlayerPage = (
   Pick<Course_Player, 'courseId' | 'playerId'>
   & { player?: Maybe<Pick<Player, 'fullName' | 'img'>>, course?: Maybe<Pick<Course, 'name'>> }
@@ -5162,6 +5170,23 @@ export const WinningsStatCardDocument = gql`
   }
 }
     `;
+export const LayoutDocument = gql`
+    query layout {
+  courses(order_by: {scores_aggregate: {count: desc}}) {
+    id
+    name
+    slug
+    coursePlayers(order_by: {scores_aggregate: {count: desc}}) {
+      player {
+        id
+        fullName
+        img
+        slug
+      }
+    }
+  }
+}
+    `;
 export const CoursePlayerPageDocument = gql`
     query coursePlayerPage($courseSlug: String!, $playerSlug: String!) {
   coursePlayers(
@@ -5250,6 +5275,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     winningsStatCard(variables: WinningsStatCardVariables): Promise<WinningsStatCard> {
       return withWrapper(() => client.request<WinningsStatCard>(print(WinningsStatCardDocument), variables));
+    },
+    layout(variables?: LayoutVariables): Promise<Layout> {
+      return withWrapper(() => client.request<Layout>(print(LayoutDocument), variables));
     },
     coursePlayerPage(variables: CoursePlayerPageVariables): Promise<CoursePlayerPage> {
       return withWrapper(() => client.request<CoursePlayerPage>(print(CoursePlayerPageDocument), variables));

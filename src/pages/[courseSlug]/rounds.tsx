@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 
 import { getStaticPaths } from './index';
 import sdk from '../../sdk';
-import Layout from '../../components/utils/Layout';
+import Layout, { CoursePage } from '../../components/utils/Layout';
 import LeaderboardCard from '../../components/card/LeaderboardCard';
 import { CourseForRoundsPage } from '../../types';
 import RoundCardList from '../../components/card/RoundCardList';
@@ -15,7 +15,11 @@ type StaticProps = GetStaticProps<Props, PageQuery>;
 type Props = { course: CourseForRoundsPage };
 
 const CourseRoundsPage = ({ course }: Props) => (
-  <Layout title={`${course.name} Rounds`}>
+  <Layout
+    title={`${course.name} Rounds`}
+    focusedCourseId={course.id}
+    focusedCoursePage={CoursePage.Rounds}
+  >
     <PageHeader>
       <Row className="align-items-center">
         <Col>
