@@ -23,7 +23,7 @@ const LeaderboardCard = ({
   ...props
 }: Props) => {
   const { data } = useSWR(
-    `LeaderboardCard:${courseId},${playerId},${rankLimit}`,
+    ['LeaderboardCard', courseId, playerId, rankLimit],
     () => (
       playerId
         ? sdk.leaderboardCardForPlayer({ courseId, playerId, rankLimit })
