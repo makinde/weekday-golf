@@ -13,7 +13,7 @@ type Props = {
 };
 
 const RoundCard = ({ round, title }: Props) => (
-  <Card>
+  <Card id={`round-${round.id}`}>
     {!round && (
       <Card.Body>No round yet</Card.Body>
     )}

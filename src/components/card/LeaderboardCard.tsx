@@ -86,14 +86,16 @@ const LeaderboardCard = ({
                   {roundsForRank.map((playerRound, idx) => {
                     const {
                       playerId: pid,
+                      player: { slug: playerSlug },
                       roundId,
                       round: { date },
                     } = playerRound;
+                    const baseUrl = playerId ? `/${courseSlug}/${playerSlug}` : `/${courseSlug}/rounds`;
 
                     return (
                       <React.Fragment key={`${pid}-${roundId}`}>
                         {idx !== 0 && (<br />)}
-                        <Link href={`/${courseSlug}/rounds#round-${roundId}`}>
+                        <Link href={`${baseUrl}#round-${roundId}`}>
                           <a className="text-reset">
                             <CompactDate
                               date={date}
