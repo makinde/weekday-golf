@@ -90,7 +90,9 @@ const LeaderboardCard = ({
                       roundId,
                       round: { date },
                     } = playerRound;
-                    const baseUrl = playerId ? `/${courseSlug}/${playerSlug}` : `/${courseSlug}/rounds`;
+                    const baseUrl = playerId
+                      ? `/${courseSlug}/${playerSlug}`
+                      : `/${courseSlug}/rounds`;
 
                     return (
                       <React.Fragment key={`${pid}-${roundId}`}>
