@@ -38,8 +38,14 @@ const CoursePlayerPage = ({
           </Col>
         )}
         <Col>
-          <PageHeader.PreTitle>{course.name}</PageHeader.PreTitle>
-          <PageHeader.Title>{player.fullName}</PageHeader.Title>
+          <PageHeader.Title>
+            {player.fullName}
+            &nbsp;
+            <span className="text-muted">
+              @&nbsp;
+              {course.name}
+            </span>
+          </PageHeader.Title>
         </Col>
       </Row>
     </PageHeader>
