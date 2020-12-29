@@ -3,6 +3,7 @@ import useSWR from 'swr';
 
 import StatCard from '../../utils/StatCard';
 import sdk from '../../../sdk';
+import { winningsText } from '../../utils/Winnings';
 
 type Props = {
   courseId?: number,
@@ -22,7 +23,7 @@ const WinningsStatCard = ({ courseId, playerId }: Props) => {
   } else if (winnings === undefined) {
     heading = '-';
   } else {
-    heading = `$${winnings}`;
+    heading = winningsText(winnings);
   }
 
   return (

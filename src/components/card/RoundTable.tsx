@@ -6,7 +6,7 @@ import { Table } from 'react-bootstrap';
 
 import { RoundForTable } from '../../types';
 import RelativeScore from '../utils/RelativeScore';
-import WinningsPill from '../utils/WinningsPill';
+import { WinningsPill } from '../utils/Winnings';
 import styles from './RoundTable.module.scss';
 import ScoresHeader from './ScoresHeader';
 
@@ -43,7 +43,7 @@ const RoundTable = ({
                   {player.nickname}
                 </a>
               </Link>
-              <WinningsPill value={totalWinnings} className="float-right" />
+              <WinningsPill value={totalWinnings} className="ml-2" />
             </td>
             {course.holes.map(({ number }) => {
               const holeScore = find(scores, { holeNumber: number });

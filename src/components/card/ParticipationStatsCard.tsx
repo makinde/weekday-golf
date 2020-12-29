@@ -6,7 +6,7 @@ import useSWR from 'swr';
 
 import RelativeScore from '../utils/RelativeScore';
 import CardHeaderTitle from '../utils/CardHeaderTitle';
-import WinningsPill from '../utils/WinningsPill';
+import { WinningsPill } from '../utils/Winnings';
 import sdk from '../../sdk';
 
 type Props = {
