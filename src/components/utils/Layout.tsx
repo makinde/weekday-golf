@@ -70,7 +70,8 @@ const Layout = ({
 
           <Link href="/">
             <a className="navbar-brand">
-              <span className="display-1" aria-label="Golf person" role="img">🏌🏾‍♂</span>
+              <span className="display-1 d-none d-md-inline" aria-label="Golf person" role="img">🏌🏾‍♂</span>
+              <span className="display-4 d-inline d-md-none" aria-label="Golf person" role="img">🏌🏾‍♂</span>
             </a>
           </Link>
 
