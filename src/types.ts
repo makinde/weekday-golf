@@ -4843,6 +4843,39 @@ export type WinningsStatCardVariables = Exact<{
 
 export type WinningsStatCard = { playerRoundStats: { aggregate?: Maybe<{ sum?: Maybe<Pick<Player_Round_Sum_Fields, 'totalWinnings'>> }> } };
 
+export type HoleInputVariables = Exact<{
+  holeNumber: Scalars['Int'];
+  playerId: Scalars['Int'];
+  roundId: Scalars['Int'];
+}>;
+
+
+export type HoleInput = { score?: Maybe<Pick<Score, 'score' | 'putts'>> };
+
+export type HoleInputInsertVariables = Exact<{
+  score: Score_Insert_Input;
+}>;
+
+
+export type HoleInputInsert = { insertScore?: Maybe<Pick<Score, 'roundId'>> };
+
+export type HoleInputUpdateVariables = Exact<{
+  scoreKey: Score_Pk_Columns_Input;
+  scoreUpdate: Score_Set_Input;
+}>;
+
+
+export type HoleInputUpdate = { updateScore?: Maybe<Pick<Score, 'roundId'>> };
+
+export type HoleInputDeleteVariables = Exact<{
+  holeNumber: Scalars['Int'];
+  playerId: Scalars['Int'];
+  roundId: Scalars['Int'];
+}>;
+
+
+export type HoleInputDelete = { deleteScore?: Maybe<Pick<Score, 'roundId'>> };
+
 export type LayoutVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -4896,6 +4929,13 @@ export type CourseRoundsPagePathsVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CourseRoundsPagePaths = { courses: Array<Pick<Course, 'slug'>> };
+
+export type ScorecardPageVariables = Exact<{
+  roundId: Scalars['Int'];
+}>;
+
+
+export type ScorecardPage = { round?: Maybe<Pick<Round, 'id' | 'courseId'>>, holes: Array<Pick<Hole, 'number' | 'par'>>, players: Array<Pick<Player, 'id' | 'img' | 'fullName'>>, roundPlayers: Array<{ id: Player_Round['playerId'] }>, coursePlayers: Array<{ id: Course_Player['playerId'] }> };
 
 export const PlayerRoundForChart = gql`
     fragment playerRoundForChart on player_round {
@@ -5170,6 +5210,35 @@ export const WinningsStatCardDocument = gql`
   }
 }
     `;
+export const HoleInputDocument = gql`
+    query holeInput($holeNumber: Int!, $playerId: Int!, $roundId: Int!) {
+  score(holeNumber: $holeNumber, playerId: $playerId, roundId: $roundId) {
+    score
+    putts
+  }
+}
+    `;
+export const HoleInputInsertDocument = gql`
+    mutation holeInputInsert($score: score_insert_input!) {
+  insertScore(object: $score) {
+    roundId
+  }
+}
+    `;
+export const HoleInputUpdateDocument = gql`
+    mutation holeInputUpdate($scoreKey: score_pk_columns_input!, $scoreUpdate: score_set_input!) {
+  updateScore(pk_columns: $scoreKey, _set: $scoreUpdate) {
+    roundId
+  }
+}
+    `;
+export const HoleInputDeleteDocument = gql`
+    mutation holeInputDelete($holeNumber: Int!, $playerId: Int!, $roundId: Int!) {
+  deleteScore(holeNumber: $holeNumber, playerId: $playerId, roundId: $roundId) {
+    roundId
+  }
+}
+    `;
 export const LayoutDocument = gql`
     query layout {
   courses(order_by: {scores_aggregate: {count: desc}}) {
@@ -5236,6 +5305,29 @@ export const CourseRoundsPagePathsDocument = gql`
   }
 }
     `;
+export const ScorecardPageDocument = gql`
+    query scorecardPage($roundId: Int!) {
+  round(id: $roundId) {
+    id
+    courseId
+  }
+  holes(where: {course: {rounds: {id: {_eq: $roundId}}}}) {
+    number
+    par
+  }
+  players {
+    id
+    img
+    fullName
+  }
+  roundPlayers: playerRounds(where: {roundId: {_eq: $roundId}}) {
+    id: playerId
+  }
+  coursePlayers(where: {course: {rounds: {id: {_eq: $roundId}}}}) {
+    id: playerId
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 
@@ -5276,6 +5368,18 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     winningsStatCard(variables: WinningsStatCardVariables): Promise<WinningsStatCard> {
       return withWrapper(() => client.request<WinningsStatCard>(print(WinningsStatCardDocument), variables));
     },
+    holeInput(variables: HoleInputVariables): Promise<HoleInput> {
+      return withWrapper(() => client.request<HoleInput>(print(HoleInputDocument), variables));
+    },
+    holeInputInsert(variables: HoleInputInsertVariables): Promise<HoleInputInsert> {
+      return withWrapper(() => client.request<HoleInputInsert>(print(HoleInputInsertDocument), variables));
+    },
+    holeInputUpdate(variables: HoleInputUpdateVariables): Promise<HoleInputUpdate> {
+      return withWrapper(() => client.request<HoleInputUpdate>(print(HoleInputUpdateDocument), variables));
+    },
+    holeInputDelete(variables: HoleInputDeleteVariables): Promise<HoleInputDelete> {
+      return withWrapper(() => client.request<HoleInputDelete>(print(HoleInputDeleteDocument), variables));
+    },
     layout(variables?: LayoutVariables): Promise<Layout> {
       return withWrapper(() => client.request<Layout>(print(LayoutDocument), variables));
     },
@@ -5296,6 +5400,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     courseRoundsPagePaths(variables?: CourseRoundsPagePathsVariables): Promise<CourseRoundsPagePaths> {
       return withWrapper(() => client.request<CourseRoundsPagePaths>(print(CourseRoundsPagePathsDocument), variables));
+    },
+    scorecardPage(variables: ScorecardPageVariables): Promise<ScorecardPage> {
+      return withWrapper(() => client.request<ScorecardPage>(print(ScorecardPageDocument), variables));
     }
   };
 }

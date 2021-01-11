@@ -1,0 +1,21 @@
+query scorecardPage($roundId: Int!) {
+  round(id: $roundId) {
+    id
+    courseId
+  }
+  holes(where: { course: { rounds: { id: { _eq: $roundId } } } }) {
+    number
+    par
+  }
+  players {
+    id
+    img
+    fullName
+  }
+  roundPlayers: playerRounds(where: { roundId: { _eq: $roundId } }) {
+    id: playerId
+  }
+  coursePlayers(where: { course: { rounds: { id: { _eq: $roundId } } } }) {
+    id: playerId
+  }
+}
