@@ -21,6 +21,10 @@ const ParticipationStatsCard = ({ courseId }: Props) => {
 
   const { slug: courseSlug, coursePlayers = [] } = data?.course ?? {};
 
+  const showWinnings = coursePlayers.some(
+    (cp) => cp?.playerRoundsStats?.aggregate?.sum?.totalWinnings !== null,
+  );
+
   return (
     <Card>
       <Card.Header>
@@ -35,7 +39,7 @@ const ParticipationStatsCard = ({ courseId }: Props) => {
             <th>Avg Score</th>
             <th>Rounds</th>
             <th>RNDs Won</th>
-            <th>Winnings</th>
+            {showWinnings && (<th>Winnings</th>)}
           </tr>
         </thead>
         <tbody className="list">
@@ -55,8 +59,10 @@ const ParticipationStatsCard = ({ courseId }: Props) => {
                 </td>
                 <td><RelativeScore value={round(stats.avg.relativeScore, 2)} /></td>
                 <td>{stats.count}</td>
-                <td>{roundsWon}</td>
-                <td><WinningsPill value={stats.sum.totalWinnings} /></td>
+                <td>{roundsWon || '-'}</td>
+                {showWinnings && (
+                  <td><WinningsPill value={stats.sum.totalWinnings} /></td>
+                )}
               </tr>
             );
           })}
