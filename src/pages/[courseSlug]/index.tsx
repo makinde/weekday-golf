@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetStaticProps, GetStaticPaths } from 'next';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 import sdk from '../../sdk';
 import Layout, { CoursePage } from '../../components/utils/Layout';
@@ -15,6 +15,7 @@ import ScoreCountStatCard from '../../components/card/statCard/ScoreCountStatCar
 
 import { CourseForIndexPage } from '../../types';
 import AverageScoreStatCard from '../../components/card/statCard/AverageScoreStatCard';
+import NewRoundButton from '../../components/dataEntry/NewRoundButton';
 
 type PageQuery = { courseSlug: string };
 type ServerSideProps = GetStaticProps<Props, PageQuery>;
@@ -38,9 +39,9 @@ const CourseIndexPage = ({ course }: Props) => (
           <PageHeader.Title>Overview</PageHeader.Title>
         </Col>
         <Col xs="auto">
-          <Button variant="primary" href="#">
-            New Round
-          </Button>
+          <NewRoundButton courseId={course.id} variant="primary">
+            + New Round
+          </NewRoundButton>
         </Col>
       </Row>
     </PageHeader>

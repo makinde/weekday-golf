@@ -4876,6 +4876,14 @@ export type HoleInputDeleteVariables = Exact<{
 
 export type HoleInputDelete = { deleteScore?: Maybe<Pick<Score, 'roundId'>> };
 
+export type NewRoundButtonInsertVariables = Exact<{
+  courseId: Scalars['Int'];
+  date: Scalars['timestamp'];
+}>;
+
+
+export type NewRoundButtonInsert = { insertRound?: Maybe<{ roundId: Round['id'] }> };
+
 export type LayoutVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -5239,6 +5247,13 @@ export const HoleInputDeleteDocument = gql`
   }
 }
     `;
+export const NewRoundButtonInsertDocument = gql`
+    mutation newRoundButtonInsert($courseId: Int!, $date: timestamp!) {
+  insertRound(object: {courseId: $courseId, date: $date}) {
+    roundId: id
+  }
+}
+    `;
 export const LayoutDocument = gql`
     query layout {
   courses(order_by: {scores_aggregate: {count: desc}}) {
@@ -5379,6 +5394,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     holeInputDelete(variables: HoleInputDeleteVariables): Promise<HoleInputDelete> {
       return withWrapper(() => client.request<HoleInputDelete>(print(HoleInputDeleteDocument), variables));
+    },
+    newRoundButtonInsert(variables: NewRoundButtonInsertVariables): Promise<NewRoundButtonInsert> {
+      return withWrapper(() => client.request<NewRoundButtonInsert>(print(NewRoundButtonInsertDocument), variables));
     },
     layout(variables?: LayoutVariables): Promise<Layout> {
       return withWrapper(() => client.request<Layout>(print(LayoutDocument), variables));

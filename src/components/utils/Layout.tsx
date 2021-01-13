@@ -10,6 +10,7 @@ import cx from 'classnames';
 
 import Avatar from './Avatar';
 import sdk from '../../sdk';
+import NewRoundButton from '../dataEntry/NewRoundButton';
 
 const keyForId = (id: number) => `nav-${id}`;
 enum CoursePage {
@@ -93,10 +94,22 @@ const Layout = ({
                       </AccordionNav>
                       <Accordion.Collapse eventKey={keyForId(course.id)}>
                         <Nav as="ul" className="nav nav-sm flex-column" navbar={false}>
+                          <Nav.Item as="li" className="pl-5 pr-4 pt-2 pb-3">
+                            <NewRoundButton
+                              block
+                              size="sm"
+                              variant="outline-secondary"
+                              courseId={course.id}
+                            >
+                              + New Round
+                            </NewRoundButton>
+                          </Nav.Item>
                           <Nav.Item as="li">
                             <Link href={`/${course.slug}`} passHref>
-                              <Nav.Link active={isCourseSelected
+                              <Nav.Link
+                                active={isCourseSelected
                                   && focusedCoursePage === CoursePage.Overview}
+                                className="pl-5"
                               >
                                 Overview
                               </Nav.Link>
@@ -104,8 +117,10 @@ const Layout = ({
                           </Nav.Item>
                           <Nav.Item as="li">
                             <Link href={`/${course.slug}/rounds`} passHref>
-                              <Nav.Link active={isCourseSelected
-                                && focusedCoursePage === CoursePage.Rounds}
+                              <Nav.Link
+                                active={isCourseSelected
+                                  && focusedCoursePage === CoursePage.Rounds}
+                                className="pl-5"
                               >
                                 Rounds
                               </Nav.Link>
@@ -114,11 +129,13 @@ const Layout = ({
                           {course.coursePlayers.map(({ player }) => (
                             <Nav.Item as="li" key={`player-${player.id}`}>
                               <Link href={`/${course.slug}/${player.slug}`} passHref>
-                                <Nav.Link active={isCourseSelected
-                                  && focusedPlayerId === player.id}
+                                <Nav.Link
+                                  active={isCourseSelected
+                                    && focusedPlayerId === player.id}
+                                  className="pl-5"
                                 >
                                   {player.fullName}
-                                  <Avatar className="ml-auto" size="xs" src={player.img} />
+                                  <Avatar className="ml-auto my-n2" size="xs" src={player.img} />
                                 </Nav.Link>
                               </Link>
                             </Nav.Item>
