@@ -57,6 +57,8 @@ const Layout = ({
     <>
       <Head>
         <title>{`Golf · ${title}`}</title>
+        <meta name="theme-color" content="#152e4d" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
         <link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
@@ -163,7 +165,7 @@ const Layout = ({
 
         </Container>
       </Navbar>
-      <div className="main-content">
+      <div className="main-content bg-lighter">
         <Container fluid>
           {children}
         </Container>
