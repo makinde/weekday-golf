@@ -29,9 +29,9 @@ const HoleInput = ({ par, scoreKey, courseId } : Props) => {
     mutate({ score: newScore }, false);
 
     // do SDK request
-    if (score === null) {
+    if (!score) {
       await sdk.holeInputInsert({ score: { ...scoreKey, courseId, ...scoreUpdate } });
-    } else if (scoreUpdate.score === null) {
+    } else if (!scoreUpdate.score) {
       await sdk.holeInputDelete(scoreKey);
     } else {
       await sdk.holeInputUpdate({ scoreKey, scoreUpdate });
@@ -42,7 +42,7 @@ const HoleInput = ({ par, scoreKey, courseId } : Props) => {
     <>
       <input
         type="number"
-        value={score}
+        value={score ?? ''}
         className="d-sm-inline-block d-none"
         size={2}
         onChange={async (e) => saveScoreChange({
@@ -55,7 +55,7 @@ const HoleInput = ({ par, scoreKey, courseId } : Props) => {
           variant="link"
           className="text-reset mr-1"
           onClick={async () => saveScoreChange({
-            score: ((score ?? par) - 1) || null,
+            score: (score ?? par) - 1,
           })}
         >
           <i className="fe fe-minus-circle mr-1" />
