@@ -91,11 +91,11 @@ const ScorecardPage = () => {
 
         return (
           <div key={activePlayerId} className="d-flex align-items-center py-3">
-            <td className="flex-fill">
+            <div className="flex-fill">
               <Avatar src={player.img} size="sm" className="mr-2" />
               {player.fullName}
-            </td>
-            <td>
+            </div>
+            <div>
               <HoleInput
                 par={activeHole?.par ?? 3}
                 scoreKey={{
@@ -105,7 +105,7 @@ const ScorecardPage = () => {
                 }}
                 courseId={round?.courseId}
               />
-            </td>
+            </div>
           </div>
         );
       })}
