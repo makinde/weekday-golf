@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import sumBy from 'lodash/sumBy';
 
@@ -13,11 +14,12 @@ type Props = {
 const ScoresHeader = ({ holes, id, showTotal = true }: Props) => {
   const firstPar = holes[0].par;
   const uniformPar = holes.every(({ par }) => par === firstPar);
+  const parAdjust = { 'py-2': !uniformPar };
 
   return (
     <thead>
       <tr>
-        <th className="border-right">
+        <th className={cx('border-right', parAdjust)}>
           {uniformPar && 'Name'}
           {!uniformPar && (
             <>
@@ -28,7 +30,7 @@ const ScoresHeader = ({ holes, id, showTotal = true }: Props) => {
           )}
         </th>
         {holes.map(({ number, nickname, par }) => (
-          <th key={`hole-${number}`}>
+          <th key={`hole-${number}`} className={cx(parAdjust)}>
             {nickname === null && number}
             {nickname !== null && (
               <OverlayTrigger
@@ -51,7 +53,7 @@ const ScoresHeader = ({ holes, id, showTotal = true }: Props) => {
           </th>
         ))}
         {showTotal && (
-          <th className="border-left">
+          <th className={cx('border-left', parAdjust)}>
             Tot
             {!uniformPar && (
             <>
