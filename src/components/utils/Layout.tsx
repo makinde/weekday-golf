@@ -69,7 +69,7 @@ const Layout = ({
         <link rel="preload" as="font" type="font/woff" crossOrigin="anonymous" href="/static/fonts/cerebrisans/cerebrisans-semibold.woff" />
         <link rel="preload" as="font" type="font/woff" crossOrigin="anonymous" href="/static/fonts/feather/fonts/Feather.woff" />
       </Head>
-      <Navbar expand="md" variant="dark" className="navbar-vertical fixed-left" id="sidebar">
+      <Navbar expand="md" variant="dark" className="navbar-vertical fixed-left" id="sidebar" fixed="top">
         <Container fluid>
 
           <Link href="/">
