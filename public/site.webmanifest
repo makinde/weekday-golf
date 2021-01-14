@@ -1,6 +1,6 @@
 {
-  "name": "Weekday Golf",
-  "short_name": "",
+  "name": "Do The Rest",
+  "short_name": "Do The Rest",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "theme_color": "#152e4d",
+  "background_color": "#f9fbfd",
   "display": "standalone"
 }

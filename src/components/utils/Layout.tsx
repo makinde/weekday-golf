@@ -1,16 +1,17 @@
 import React, { useContext } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import useSWR from 'swr';
+import cx from 'classnames';
 import {
   Accordion, Container, Nav, Navbar, AccordionContext, useAccordionToggle,
 } from 'react-bootstrap';
 
-import useSWR from 'swr';
-import cx from 'classnames';
-
 import Avatar from './Avatar';
 import sdk from '../../sdk';
 import NewRoundButton from '../dataEntry/NewRoundButton';
+
+import styles from './Layout.module.scss';
 
 const keyForId = (id: number) => `nav-${id}`;
 enum CoursePage {
@@ -60,6 +61,7 @@ const Layout = ({
         <meta name="theme-color" content="#152e4d" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,viewport-fit=cover" />
         <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
         <link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
         <link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png" />
@@ -69,7 +71,7 @@ const Layout = ({
         <link rel="preload" as="font" type="font/woff" crossOrigin="anonymous" href="/static/fonts/cerebrisans/cerebrisans-semibold.woff" />
         <link rel="preload" as="font" type="font/woff" crossOrigin="anonymous" href="/static/fonts/feather/fonts/Feather.woff" />
       </Head>
-      <Navbar expand="md" variant="dark" className="navbar-vertical fixed-left" id="sidebar" sticky="top">
+      <Navbar expand="md" variant="dark" className={`navbar-vertical fixed-left ${styles.pageNavbar}`} id="sidebar" fixed="top">
         <Container fluid>
 
           <Link href="/">
@@ -165,7 +167,7 @@ const Layout = ({
 
         </Container>
       </Navbar>
-      <div className="main-content bg-lighter">
+      <div className={`main-content bg-lighter ${styles.content}`}>
         <Container fluid>
           {children}
         </Container>

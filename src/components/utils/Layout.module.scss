@@ -1,0 +1,16 @@
+@import '../../../node_modules/bootstrap/scss/functions';
+@import '../../../node_modules/bootstrap/scss/mixins/breakpoints';
+@import '../../../node_modules/bootstrap/scss/variables';
+@import '../../theme/dashkit/variables';
+
+@supports(padding: max(0px)) {
+  .pageNavbar {
+    padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
+  }
+}
+
+@include media-breakpoint-down(xs) {
+  .content {
+    padding-top: 61px;
+  }
+}

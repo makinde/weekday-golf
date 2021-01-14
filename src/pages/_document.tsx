@@ -8,7 +8,9 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head />
-        <body className="bg-dark">
+        {/* Blank onTouchStart helps with PWA look and feel.
+        See: https://medium.com/appscope/designing-native-like-progressive-web-apps-for-ios-1b3cdda1d0e8 */}
+        <body onTouchStart={() => {}}>
           <Main />
           <NextScript />
         </body>
