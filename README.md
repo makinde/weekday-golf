@@ -1,4 +1,4 @@
-# 🏌🏾‍♂ Weekday Golf
+# 🏌🏾‍♂ 
 A site/app for a small number of small groups to track their golf rounds. More importantly, a place for friends to try and learn new technologies for building sites and apps.
 
 ## Technologies
@@ -14,8 +14,8 @@ A site/app for a small number of small groups to track their golf rounds. More i
 - Fast. This does need to be balanced with simplicity and other things, but generally we try to make this production level performance.
 - Supports multiple courses. The site allows people to enter scores from different courses with different pars.
 - Intimate. It's designed for a small number of small groups. So it's cool to have nicknames, pictures, and lists of all the courses. Those things wouldn't scale to even hundreds of users, but whatevs.
-- Too much data :P . The site allows you to fig into more stats than you probably want to know about your golf
-- (Coming soon) Data Entry. You can track rounds directly on the site/app.
+- Too much data :P . The site allows you to dig into more stats than you probably want to know about your golf
+- Data Entry. You can track rounds directly on the site/app.
 
 ## Contributing
 Contributions from clowns and clown-adjacent folks are welcome. Just holler at an existing contributor for access to Hasura, Vercel, or the code.
