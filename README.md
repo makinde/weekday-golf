@@ -1,4 +1,4 @@
-# 🏌🏾‍♂ 
+# 🏌🏾‍♂ Weekday Golf (hosted on dotherest.com)
 A site/app for a small number of small groups to track their golf rounds. More importantly, a place for friends to try and learn new technologies for building sites and apps.
 
 ## Technologies
