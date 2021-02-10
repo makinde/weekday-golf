@@ -25,16 +25,20 @@ const HoleInput = ({ par, scoreKey, courseId } : Props) => {
   const score = data?.score?.score;
 
   const saveScoreChange = async (scoreUpdate: Score_Set_Input) => {
-    const newScore = defaults({}, scoreUpdate, data.score);
-    mutate({ score: newScore }, false);
+    const deletingScore = !scoreUpdate.score;
+    const existingScore = !!score;
+    const newScore = defaults({}, scoreUpdate, data?.score);
+    mutate(deletingScore ? null : { score: newScore }, false);
 
     // do SDK request
-    if (!score) {
+    if (existingScore) {
+      if (deletingScore) {
+        await sdk.holeInputDelete(scoreKey);
+      } else {
+        await sdk.holeInputUpdate({ scoreKey, scoreUpdate });
+      }
+    } else if (!deletingScore) {
       await sdk.holeInputInsert({ score: { ...scoreKey, courseId, ...scoreUpdate } });
-    } else if (!scoreUpdate.score) {
-      await sdk.holeInputDelete(scoreKey);
-    } else {
-      await sdk.holeInputUpdate({ scoreKey, scoreUpdate });
     }
   };
 
@@ -45,13 +49,14 @@ const HoleInput = ({ par, scoreKey, courseId } : Props) => {
         value={score ?? ''}
         className="d-sm-inline-block d-none"
         size={2}
+        step={1}
+        min={0}
         onChange={async (e) => saveScoreChange({
           score: parseInt(e.target.value, 10) || null,
         })}
       />
       <div className="d-block d-sm-none">
         <Button
-          size="sm"
           variant="link"
           className="text-reset mr-1"
           onClick={async () => saveScoreChange({
