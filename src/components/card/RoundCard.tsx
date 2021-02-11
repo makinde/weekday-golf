@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 
+import Link from 'next/link';
 import { RoundForRoundCard } from '../../types';
 import RoundTable from './RoundTable';
 import RoundTitle from '../utils/RoundTitle';
@@ -39,12 +40,19 @@ const RoundCard = ({ round, title }: Props) => (
                   $
                   {round.skinsHoleBounty}
                   /hole skin
-                  {round.roundBounty && ','}
+                  {round.roundBounty && (<>,&nbsp;</>)}
                 </span>
               )}
               {round.roundBounty && (
                 `$${round.roundBounty} round winner`
               )}
+              <div>
+                <Link href={`/scorecard/${round.id}`}>
+                  <a>
+                    edit scores
+                  </a>
+                </Link>
+              </div>
             </div>
           </Card.Body>
         )}

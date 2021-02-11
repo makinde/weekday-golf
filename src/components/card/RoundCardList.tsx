@@ -28,14 +28,14 @@ const RoundCardList = ({ courseId, playerId, limit }: Props) => {
           key={round.id}
           round={round}
           title={singleRound && (
-          <CardHeaderTitle>
-            Latest Round
-            <Link href={playerId ? '#rounds' : `/${round.course.slug}/rounds`}>
-              <a className="small ml-3 text-primary">
-                See all
-              </a>
-            </Link>
-          </CardHeaderTitle>
+            <CardHeaderTitle>
+              Latest Round
+              <Link href={playerId ? '#rounds' : `/${round.course.slug}/rounds`}>
+                <a className="small ml-3 text-primary">
+                  See all
+                </a>
+              </Link>
+            </CardHeaderTitle>
           )}
         />
       ))}
