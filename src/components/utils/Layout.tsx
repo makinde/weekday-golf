@@ -61,7 +61,7 @@ const Layout = ({
         <meta name="theme-color" content="#152e4d" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,viewport-fit=cover" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, viewport-fit=cover" />
         <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
         <link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
         <link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png" />
