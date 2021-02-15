@@ -848,6 +848,10 @@ export type Hole = {
   scores: Array<Score>;
   /** An aggregated array relationship */
   scores_aggregate: Score_Aggregate;
+  /** An array relationship */
+  scoringInfo: Array<Scoring_Info>;
+  /** An aggregated array relationship */
+  scoringInfo_aggregate: Scoring_Info_Aggregate;
   yards?: Maybe<Scalars['Int']>;
 };
 
@@ -869,6 +873,26 @@ export type HoleScores_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Score_Order_By>>;
   where?: Maybe<Score_Bool_Exp>;
+};
+
+
+/** columns and relationships of "hole" */
+export type HoleScoringInfoArgs = {
+  distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Scoring_Info_Order_By>>;
+  where?: Maybe<Scoring_Info_Bool_Exp>;
+};
+
+
+/** columns and relationships of "hole" */
+export type HoleScoringInfo_AggregateArgs = {
+  distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Scoring_Info_Order_By>>;
+  where?: Maybe<Scoring_Info_Bool_Exp>;
 };
 
 /** aggregated selection of "hole" */
@@ -950,6 +974,7 @@ export type Hole_Bool_Exp = {
   number?: Maybe<Int_Comparison_Exp>;
   par?: Maybe<Int_Comparison_Exp>;
   scores?: Maybe<Score_Bool_Exp>;
+  scoringInfo?: Maybe<Scoring_Info_Bool_Exp>;
   yards?: Maybe<Int_Comparison_Exp>;
 };
 
@@ -1050,6 +1075,7 @@ export type Hole_Order_By = {
   number?: Maybe<Order_By>;
   par?: Maybe<Order_By>;
   scores_aggregate?: Maybe<Score_Aggregate_Order_By>;
+  scoringInfo_aggregate?: Maybe<Scoring_Info_Aggregate_Order_By>;
   yards?: Maybe<Order_By>;
 };
 
@@ -3639,6 +3665,8 @@ export type Scoring_Info = {
   holeNumber?: Maybe<Scalars['Int']>;
   lifetimeAvgPutts?: Maybe<Scalars['numeric']>;
   lifetimeAvgScore?: Maybe<Scalars['numeric']>;
+  /** An object relationship */
+  player?: Maybe<Player>;
   playerId?: Maybe<Scalars['Int']>;
   puttsTrend?: Maybe<Scalars['numeric']>;
   relativeScore?: Maybe<Scalars['Int']>;
@@ -3735,6 +3763,7 @@ export type Scoring_Info_Bool_Exp = {
   holeNumber?: Maybe<Int_Comparison_Exp>;
   lifetimeAvgPutts?: Maybe<Numeric_Comparison_Exp>;
   lifetimeAvgScore?: Maybe<Numeric_Comparison_Exp>;
+  player?: Maybe<Player_Bool_Exp>;
   playerId?: Maybe<Int_Comparison_Exp>;
   puttsTrend?: Maybe<Numeric_Comparison_Exp>;
   relativeScore?: Maybe<Int_Comparison_Exp>;
@@ -3821,6 +3850,7 @@ export type Scoring_Info_Order_By = {
   holeNumber?: Maybe<Order_By>;
   lifetimeAvgPutts?: Maybe<Order_By>;
   lifetimeAvgScore?: Maybe<Order_By>;
+  player?: Maybe<Player_Order_By>;
   playerId?: Maybe<Order_By>;
   puttsTrend?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
@@ -4884,6 +4914,38 @@ export type NewRoundButtonInsertVariables = Exact<{
 
 export type NewRoundButtonInsert = { insertRound?: Maybe<{ roundId: Round['id'] }> };
 
+export type ScorecardPlayerListVariables = Exact<{
+  roundId: Scalars['Int'];
+  playerIds?: Maybe<Array<Scalars['Int']>>;
+}>;
+
+
+export type ScorecardPlayerList = { courses: Array<{ courseId: Course['id'] }>, holes: Array<Pick<Hole, 'number' | 'par'>>, players: Array<Pick<Player, 'id' | 'img' | 'fullName'>>, scores: Array<Pick<Score, 'playerId' | 'holeNumber' | 'score' | 'putts'>> };
+
+export type ScorecardPlayerListInsertVariables = Exact<{
+  score: Score_Insert_Input;
+}>;
+
+
+export type ScorecardPlayerListInsert = { insertScore?: Maybe<Pick<Score, 'roundId'>> };
+
+export type ScorecardPlayerListUpdateVariables = Exact<{
+  scoreKey: Score_Pk_Columns_Input;
+  scoreUpdate: Score_Set_Input;
+}>;
+
+
+export type ScorecardPlayerListUpdate = { updateScore?: Maybe<Pick<Score, 'roundId'>> };
+
+export type ScorecardPlayerListDeleteVariables = Exact<{
+  holeNumber: Scalars['Int'];
+  playerId: Scalars['Int'];
+  roundId: Scalars['Int'];
+}>;
+
+
+export type ScorecardPlayerListDelete = { deleteScore?: Maybe<Pick<Score, 'roundId'>> };
+
 export type LayoutVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -5254,6 +5316,49 @@ export const NewRoundButtonInsertDocument = gql`
   }
 }
     `;
+export const ScorecardPlayerListDocument = gql`
+    query scorecardPlayerList($roundId: Int!, $playerIds: [Int!]) {
+  courses(where: {rounds: {id: {_eq: $roundId}}}) {
+    courseId: id
+  }
+  holes(where: {course: {rounds: {id: {_eq: $roundId}}}}) {
+    number
+    par
+  }
+  players(where: {id: {_in: $playerIds}}) {
+    id
+    img
+    fullName
+  }
+  scores(where: {roundId: {_eq: $roundId}}) {
+    playerId
+    holeNumber
+    score
+    putts
+  }
+}
+    `;
+export const ScorecardPlayerListInsertDocument = gql`
+    mutation scorecardPlayerListInsert($score: score_insert_input!) {
+  insertScore(object: $score) {
+    roundId
+  }
+}
+    `;
+export const ScorecardPlayerListUpdateDocument = gql`
+    mutation scorecardPlayerListUpdate($scoreKey: score_pk_columns_input!, $scoreUpdate: score_set_input!) {
+  updateScore(pk_columns: $scoreKey, _set: $scoreUpdate) {
+    roundId
+  }
+}
+    `;
+export const ScorecardPlayerListDeleteDocument = gql`
+    mutation scorecardPlayerListDelete($holeNumber: Int!, $playerId: Int!, $roundId: Int!) {
+  deleteScore(holeNumber: $holeNumber, playerId: $playerId, roundId: $roundId) {
+    roundId
+  }
+}
+    `;
 export const LayoutDocument = gql`
     query layout {
   courses(order_by: {scores_aggregate: {count: desc}}) {
@@ -5397,6 +5502,18 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     newRoundButtonInsert(variables: NewRoundButtonInsertVariables): Promise<NewRoundButtonInsert> {
       return withWrapper(() => client.request<NewRoundButtonInsert>(print(NewRoundButtonInsertDocument), variables));
+    },
+    scorecardPlayerList(variables: ScorecardPlayerListVariables): Promise<ScorecardPlayerList> {
+      return withWrapper(() => client.request<ScorecardPlayerList>(print(ScorecardPlayerListDocument), variables));
+    },
+    scorecardPlayerListInsert(variables: ScorecardPlayerListInsertVariables): Promise<ScorecardPlayerListInsert> {
+      return withWrapper(() => client.request<ScorecardPlayerListInsert>(print(ScorecardPlayerListInsertDocument), variables));
+    },
+    scorecardPlayerListUpdate(variables: ScorecardPlayerListUpdateVariables): Promise<ScorecardPlayerListUpdate> {
+      return withWrapper(() => client.request<ScorecardPlayerListUpdate>(print(ScorecardPlayerListUpdateDocument), variables));
+    },
+    scorecardPlayerListDelete(variables: ScorecardPlayerListDeleteVariables): Promise<ScorecardPlayerListDelete> {
+      return withWrapper(() => client.request<ScorecardPlayerListDelete>(print(ScorecardPlayerListDeleteDocument), variables));
     },
     layout(variables?: LayoutVariables): Promise<Layout> {
       return withWrapper(() => client.request<Layout>(print(LayoutDocument), variables));

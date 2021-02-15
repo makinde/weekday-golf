@@ -10,9 +10,9 @@ import toInteger from 'lodash/toInteger';
 
 import { castArray } from 'lodash';
 import Layout from '../../components/utils/Layout';
-import HoleInput from '../../components/dataEntry/HoleInput';
 import Avatar from '../../components/utils/Avatar';
 import sdk from '../../sdk';
+import ScorecardPlayerList from '../../components/dataEntry/ScorecardPlayerList';
 
 // When sorting the list of players, prioritize those who are playing in this
 // round already, and then players who have played on this course before. That
@@ -61,7 +61,6 @@ const ScorecardPage = () => {
   );
 
   const {
-    round,
     holes = [],
     players = [],
     roundPlayers = [],
@@ -85,30 +84,11 @@ const ScorecardPage = () => {
           <span className="h1">{activeHole?.par ?? '-'}</span>
         </span>
       </div>
-      {activePlayerIds.map((activePlayerId) => {
-        const player = find(players, { id: activePlayerId });
-        if (!player) { return null; }
-
-        return (
-          <div key={activePlayerId} className="d-flex align-items-center py-3">
-            <div className="flex-fill">
-              <Avatar src={player.img} size="sm" className="mr-2" />
-              {player.fullName}
-            </div>
-            <div>
-              <HoleInput
-                par={activeHole?.par ?? 3}
-                scoreKey={{
-                  playerId: activePlayerId,
-                  roundId,
-                  holeNumber: activeHoleNumber,
-                }}
-                courseId={round?.courseId}
-              />
-            </div>
-          </div>
-        );
-      })}
+      <ScorecardPlayerList
+        playerIds={activePlayerIds}
+        roundId={roundId}
+        holeNumber={activeHoleNumber}
+      />
       <Dropdown className="mb-auto">
         <Dropdown.Toggle variant="white" id="player-add-dropdown">
           Add Player

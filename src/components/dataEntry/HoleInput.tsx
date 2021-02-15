@@ -57,23 +57,24 @@ const HoleInput = ({ par, scoreKey, courseId } : Props) => {
       />
       <div className="d-block d-sm-none">
         <Button
-          variant="link"
-          className="text-reset mr-1"
+          variant="white"
+          className="btn-rounded-circle mr-2"
+          size="sm"
           onClick={async () => saveScoreChange({
             score: (score ?? par) - 1,
           })}
         >
-          <i className="fe fe-minus-circle mr-1" />
+          -
         </Button>
         {score ?? '-'}
         <Button
-          variant="link"
-          className="text-reset mr-1"
-          onClick={() => saveScoreChange({
+          variant="white"
+          className="btn-rounded-circle ml-2"
+          onClick={async () => saveScoreChange({
             score: (score ?? (par - 1)) + 1,
           })}
         >
-          <i className="fe fe-plus-circle mr-1" />
+          +
         </Button>
       </div>
     </>

@@ -1,0 +1,48 @@
+query scorecardPlayerList($roundId: Int!, $playerIds: [Int!]) {
+  courses(where: { rounds: { id: { _eq: $roundId } } }) {
+    courseId: id
+  }
+  holes(where: { course: { rounds: { id: { _eq: $roundId } } } }) {
+    number
+    par
+  }
+  players(where: { id: { _in: $playerIds} }) {
+    id
+    img
+    fullName
+  }
+  scores(where: { roundId: { _eq: $roundId } }) {
+    playerId
+    holeNumber
+    score
+    putts
+  }
+}
+
+mutation scorecardPlayerListInsert($score: score_insert_input!) {
+  insertScore(object: $score) {
+    roundId
+  }
+}
+
+mutation scorecardPlayerListUpdate(
+  $scoreKey: score_pk_columns_input!,
+  $scoreUpdate: score_set_input!,
+) {
+  updateScore(
+    pk_columns: $scoreKey,
+    _set: $scoreUpdate,
+  ) {
+    roundId
+  }
+}
+
+mutation scorecardPlayerListDelete(
+  $holeNumber: Int!,
+  $playerId: Int!,
+  $roundId: Int!
+) {
+  deleteScore(holeNumber: $holeNumber, playerId: $playerId, roundId: $roundId) {
+    roundId
+  }
+}
