@@ -57,6 +57,8 @@ const processScoreUpdateItem = async (updateArgs: UpdateArgs) => {
   const deletion = isDeletion(updateArgs);
   const existing = isExistingScore(updateArgs);
 
+  // console.log('starting update: ', scoreUpdate);
+
   // do SDK request
   if (existing) {
     if (deletion) {
@@ -69,6 +71,7 @@ const processScoreUpdateItem = async (updateArgs: UpdateArgs) => {
       score: { ...scoreKey, courseId, ...scoreUpdate },
     });
   }
+  // console.log('update complete: ', scoreUpdate);
 };
 
 const useOfflineScores: UseOfflineScores = (roundId) => {
@@ -99,8 +102,12 @@ const useOfflineScores: UseOfflineScores = (roundId) => {
   // server.
   const updateScore = (updateArgs: UpdateArgs) => {
     updateCache(updateArgs);
+    // console.log('adding pending update: ', conciseUpdates([...pendingUpdates, updateArgs]));
     setPendingUpdates([...pendingUpdates, updateArgs]);
   };
+
+  // const conciseUpdates = ((updates:PendingUpdates) =>
+  // updates.map((update) => update.scoreUpdate));
 
   // Every time online status changes or the pending updates list changes
   // in (length), try to process the oldest item in the queue. If this is
@@ -111,25 +118,29 @@ const useOfflineScores: UseOfflineScores = (roundId) => {
   // TODO: is this bad that a real error may occur and we won't process again
   // until there's an offline->online switch?
   useEffect(() => {
+    // console.log('queue/online/pending change',
+    // pending, online, conciseUpdates(latestPendingUpdates.current));
     const execute = async () => {
       const updateArgs = pendingUpdates[0];
       setPending(true);
       try {
         await processScoreUpdateItem(updateArgs);
+
+        const [, ...remainingUpdates] = latestPendingUpdates.current;
+        // console.log('reducing remaining updates: ', conciseUpdates(remainingUpdates));
+        setPendingUpdates(remainingUpdates);
       } catch (e) {
         return;
       } finally {
+        // console.log('set pending to false');
         setPending(false);
       }
-
-      const [, ...remainingUpdates] = latestPendingUpdates.current;
-      setPendingUpdates(remainingUpdates);
     };
 
-    if (!pending && online && pendingUpdates[0]) {
+    if (!pending && online && latestPendingUpdates.current[0]) {
       execute();
     }
-  }, [online, latestPendingUpdates.current]);
+  }, [pending, online, latestPendingUpdates.current]);
 
   return { ...swrResult, updateScore };
 };

@@ -4735,22 +4735,6 @@ export type PlayerRoundForChart = (
   & { player?: Maybe<Pick<Player, 'nickname' | 'id' | 'img'>>, round?: Maybe<Pick<Round, 'date' | 'id'>> }
 );
 
-export type HoleInfoCardVariables = Exact<{
-  courseId: Scalars['Int'];
-}>;
-
-
-export type HoleInfoCard = { holes: Array<(
-    Pick<Hole, 'number' | 'nickname' | 'par' | 'yards' | 'handicap'>
-    & { recentInfo: Array<(
-      { avg: Scoring_Info['trailingAvgScore'], trend: Scoring_Info['scoreTrend'], count: Scoring_Info['trailingCount'] }
-      & { player?: Maybe<Pick<Player, 'nickname' | 'slug'>> }
-    )>, lifetimeInfo: Array<(
-      { avg: Scoring_Info['lifetimeAvgScore'], count: Scoring_Info['trailingCount'] }
-      & { player?: Maybe<Pick<Player, 'nickname' | 'slug'>> }
-    )> }
-  )> };
-
 export type _LeaderboardCardCourse = Pick<Course, 'slug'>;
 
 export type _LeaderboardCardPlayerRound = (
@@ -5026,6 +5010,11 @@ export type CourseRoundsPageVariables = Exact<{
 
 export type CourseRoundsPage = { courses: Array<CourseForRoundsPage> };
 
+export type CourseRoundsPagePathsVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CourseRoundsPagePaths = { courses: Array<Pick<Course, 'slug'>> };
+
 export type ScorecardPageNewVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -5152,40 +5141,6 @@ export const CourseForRoundsPage = gql`
   slug
   name
   img
-}
-    `;
-export const HoleInfoCardDocument = gql`
-    query holeInfoCard($courseId: Int!) {
-  holes(where: {courseId: {_eq: $courseId}}, order_by: {number: asc}) {
-    number
-    nickname
-    par
-    yards
-    handicap
-    recentInfo: scoringInfo(
-      order_by: {playerId: asc, date: desc}
-      distinct_on: playerId
-    ) {
-      avg: trailingAvgScore
-      trend: scoreTrend
-      count: trailingCount
-      player {
-        nickname
-        slug
-      }
-    }
-    lifetimeInfo: scoringInfo(
-      order_by: {playerId: asc, date: desc}
-      distinct_on: playerId
-    ) {
-      avg: lifetimeAvgScore
-      count: trailingCount
-      player {
-        nickname
-        slug
-      }
-    }
-  }
 }
     `;
 export const LeaderboardCardDocument = gql`
@@ -5501,6 +5456,13 @@ export const CourseRoundsPageDocument = gql`
   }
 }
     ${CourseForRoundsPage}`;
+export const CourseRoundsPagePathsDocument = gql`
+    query courseRoundsPagePaths {
+  courses {
+    slug
+  }
+}
+    `;
 export const ScorecardPageNewDocument = gql`
     query scorecardPageNEW($slug: String!) {
   courses(where: {slug: {_eq: $slug}}) {
@@ -5520,9 +5482,6 @@ export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    holeInfoCard(variables: HoleInfoCardVariables): Promise<HoleInfoCard> {
-      return withWrapper(() => client.request<HoleInfoCard>(print(HoleInfoCardDocument), variables));
-    },
     leaderboardCard(variables: LeaderboardCardVariables): Promise<LeaderboardCard> {
       return withWrapper(() => client.request<LeaderboardCard>(print(LeaderboardCardDocument), variables));
     },
@@ -5603,6 +5562,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     courseRoundsPage(variables: CourseRoundsPageVariables): Promise<CourseRoundsPage> {
       return withWrapper(() => client.request<CourseRoundsPage>(print(CourseRoundsPageDocument), variables));
+    },
+    courseRoundsPagePaths(variables?: CourseRoundsPagePathsVariables): Promise<CourseRoundsPagePaths> {
+      return withWrapper(() => client.request<CourseRoundsPagePaths>(print(CourseRoundsPagePathsDocument), variables));
     },
     scorecardPageNEW(variables: ScorecardPageNewVariables): Promise<ScorecardPageNew> {
       return withWrapper(() => client.request<ScorecardPageNew>(print(ScorecardPageNewDocument), variables));
