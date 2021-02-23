@@ -6,6 +6,7 @@ import partition from 'lodash/partition';
 import some from 'lodash/some';
 import useLatest from 'use-latest';
 
+import { mutateCallback } from 'swr/dist/types';
 import sdk, { useSdk, getCacheKey } from '../../sdk';
 import {
   OfflineRoundScores,
@@ -19,27 +20,32 @@ type UpdateArgs = {
   courseId: number,
 };
 type PendingUpdates = Array<UpdateArgs>;
+type ScoreFromQuery = OfflineRoundScores['scores'][0];
+type IsDeletion = (updateArgs: UpdateArgs) => boolean;
+type IsExistingScore = (updateArgs: UpdateArgs) => boolean;
+type UpdateCache = (updateAgs: UpdateArgs) => void;
+type ProcessScoreUpdateItem = (updateArgs: UpdateArgs) => Promise<void>;
 type UseOfflineScores = (roundId: number) => responseInterface<OfflineRoundScores, any> & {
   updateScore: (updateAgs: UpdateArgs) => void,
 };
 
 const QUEUE_STORAGE_KEY = 'useOfflineScores:Queue';
 const SDK_FUNC = sdk.offlineRoundScores;
-const isDeletion = (updateArgs: UpdateArgs) => updateArgs.scoreUpdate.score === null;
-const isExistingScore = (updateArgs: UpdateArgs) => {
+const isDeletion: IsDeletion = (updateArgs) => updateArgs.scoreUpdate.score === null;
+const isExistingScore: IsExistingScore = (updateArgs) => {
   const cacheKey = getCacheKey(SDK_FUNC, { roundId: updateArgs.scoreKey.roundId });
   const { scores = [] } = cache.get(cacheKey);
 
   return some(scores, updateArgs.scoreKey);
 };
 
-const updateCache = ({ scoreKey, scoreUpdate }: UpdateArgs) => {
+const updateCache: UpdateCache = ({ scoreKey, scoreUpdate }) => {
   const cacheKey = getCacheKey(SDK_FUNC, { roundId: scoreKey.roundId });
   const deletingScore = !scoreUpdate.score;
 
-  const mutateKey = (data) => {
+  const mutateKey: mutateCallback<OfflineRoundScores> = (data) => {
     const { scores = [] } = data ?? {};
-    const [[score], otherScores] = partition(scores, scoreKey);
+    const [[score], otherScores] = partition<ScoreFromQuery>(scores, scoreKey);
 
     return {
       scores: [
@@ -52,12 +58,10 @@ const updateCache = ({ scoreKey, scoreUpdate }: UpdateArgs) => {
   mutate(cacheKey, mutateKey, false);
 };
 
-const processScoreUpdateItem = async (updateArgs: UpdateArgs) => {
+const processScoreUpdateItem: ProcessScoreUpdateItem = async (updateArgs) => {
   const { scoreKey, scoreUpdate, courseId } = updateArgs;
   const deletion = isDeletion(updateArgs);
   const existing = isExistingScore(updateArgs);
-
-  // console.log('starting update: ', scoreUpdate);
 
   // do SDK request
   if (existing) {
@@ -71,7 +75,6 @@ const processScoreUpdateItem = async (updateArgs: UpdateArgs) => {
       score: { ...scoreKey, courseId, ...scoreUpdate },
     });
   }
-  // console.log('update complete: ', scoreUpdate);
 };
 
 const useOfflineScores: UseOfflineScores = (roundId) => {
@@ -102,12 +105,8 @@ const useOfflineScores: UseOfflineScores = (roundId) => {
   // server.
   const updateScore = (updateArgs: UpdateArgs) => {
     updateCache(updateArgs);
-    // console.log('adding pending update: ', conciseUpdates([...pendingUpdates, updateArgs]));
     setPendingUpdates([...pendingUpdates, updateArgs]);
   };
-
-  // const conciseUpdates = ((updates:PendingUpdates) =>
-  // updates.map((update) => update.scoreUpdate));
 
   // Every time online status changes or the pending updates list changes
   // in (length), try to process the oldest item in the queue. If this is
@@ -115,11 +114,9 @@ const useOfflineScores: UseOfflineScores = (roundId) => {
   // all over again. If the update errors, then stop, and you'll try it again
   // the next time the user goes online.
   //
-  // TODO: is this bad that a real error may occur and we won't process again
-  // until there's an offline->online switch?
+  // TODO: is this bad that when an error happens we keep trying to replay that
+  // same operation over and over again.
   useEffect(() => {
-    // console.log('queue/online/pending change',
-    // pending, online, conciseUpdates(latestPendingUpdates.current));
     const execute = async () => {
       const updateArgs = pendingUpdates[0];
       setPending(true);
@@ -127,12 +124,12 @@ const useOfflineScores: UseOfflineScores = (roundId) => {
         await processScoreUpdateItem(updateArgs);
 
         const [, ...remainingUpdates] = latestPendingUpdates.current;
-        // console.log('reducing remaining updates: ', conciseUpdates(remainingUpdates));
         setPendingUpdates(remainingUpdates);
       } catch (e) {
         return;
       } finally {
-        // console.log('set pending to false');
+        // Do this last since it reliably triggers the hook to run again.
+        // Calling `setPendingUpdates` doesn't seem to do that.
         setPending(false);
       }
     };
