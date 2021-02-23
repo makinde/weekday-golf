@@ -11,8 +11,8 @@ import RoundCardList from '../../components/card/RoundCardList';
 import PageHeader from '../../components/utils/PageHeader';
 
 type PageQuery = { courseSlug: string };
-type StaticProps = GetStaticProps<Props, PageQuery>;
 type Props = { course: CourseForRoundsPage };
+type StaticProps = GetStaticProps<Props, PageQuery>;
 
 const CourseRoundsPage = ({ course }: Props) => (
   <Layout
