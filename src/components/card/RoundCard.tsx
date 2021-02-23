@@ -47,7 +47,7 @@ const RoundCard = ({ round, title }: Props) => (
                 `$${round.roundBounty} round winner`
               )}
               <div>
-                <Link href={`/scorecard/${round.id}`}>
+                <Link href={`/${round.course.slug}/scorecard/?roundId=${round.id}`}>
                   <a>
                     edit scores
                   </a>
