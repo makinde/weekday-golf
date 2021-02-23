@@ -1,0 +1,37 @@
+query offlineRoundScores($roundId: Int!) {
+  scores(where: { roundId: { _eq: $roundId } }) {
+    playerId
+    holeNumber
+    roundId  # include the round number to have full primary key returned
+    score
+    putts
+  }
+}
+
+mutation offlineRoundScoresInsert($score: score_insert_input!) {
+  insertScore(object: $score) {
+    roundId
+  }
+}
+
+mutation offlineRoundScoresUpdate(
+  $scoreKey: score_pk_columns_input!,
+  $scoreUpdate: score_set_input!,
+) {
+  updateScore(
+    pk_columns: $scoreKey,
+    _set: $scoreUpdate,
+  ) {
+    roundId
+  }
+}
+
+mutation offlineRoundScoresDelete(
+  $holeNumber: Int!,
+  $playerId: Int!,
+  $roundId: Int!
+) {
+  deleteScore(holeNumber: $holeNumber, playerId: $playerId, roundId: $roundId) {
+    roundId
+  }
+}

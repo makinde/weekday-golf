@@ -1,0 +1,20 @@
+query scorecardPlayerInfo($courseId: Int!, $playerId: Int!) {
+  player(id: $playerId) {
+    id
+    img
+    firstName
+    lastName
+    fullName
+    scoringInfo(
+      where: { courseId: { _eq: $courseId } },
+      order_by: { holeNumber: asc, date: desc },
+      distinct_on: holeNumber
+    ) {
+      trailingAvgScore
+      lifetimeAvgScore
+      scoreTrend
+      holeNumber
+    }
+  }
+}
+
