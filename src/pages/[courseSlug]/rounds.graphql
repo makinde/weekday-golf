@@ -11,9 +11,3 @@ query courseRoundsPage($slug: String!) {
     ...courseForRoundsPage
   }
 }
-
-query courseRoundsPagePaths {
-  courses {
-    slug
-  }
-}
