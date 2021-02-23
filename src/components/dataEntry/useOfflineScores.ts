@@ -32,11 +32,11 @@ type UseOfflineScores = (roundId: number) => responseInterface<OfflineRoundScore
 const QUEUE_STORAGE_KEY = 'useOfflineScores:Queue';
 const SDK_FUNC = sdk.offlineRoundScores;
 const isDeletion: IsDeletion = (updateArgs) => updateArgs.scoreUpdate.score === null;
-const isExistingScore: IsExistingScore = (updateArgs) => {
-  const cacheKey = getCacheKey(SDK_FUNC, { roundId: updateArgs.scoreKey.roundId });
+const isExistingScore: IsExistingScore = ({ scoreKey }) => {
+  const cacheKey = getCacheKey(SDK_FUNC, { roundId: scoreKey.roundId });
   const { scores = [] } = cache.get(cacheKey);
 
-  return some(scores, updateArgs.scoreKey);
+  return some(scores, scoreKey);
 };
 
 const updateCache: UpdateCache = ({ scoreKey, scoreUpdate }) => {
