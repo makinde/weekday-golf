@@ -34,7 +34,7 @@ const PlayerSelectorModal = ({
         </Card.Header>
         <Modal.Body>
           {players.map(({ id, fullName }) => (
-            <div className="custom-control custom-checkbox checklist-control">
+            <div key={id} className="custom-control custom-checkbox checklist-control">
               <input
                 className="custom-control-input"
                 id={`checklist-${id}`}
