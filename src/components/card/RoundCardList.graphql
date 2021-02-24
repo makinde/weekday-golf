@@ -1,12 +1,17 @@
 query roundCardList($courseId: Int, $playerId: Int, $limit: Int) {
-  rounds(
-    where: {
-      courseId: { _eq: $courseId },
-      playerRounds: { playerId: { _eq: $playerId } },
-    },
-    order_by: { date: desc },
-    limit: $limit,
-  ) {
+  rounds(where: {
+    _and: [
+      { courseId: {_eq: $courseId} },
+      {
+        _or: [
+        	{ scores: { playerId: {_eq: $playerId} } },
+        	{ _not: { scores: {} } },
+        ],
+      },
+    ],
+  },
+  order_by: {date: desc},
+  limit: $limit) {
     id
     course {
       slug

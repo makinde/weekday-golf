@@ -32,7 +32,14 @@ const RoundTable = ({
     <tbody>
       {playerRounds.map((playerRound) => {
         const {
-          player, skins, scores, roundBountyWinner, totalWinnings,
+          player,
+          skins,
+          scores,
+          roundBountyWinner,
+          totalWinnings,
+          relativeScore,
+          rawRelativeScore,
+          complete,
         } = playerRound;
 
         return (
@@ -69,7 +76,15 @@ const RoundTable = ({
               [styles.won]: roundBountyWinner,
             })}
             >
-              <RelativeScore value={playerRound.relativeScore} />
+              {complete ? (
+                <RelativeScore value={relativeScore} />
+              ) : (
+                <>
+                  (
+                  <RelativeScore value={rawRelativeScore} />
+                  )
+                </>
+              )}
             </td>
           </tr>
         );

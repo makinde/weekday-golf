@@ -1868,6 +1868,7 @@ export type Player_Round = {
   player?: Maybe<Player>;
   playerCourseRank?: Maybe<Scalars['bigint']>;
   playerId?: Maybe<Scalars['Int']>;
+  rawRelativeScore?: Maybe<Scalars['bigint']>;
   relativeScore?: Maybe<Scalars['bigint']>;
   /** An object relationship */
   round?: Maybe<Round>;
@@ -1978,6 +1979,7 @@ export type Player_Round_Avg_Fields = {
   par?: Maybe<Scalars['Float']>;
   playerCourseRank?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
+  rawRelativeScore?: Maybe<Scalars['Float']>;
   relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
   roundWinnings?: Maybe<Scalars['Float']>;
@@ -1993,6 +1995,7 @@ export type Player_Round_Avg_Order_By = {
   par?: Maybe<Order_By>;
   playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
+  rawRelativeScore?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   roundWinnings?: Maybe<Order_By>;
@@ -2014,6 +2017,7 @@ export type Player_Round_Bool_Exp = {
   player?: Maybe<Player_Bool_Exp>;
   playerCourseRank?: Maybe<Bigint_Comparison_Exp>;
   playerId?: Maybe<Int_Comparison_Exp>;
+  rawRelativeScore?: Maybe<Bigint_Comparison_Exp>;
   relativeScore?: Maybe<Bigint_Comparison_Exp>;
   round?: Maybe<Round_Bool_Exp>;
   roundBountyWinner?: Maybe<Boolean_Comparison_Exp>;
@@ -2034,6 +2038,7 @@ export type Player_Round_Max_Fields = {
   par?: Maybe<Scalars['bigint']>;
   playerCourseRank?: Maybe<Scalars['bigint']>;
   playerId?: Maybe<Scalars['Int']>;
+  rawRelativeScore?: Maybe<Scalars['bigint']>;
   relativeScore?: Maybe<Scalars['bigint']>;
   roundId?: Maybe<Scalars['Int']>;
   roundWinnings?: Maybe<Scalars['numeric']>;
@@ -2049,6 +2054,7 @@ export type Player_Round_Max_Order_By = {
   par?: Maybe<Order_By>;
   playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
+  rawRelativeScore?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   roundWinnings?: Maybe<Order_By>;
@@ -2064,6 +2070,7 @@ export type Player_Round_Min_Fields = {
   par?: Maybe<Scalars['bigint']>;
   playerCourseRank?: Maybe<Scalars['bigint']>;
   playerId?: Maybe<Scalars['Int']>;
+  rawRelativeScore?: Maybe<Scalars['bigint']>;
   relativeScore?: Maybe<Scalars['bigint']>;
   roundId?: Maybe<Scalars['Int']>;
   roundWinnings?: Maybe<Scalars['numeric']>;
@@ -2079,6 +2086,7 @@ export type Player_Round_Min_Order_By = {
   par?: Maybe<Order_By>;
   playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
+  rawRelativeScore?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   roundWinnings?: Maybe<Order_By>;
@@ -2097,6 +2105,7 @@ export type Player_Round_Order_By = {
   player?: Maybe<Player_Order_By>;
   playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
+  rawRelativeScore?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   round?: Maybe<Round_Order_By>;
   roundBountyWinner?: Maybe<Order_By>;
@@ -2125,6 +2134,8 @@ export enum Player_Round_Select_Column {
   /** column name */
   PlayerId = 'playerId',
   /** column name */
+  RawRelativeScore = 'rawRelativeScore',
+  /** column name */
   RelativeScore = 'relativeScore',
   /** column name */
   RoundBountyWinner = 'roundBountyWinner',
@@ -2149,6 +2160,7 @@ export type Player_Round_Stddev_Fields = {
   par?: Maybe<Scalars['Float']>;
   playerCourseRank?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
+  rawRelativeScore?: Maybe<Scalars['Float']>;
   relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
   roundWinnings?: Maybe<Scalars['Float']>;
@@ -2164,6 +2176,7 @@ export type Player_Round_Stddev_Order_By = {
   par?: Maybe<Order_By>;
   playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
+  rawRelativeScore?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   roundWinnings?: Maybe<Order_By>;
@@ -2179,6 +2192,7 @@ export type Player_Round_Stddev_Pop_Fields = {
   par?: Maybe<Scalars['Float']>;
   playerCourseRank?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
+  rawRelativeScore?: Maybe<Scalars['Float']>;
   relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
   roundWinnings?: Maybe<Scalars['Float']>;
@@ -2194,6 +2208,7 @@ export type Player_Round_Stddev_Pop_Order_By = {
   par?: Maybe<Order_By>;
   playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
+  rawRelativeScore?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   roundWinnings?: Maybe<Order_By>;
@@ -2209,6 +2224,7 @@ export type Player_Round_Stddev_Samp_Fields = {
   par?: Maybe<Scalars['Float']>;
   playerCourseRank?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
+  rawRelativeScore?: Maybe<Scalars['Float']>;
   relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
   roundWinnings?: Maybe<Scalars['Float']>;
@@ -2224,6 +2240,7 @@ export type Player_Round_Stddev_Samp_Order_By = {
   par?: Maybe<Order_By>;
   playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
+  rawRelativeScore?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   roundWinnings?: Maybe<Order_By>;
@@ -2239,6 +2256,7 @@ export type Player_Round_Sum_Fields = {
   par?: Maybe<Scalars['bigint']>;
   playerCourseRank?: Maybe<Scalars['bigint']>;
   playerId?: Maybe<Scalars['Int']>;
+  rawRelativeScore?: Maybe<Scalars['bigint']>;
   relativeScore?: Maybe<Scalars['bigint']>;
   roundId?: Maybe<Scalars['Int']>;
   roundWinnings?: Maybe<Scalars['numeric']>;
@@ -2254,6 +2272,7 @@ export type Player_Round_Sum_Order_By = {
   par?: Maybe<Order_By>;
   playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
+  rawRelativeScore?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   roundWinnings?: Maybe<Order_By>;
@@ -2269,6 +2288,7 @@ export type Player_Round_Var_Pop_Fields = {
   par?: Maybe<Scalars['Float']>;
   playerCourseRank?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
+  rawRelativeScore?: Maybe<Scalars['Float']>;
   relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
   roundWinnings?: Maybe<Scalars['Float']>;
@@ -2284,6 +2304,7 @@ export type Player_Round_Var_Pop_Order_By = {
   par?: Maybe<Order_By>;
   playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
+  rawRelativeScore?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   roundWinnings?: Maybe<Order_By>;
@@ -2299,6 +2320,7 @@ export type Player_Round_Var_Samp_Fields = {
   par?: Maybe<Scalars['Float']>;
   playerCourseRank?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
+  rawRelativeScore?: Maybe<Scalars['Float']>;
   relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
   roundWinnings?: Maybe<Scalars['Float']>;
@@ -2314,6 +2336,7 @@ export type Player_Round_Var_Samp_Order_By = {
   par?: Maybe<Order_By>;
   playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
+  rawRelativeScore?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   roundWinnings?: Maybe<Order_By>;
@@ -2329,6 +2352,7 @@ export type Player_Round_Variance_Fields = {
   par?: Maybe<Scalars['Float']>;
   playerCourseRank?: Maybe<Scalars['Float']>;
   playerId?: Maybe<Scalars['Float']>;
+  rawRelativeScore?: Maybe<Scalars['Float']>;
   relativeScore?: Maybe<Scalars['Float']>;
   roundId?: Maybe<Scalars['Float']>;
   roundWinnings?: Maybe<Scalars['Float']>;
@@ -2344,6 +2368,7 @@ export type Player_Round_Variance_Order_By = {
   par?: Maybe<Order_By>;
   playerCourseRank?: Maybe<Order_By>;
   playerId?: Maybe<Order_By>;
+  rawRelativeScore?: Maybe<Order_By>;
   relativeScore?: Maybe<Order_By>;
   roundId?: Maybe<Order_By>;
   roundWinnings?: Maybe<Order_By>;
@@ -4808,7 +4833,7 @@ export type RoundForTable = (
     Pick<Course, 'slug'>
     & { holes: Array<HoleForScoresHeader> }
   ), playerRounds: Array<(
-    Pick<Player_Round, 'relativeScore' | 'roundBountyWinner' | 'totalWinnings'>
+    Pick<Player_Round, 'relativeScore' | 'rawRelativeScore' | 'complete' | 'roundBountyWinner' | 'totalWinnings'>
     & { player?: Maybe<Pick<Player, 'nickname' | 'id' | 'slug'>>, skins: Array<Pick<Skins, 'holeNumber' | 'won'>>, scores: Array<Pick<Score, 'holeNumber' | 'score'>> }
   )> }
 );
@@ -5078,6 +5103,8 @@ export const RoundForTable = gql`
   }
   playerRounds(order_by: {relativeScore: asc}) {
     relativeScore
+    rawRelativeScore
+    complete
     roundBountyWinner
     totalWinnings
     player {
@@ -5201,7 +5228,7 @@ export const ParticipationStatsCardDocument = gql`
 export const RoundCardListDocument = gql`
     query roundCardList($courseId: Int, $playerId: Int, $limit: Int) {
   rounds(
-    where: {courseId: {_eq: $courseId}, playerRounds: {playerId: {_eq: $playerId}}}
+    where: {_and: [{courseId: {_eq: $courseId}}, {_or: [{scores: {playerId: {_eq: $playerId}}}, {_not: {scores: {}}}]}]}
     order_by: {date: desc}
     limit: $limit
   ) {

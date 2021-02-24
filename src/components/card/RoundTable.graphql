@@ -10,6 +10,8 @@ fragment roundForTable on round {
   }
   playerRounds(order_by: { relativeScore: asc }) {
     relativeScore
+    rawRelativeScore
+    complete
     roundBountyWinner
     totalWinnings
     player {
