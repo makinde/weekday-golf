@@ -4914,6 +4914,11 @@ export type NewRoundButtonInsertVariables = Exact<{
 
 export type NewRoundButtonInsert = { insertRound?: Maybe<{ roundId: Round['id'] }> };
 
+export type PlayerSelectModalVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PlayerSelectModal = { players: Array<Pick<Player, 'id' | 'fullName'>> };
+
 export type ScorecardPlayerInfoVariables = Exact<{
   courseId: Scalars['Int'];
   playerId: Scalars['Int'];
@@ -5010,19 +5015,13 @@ export type CourseRoundsPageVariables = Exact<{
 
 export type CourseRoundsPage = { courses: Array<CourseForRoundsPage> };
 
-export type CourseRoundsPagePathsVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CourseRoundsPagePaths = { courses: Array<Pick<Course, 'slug'>> };
-
 export type ScorecardPageNewVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
 export type ScorecardPageNew = { courses: Array<(
-    Pick<Course, 'slug'>
-    & { holes: Array<Pick<Hole, 'number' | 'par'>> }
+    { holes: Array<Pick<Hole, 'number' | 'par'>> }
     & CourseForScorecardPlayerList
   )> };
 
@@ -5344,6 +5343,14 @@ export const NewRoundButtonInsertDocument = gql`
   }
 }
     `;
+export const PlayerSelectModalDocument = gql`
+    query playerSelectModal {
+  players {
+    id
+    fullName
+  }
+}
+    `;
 export const ScorecardPlayerInfoDocument = gql`
     query scorecardPlayerInfo($courseId: Int!, $playerId: Int!) {
   player(id: $playerId) {
@@ -5456,17 +5463,9 @@ export const CourseRoundsPageDocument = gql`
   }
 }
     ${CourseForRoundsPage}`;
-export const CourseRoundsPagePathsDocument = gql`
-    query courseRoundsPagePaths {
-  courses {
-    slug
-  }
-}
-    `;
 export const ScorecardPageNewDocument = gql`
     query scorecardPageNEW($slug: String!) {
   courses(where: {slug: {_eq: $slug}}) {
-    slug
     holes {
       number
       par
@@ -5530,6 +5529,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     newRoundButtonInsert(variables: NewRoundButtonInsertVariables): Promise<NewRoundButtonInsert> {
       return withWrapper(() => client.request<NewRoundButtonInsert>(print(NewRoundButtonInsertDocument), variables));
     },
+    playerSelectModal(variables?: PlayerSelectModalVariables): Promise<PlayerSelectModal> {
+      return withWrapper(() => client.request<PlayerSelectModal>(print(PlayerSelectModalDocument), variables));
+    },
     scorecardPlayerInfo(variables: ScorecardPlayerInfoVariables): Promise<ScorecardPlayerInfo> {
       return withWrapper(() => client.request<ScorecardPlayerInfo>(print(ScorecardPlayerInfoDocument), variables));
     },
@@ -5562,9 +5564,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     courseRoundsPage(variables: CourseRoundsPageVariables): Promise<CourseRoundsPage> {
       return withWrapper(() => client.request<CourseRoundsPage>(print(CourseRoundsPageDocument), variables));
-    },
-    courseRoundsPagePaths(variables?: CourseRoundsPagePathsVariables): Promise<CourseRoundsPagePaths> {
-      return withWrapper(() => client.request<CourseRoundsPagePaths>(print(CourseRoundsPagePathsDocument), variables));
     },
     scorecardPageNEW(variables: ScorecardPageNewVariables): Promise<ScorecardPageNew> {
       return withWrapper(() => client.request<ScorecardPageNew>(print(ScorecardPageNewDocument), variables));

@@ -1,0 +1,6 @@
+query playerSelectModal {
+  players {
+    id
+    fullName
+  }
+}

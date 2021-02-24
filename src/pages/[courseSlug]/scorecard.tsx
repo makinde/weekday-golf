@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  ToggleButtonGroup, ToggleButton,
+  ToggleButtonGroup, ToggleButton, Button,
 } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import find from 'lodash/find';
@@ -13,6 +13,7 @@ import Layout from '../../components/utils/Layout';
 import sdk from '../../sdk';
 import ScorecardRoundInfo from '../../components/dataEntry/ScorecardRoundInfo';
 import ScorecardPlayerList from '../../components/dataEntry/ScorecardPlayerList';
+import PlayerSelectorModal from '../../components/dataEntry/PlayerSelectorModal';
 import { ScorecardPageNew } from '../../types';
 
 type PageQuery = { courseSlug: string };
@@ -20,14 +21,15 @@ type Props = { course: ScorecardPageNew['courses'][0] };
 type StaticProps = GetStaticProps<Props, PageQuery>;
 
 const ScorecardPage = ({ course }: Props) => {
-  const { query, replace } = useRouter();
+  const { query, pathname, replace } = useRouter();
 
-  const { slug: courseSlug, holes } = course;
+  const { holes } = course;
 
   const roundId = toInteger(query.roundId);
   const activePlayerIds = castArray(query.actives).filter((p) => !!p).map(toInteger);
   const activeHoleNumber = toInteger(query.hole) || 1;
   const activeHole = find(holes, { number: activeHoleNumber });
+  const [showPlayerSelector, setShowPlayerSelector] = useState(false);
 
   return (
     <Layout title="Overview">
@@ -50,18 +52,30 @@ const ScorecardPage = ({ course }: Props) => {
           holeNumber={activeHoleNumber}
         />
       )}
+      <Button
+        block
+        onClick={() => setShowPlayerSelector(true)}
+        variant="light"
+        className="mb-3"
+      >
+        Edit Players
+      </Button>
+      <PlayerSelectorModal
+        playerIds={activePlayerIds}
+        setPlayerIds={(newPlayerIds) => replace({
+          pathname,
+          query: { ...query, actives: newPlayerIds },
+        }, undefined, { shallow: true })}
+        onHide={() => setShowPlayerSelector(false)}
+        show={showPlayerSelector}
+      />
       <ToggleButtonGroup
         name="hole_selector"
         type="radio"
         value={activeHoleNumber}
         onChange={(value) => replace({
-          pathname: '/[courseSlug]/scorecard',
-          query: {
-            courseSlug,
-            roundId,
-            actives: activePlayerIds,
-            hole: value,
-          },
+          pathname,
+          query: { ...query, hole: value },
         }, undefined, { shallow: true })}
       >
         {holes.map((hole) => (
