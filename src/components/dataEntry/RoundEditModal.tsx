@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import useSWR from 'swr';
 import {
   Button, Card, Modal, ModalProps,
 } from 'react-bootstrap';
 
 import CardHeaderTitle from '../utils/CardHeaderTitle';
-import sdk from '../../sdk';
 
 type Props = ModalProps & {
   roundId: number,
 };
 
 const RoundEditModal = ({ roundId, onHide, ...rest }: Props) => {
-  const { data, mutate } = useSWR(
+  useSWR(
     ['RoundEditModal', roundId],
     () => {}, // () => sdk.roundEditModal({ roundId }),
   );
@@ -28,7 +27,7 @@ const RoundEditModal = ({ roundId, onHide, ...rest }: Props) => {
             <span aria-hidden="true">×</span>
           </Button>
         </Card.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Body>Woohoo, you&apos;re reading this text in a modal!</Modal.Body>
         <Card.Footer>
           <Button variant="secondary" onClick={onHide}>
             Cancel
