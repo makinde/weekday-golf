@@ -835,6 +835,232 @@ export type Course_Variance_Order_By = {
   id?: Maybe<Order_By>;
 };
 
+/** columns and relationships of "foobar" */
+export type Foobar = {
+  afafdaf: Scalars['Int'];
+};
+
+/** aggregated selection of "foobar" */
+export type Foobar_Aggregate = {
+  aggregate?: Maybe<Foobar_Aggregate_Fields>;
+  nodes: Array<Foobar>;
+};
+
+/** aggregate fields of "foobar" */
+export type Foobar_Aggregate_Fields = {
+  avg?: Maybe<Foobar_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Foobar_Max_Fields>;
+  min?: Maybe<Foobar_Min_Fields>;
+  stddev?: Maybe<Foobar_Stddev_Fields>;
+  stddev_pop?: Maybe<Foobar_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Foobar_Stddev_Samp_Fields>;
+  sum?: Maybe<Foobar_Sum_Fields>;
+  var_pop?: Maybe<Foobar_Var_Pop_Fields>;
+  var_samp?: Maybe<Foobar_Var_Samp_Fields>;
+  variance?: Maybe<Foobar_Variance_Fields>;
+};
+
+
+/** aggregate fields of "foobar" */
+export type Foobar_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Foobar_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "foobar" */
+export type Foobar_Aggregate_Order_By = {
+  avg?: Maybe<Foobar_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Foobar_Max_Order_By>;
+  min?: Maybe<Foobar_Min_Order_By>;
+  stddev?: Maybe<Foobar_Stddev_Order_By>;
+  stddev_pop?: Maybe<Foobar_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Foobar_Stddev_Samp_Order_By>;
+  sum?: Maybe<Foobar_Sum_Order_By>;
+  var_pop?: Maybe<Foobar_Var_Pop_Order_By>;
+  var_samp?: Maybe<Foobar_Var_Samp_Order_By>;
+  variance?: Maybe<Foobar_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "foobar" */
+export type Foobar_Arr_Rel_Insert_Input = {
+  data: Array<Foobar_Insert_Input>;
+  on_conflict?: Maybe<Foobar_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Foobar_Avg_Fields = {
+  afafdaf?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "foobar" */
+export type Foobar_Avg_Order_By = {
+  afafdaf?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "foobar". All fields are combined with a logical 'AND'. */
+export type Foobar_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Foobar_Bool_Exp>>>;
+  _not?: Maybe<Foobar_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Foobar_Bool_Exp>>>;
+  afafdaf?: Maybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "foobar" */
+export enum Foobar_Constraint {
+  /** unique or primary key constraint */
+  FoobarPkey = 'foobar_pkey'
+}
+
+/** input type for incrementing integer column in table "foobar" */
+export type Foobar_Inc_Input = {
+  afafdaf?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "foobar" */
+export type Foobar_Insert_Input = {
+  afafdaf?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Foobar_Max_Fields = {
+  afafdaf?: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "foobar" */
+export type Foobar_Max_Order_By = {
+  afafdaf?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Foobar_Min_Fields = {
+  afafdaf?: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "foobar" */
+export type Foobar_Min_Order_By = {
+  afafdaf?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "foobar" */
+export type Foobar_Mutation_Response = {
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Foobar>;
+};
+
+/** input type for inserting object relation for remote table "foobar" */
+export type Foobar_Obj_Rel_Insert_Input = {
+  data: Foobar_Insert_Input;
+  on_conflict?: Maybe<Foobar_On_Conflict>;
+};
+
+/** on conflict condition type for table "foobar" */
+export type Foobar_On_Conflict = {
+  constraint: Foobar_Constraint;
+  update_columns: Array<Foobar_Update_Column>;
+  where?: Maybe<Foobar_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "foobar" */
+export type Foobar_Order_By = {
+  afafdaf?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "foobar" */
+export type Foobar_Pk_Columns_Input = {
+  afafdaf: Scalars['Int'];
+};
+
+/** select columns of table "foobar" */
+export enum Foobar_Select_Column {
+  /** column name */
+  Afafdaf = 'afafdaf'
+}
+
+/** input type for updating data in table "foobar" */
+export type Foobar_Set_Input = {
+  afafdaf?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Foobar_Stddev_Fields = {
+  afafdaf?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "foobar" */
+export type Foobar_Stddev_Order_By = {
+  afafdaf?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Foobar_Stddev_Pop_Fields = {
+  afafdaf?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "foobar" */
+export type Foobar_Stddev_Pop_Order_By = {
+  afafdaf?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Foobar_Stddev_Samp_Fields = {
+  afafdaf?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "foobar" */
+export type Foobar_Stddev_Samp_Order_By = {
+  afafdaf?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Foobar_Sum_Fields = {
+  afafdaf?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "foobar" */
+export type Foobar_Sum_Order_By = {
+  afafdaf?: Maybe<Order_By>;
+};
+
+/** update columns of table "foobar" */
+export enum Foobar_Update_Column {
+  /** column name */
+  Afafdaf = 'afafdaf'
+}
+
+/** aggregate var_pop on columns */
+export type Foobar_Var_Pop_Fields = {
+  afafdaf?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "foobar" */
+export type Foobar_Var_Pop_Order_By = {
+  afafdaf?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Foobar_Var_Samp_Fields = {
+  afafdaf?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "foobar" */
+export type Foobar_Var_Samp_Order_By = {
+  afafdaf?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Foobar_Variance_Fields = {
+  afafdaf?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "foobar" */
+export type Foobar_Variance_Order_By = {
+  afafdaf?: Maybe<Order_By>;
+};
+
 /** columns and relationships of "hole" */
 export type Hole = {
   /** An object relationship */
@@ -1275,6 +1501,10 @@ export type Mutation_Root = {
   deleteScore?: Maybe<Score>;
   /** delete data from the table: "score" */
   deleteScores?: Maybe<Score_Mutation_Response>;
+  /** delete data from the table: "foobar" */
+  delete_foobar?: Maybe<Foobar_Mutation_Response>;
+  /** delete single row from the table: "foobar" */
+  delete_foobar_by_pk?: Maybe<Foobar>;
   /** insert a single row into the table: "course" */
   insertCourse?: Maybe<Course>;
   /** insert data into the table: "course" */
@@ -1295,6 +1525,10 @@ export type Mutation_Root = {
   insertScore?: Maybe<Score>;
   /** insert data into the table: "score" */
   insertScores?: Maybe<Score_Mutation_Response>;
+  /** insert data into the table: "foobar" */
+  insert_foobar?: Maybe<Foobar_Mutation_Response>;
+  /** insert a single row into the table: "foobar" */
+  insert_foobar_one?: Maybe<Foobar>;
   /** update single row of the table: "course" */
   updateCourse?: Maybe<Course>;
   /** update data of the table: "course" */
@@ -1315,6 +1549,10 @@ export type Mutation_Root = {
   updateScore?: Maybe<Score>;
   /** update data of the table: "score" */
   updateScores?: Maybe<Score_Mutation_Response>;
+  /** update data of the table: "foobar" */
+  update_foobar?: Maybe<Foobar_Mutation_Response>;
+  /** update single row of the table: "foobar" */
+  update_foobar_by_pk?: Maybe<Foobar>;
 };
 
 
@@ -1378,6 +1616,18 @@ export type Mutation_RootDeleteScoreArgs = {
 /** mutation root */
 export type Mutation_RootDeleteScoresArgs = {
   where: Score_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_FoobarArgs = {
+  where: Foobar_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Foobar_By_PkArgs = {
+  afafdaf: Scalars['Int'];
 };
 
 
@@ -1448,6 +1698,20 @@ export type Mutation_RootInsertScoreArgs = {
 export type Mutation_RootInsertScoresArgs = {
   objects: Array<Score_Insert_Input>;
   on_conflict?: Maybe<Score_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_FoobarArgs = {
+  objects: Array<Foobar_Insert_Input>;
+  on_conflict?: Maybe<Foobar_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Foobar_OneArgs = {
+  object: Foobar_Insert_Input;
+  on_conflict?: Maybe<Foobar_On_Conflict>;
 };
 
 
@@ -1528,6 +1792,22 @@ export type Mutation_RootUpdateScoresArgs = {
   _inc?: Maybe<Score_Inc_Input>;
   _set?: Maybe<Score_Set_Input>;
   where: Score_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_FoobarArgs = {
+  _inc?: Maybe<Foobar_Inc_Input>;
+  _set?: Maybe<Foobar_Set_Input>;
+  where: Foobar_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Foobar_By_PkArgs = {
+  _inc?: Maybe<Foobar_Inc_Input>;
+  _set?: Maybe<Foobar_Set_Input>;
+  pk_columns: Foobar_Pk_Columns_Input;
 };
 
 
@@ -2520,6 +2800,12 @@ export type Query_Root = {
   courseStats: Course_Aggregate;
   /** fetch data from the table: "course" */
   courses: Array<Course>;
+  /** fetch data from the table: "foobar" */
+  foobar: Array<Foobar>;
+  /** fetch aggregated fields from the table: "foobar" */
+  foobar_aggregate: Foobar_Aggregate;
+  /** fetch data from the table: "foobar" using primary key columns */
+  foobar_by_pk?: Maybe<Foobar>;
   /** fetch data from the table: "hole" using primary key columns */
   hole?: Maybe<Hole>;
   /** fetch aggregated fields from the table: "hole" */
@@ -2602,6 +2888,32 @@ export type Query_RootCoursesArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Course_Order_By>>;
   where?: Maybe<Course_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootFoobarArgs = {
+  distinct_on?: Maybe<Array<Foobar_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Foobar_Order_By>>;
+  where?: Maybe<Foobar_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootFoobar_AggregateArgs = {
+  distinct_on?: Maybe<Array<Foobar_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Foobar_Order_By>>;
+  where?: Maybe<Foobar_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootFoobar_By_PkArgs = {
+  afafdaf: Scalars['Int'];
 };
 
 
@@ -4490,6 +4802,12 @@ export type Subscription_Root = {
   courseStats: Course_Aggregate;
   /** fetch data from the table: "course" */
   courses: Array<Course>;
+  /** fetch data from the table: "foobar" */
+  foobar: Array<Foobar>;
+  /** fetch aggregated fields from the table: "foobar" */
+  foobar_aggregate: Foobar_Aggregate;
+  /** fetch data from the table: "foobar" using primary key columns */
+  foobar_by_pk?: Maybe<Foobar>;
   /** fetch data from the table: "hole" using primary key columns */
   hole?: Maybe<Hole>;
   /** fetch aggregated fields from the table: "hole" */
@@ -4572,6 +4890,32 @@ export type Subscription_RootCoursesArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Course_Order_By>>;
   where?: Maybe<Course_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootFoobarArgs = {
+  distinct_on?: Maybe<Array<Foobar_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Foobar_Order_By>>;
+  where?: Maybe<Foobar_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootFoobar_AggregateArgs = {
+  distinct_on?: Maybe<Array<Foobar_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Foobar_Order_By>>;
+  where?: Maybe<Foobar_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootFoobar_By_PkArgs = {
+  afafdaf: Scalars['Int'];
 };
 
 
@@ -4967,20 +5311,13 @@ export type OfflineRoundScoresVariables = Exact<{
 
 export type OfflineRoundScores = { scores: Array<Pick<Score, 'playerId' | 'holeNumber' | 'roundId' | 'score' | 'putts'>> };
 
-export type OfflineRoundScoresInsertVariables = Exact<{
-  score: Score_Insert_Input;
+export type OfflineRoundScoresUpsertVariables = Exact<{
+  scoreData: Score_Insert_Input;
+  updateColumns: Array<Score_Update_Column>;
 }>;
 
 
-export type OfflineRoundScoresInsert = { insertScore?: Maybe<Pick<Score, 'roundId'>> };
-
-export type OfflineRoundScoresUpdateVariables = Exact<{
-  scoreKey: Score_Pk_Columns_Input;
-  scoreUpdate: Score_Set_Input;
-}>;
-
-
-export type OfflineRoundScoresUpdate = { updateScore?: Maybe<Pick<Score, 'roundId'>> };
+export type OfflineRoundScoresUpsert = { insertScores?: Maybe<{ returning: Array<Pick<Score, 'playerId' | 'holeNumber' | 'roundId' | 'score' | 'putts'>> }> };
 
 export type OfflineRoundScoresDeleteVariables = Exact<{
   holeNumber: Scalars['Int'];
@@ -5410,17 +5747,19 @@ export const OfflineRoundScoresDocument = gql`
   }
 }
     `;
-export const OfflineRoundScoresInsertDocument = gql`
-    mutation offlineRoundScoresInsert($score: score_insert_input!) {
-  insertScore(object: $score) {
-    roundId
-  }
-}
-    `;
-export const OfflineRoundScoresUpdateDocument = gql`
-    mutation offlineRoundScoresUpdate($scoreKey: score_pk_columns_input!, $scoreUpdate: score_set_input!) {
-  updateScore(pk_columns: $scoreKey, _set: $scoreUpdate) {
-    roundId
+export const OfflineRoundScoresUpsertDocument = gql`
+    mutation offlineRoundScoresUpsert($scoreData: score_insert_input!, $updateColumns: [score_update_column!]!) {
+  insertScores(
+    objects: [$scoreData]
+    on_conflict: {constraint: score_pkey, update_columns: $updateColumns}
+  ) {
+    returning {
+      playerId
+      holeNumber
+      roundId
+      score
+      putts
+    }
   }
 }
     `;
@@ -5565,11 +5904,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     offlineRoundScores(variables: OfflineRoundScoresVariables): Promise<OfflineRoundScores> {
       return withWrapper(() => client.request<OfflineRoundScores>(print(OfflineRoundScoresDocument), variables));
     },
-    offlineRoundScoresInsert(variables: OfflineRoundScoresInsertVariables): Promise<OfflineRoundScoresInsert> {
-      return withWrapper(() => client.request<OfflineRoundScoresInsert>(print(OfflineRoundScoresInsertDocument), variables));
-    },
-    offlineRoundScoresUpdate(variables: OfflineRoundScoresUpdateVariables): Promise<OfflineRoundScoresUpdate> {
-      return withWrapper(() => client.request<OfflineRoundScoresUpdate>(print(OfflineRoundScoresUpdateDocument), variables));
+    offlineRoundScoresUpsert(variables: OfflineRoundScoresUpsertVariables): Promise<OfflineRoundScoresUpsert> {
+      return withWrapper(() => client.request<OfflineRoundScoresUpsert>(print(OfflineRoundScoresUpsertDocument), variables));
     },
     offlineRoundScoresDelete(variables: OfflineRoundScoresDeleteVariables): Promise<OfflineRoundScoresDelete> {
       return withWrapper(() => client.request<OfflineRoundScoresDelete>(print(OfflineRoundScoresDeleteDocument), variables));

@@ -8,23 +8,28 @@ query offlineRoundScores($roundId: Int!) {
   }
 }
 
-mutation offlineRoundScoresInsert($score: score_insert_input!) {
-  insertScore(object: $score) {
-    roundId
+mutation offlineRoundScoresUpsert(
+  $scoreData: score_insert_input!,
+  $updateColumns: [score_update_column!]!
+) {
+  insertScores(
+    objects: [$scoreData],
+    on_conflict: {
+      constraint: score_pkey,
+      update_columns: $updateColumns
+    }
+  ) {
+    returning {
+      playerId
+      holeNumber
+      roundId
+      score
+      putts
+    }
   }
 }
 
-mutation offlineRoundScoresUpdate(
-  $scoreKey: score_pk_columns_input!,
-  $scoreUpdate: score_set_input!,
-) {
-  updateScore(
-    pk_columns: $scoreKey,
-    _set: $scoreUpdate,
-  ) {
-    roundId
-  }
-}
+
 
 mutation offlineRoundScoresDelete(
   $holeNumber: Int!,

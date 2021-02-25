@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { cache, mutate, responseInterface } from 'swr';
+import { mutate, responseInterface } from 'swr';
 import { useLocalStorage, useNetworkState } from 'react-use';
 import defaults from 'lodash/defaults';
 import partition from 'lodash/partition';
-import some from 'lodash/some';
+import has from 'lodash/has';
 import useLatest from 'use-latest';
 
 import { mutateCallback } from 'swr/dist/types';
@@ -12,6 +12,7 @@ import {
   OfflineRoundScores,
   Score_Pk_Columns_Input,
   Score_Set_Input,
+  Score_Update_Column,
 } from '../../types';
 
 type UpdateArgs = {
@@ -22,7 +23,6 @@ type UpdateArgs = {
 type PendingUpdates = Array<UpdateArgs>;
 type ScoreFromQuery = OfflineRoundScores['scores'][0];
 type IsDeletion = (updateArgs: UpdateArgs) => boolean;
-type IsExistingScore = (updateArgs: UpdateArgs) => boolean;
 type UpdateCache = (updateAgs: UpdateArgs) => void;
 type ProcessScoreUpdateItem = (updateArgs: UpdateArgs) => Promise<void>;
 type UseOfflineScores = (roundId: number) => responseInterface<OfflineRoundScores, any> & {
@@ -31,28 +31,27 @@ type UseOfflineScores = (roundId: number) => responseInterface<OfflineRoundScore
 
 const QUEUE_STORAGE_KEY = 'useOfflineScores:Queue';
 const SDK_FUNC = sdk.offlineRoundScores;
-const isDeletion: IsDeletion = (updateArgs) => updateArgs.scoreUpdate.score === null;
-const isExistingScore: IsExistingScore = ({ scoreKey }) => {
-  const cacheKey = getCacheKey(SDK_FUNC, { roundId: scoreKey.roundId });
-  const { scores = [] } = cache.get(cacheKey);
+const isDeletion: IsDeletion = ({ scoreUpdate }) => scoreUpdate.score === null;
 
-  return some(scores, scoreKey);
-};
-
-const updateCache: UpdateCache = ({ scoreKey, scoreUpdate }) => {
+const updateCache: UpdateCache = (updateArgs) => {
+  const { scoreKey, scoreUpdate, courseId } = updateArgs;
   const cacheKey = getCacheKey(SDK_FUNC, { roundId: scoreKey.roundId });
-  const deletingScore = !scoreUpdate.score;
+  const deletion = isDeletion(updateArgs);
 
   const mutateKey: mutateCallback<OfflineRoundScores> = (data) => {
     const { scores = [] } = data ?? {};
     const [[score], otherScores] = partition<ScoreFromQuery>(scores, scoreKey);
 
-    return {
-      scores: [
-        ...otherScores,
-        ...(deletingScore ? [] : [defaults({}, scoreUpdate, score)]),
-      ],
-    };
+    const additions = [];
+    if (!deletion) {
+      if (score) {
+        additions.push(defaults({}, scoreUpdate, score));
+      } else if (scoreUpdate.score) {
+        additions.push({ ...scoreKey, ...scoreUpdate, courseId });
+      }
+    }
+
+    return { scores: [...otherScores, ...additions] };
   };
 
   mutate(cacheKey, mutateKey, false);
@@ -61,20 +60,19 @@ const updateCache: UpdateCache = ({ scoreKey, scoreUpdate }) => {
 const processScoreUpdateItem: ProcessScoreUpdateItem = async (updateArgs) => {
   const { scoreKey, scoreUpdate, courseId } = updateArgs;
   const deletion = isDeletion(updateArgs);
-  const existing = isExistingScore(updateArgs);
 
   // do SDK request
-  if (existing) {
-    if (deletion) {
-      await sdk.offlineRoundScoresDelete(scoreKey);
-    } else {
-      await sdk.offlineRoundScoresUpdate({ scoreKey, scoreUpdate });
-    }
-  } else if (deletion) {
-    await sdk.offlineRoundScoresInsert({
-      score: { ...scoreKey, courseId, ...scoreUpdate },
-    });
+  if (deletion) {
+    await sdk.offlineRoundScoresDelete(scoreKey);
+    return;
   }
+
+  const scoreData = { ...scoreKey, ...scoreUpdate, courseId };
+  const updateColumns = [Score_Update_Column.Score];
+  if (has(scoreUpdate, 'putts')) {
+    updateColumns.push(Score_Update_Column.Putts);
+  }
+  await sdk.offlineRoundScoresUpsert({ scoreData, updateColumns });
 };
 
 const useOfflineScores: UseOfflineScores = (roundId) => {
