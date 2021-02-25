@@ -29,8 +29,6 @@ mutation offlineRoundScoresUpsert(
   }
 }
 
-
-
 mutation offlineRoundScoresDelete(
   $holeNumber: Int!,
   $playerId: Int!,
