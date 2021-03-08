@@ -13,6 +13,9 @@ type Props = {
   title?: React.ReactNode,
 };
 
+// Replace this with a permissions check when login becomes a thing
+const canEdit = true;
+
 const RoundCard = ({ round, title }: Props) => (
   <Card id={`round-${round.id}`}>
     {!round && (
@@ -32,7 +35,7 @@ const RoundCard = ({ round, title }: Props) => (
           </Card.Text>
         </Card.Header>
         <RoundTable round={round} className="table-nowrap card-table" />
-        {(round.skinsHoleBounty || round.roundBounty) && (
+        {(round.skinsHoleBounty || round.roundBounty || canEdit) && (
           <Card.Body className="border-top">
             <div className="small text-muted">
               {round.skinsHoleBounty && (
