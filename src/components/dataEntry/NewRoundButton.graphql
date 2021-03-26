@@ -1,5 +1,8 @@
 mutation newRoundButtonInsert($courseId: Int!, $date: timestamp!) {
   insertRound(object: { courseId: $courseId, date: $date }) {
     roundId: id
+    course {
+      slug
+    }
   }
 }

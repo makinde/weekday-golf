@@ -17,9 +17,9 @@ const NewRoundButton = ({ courseId, children, ...rest }: Props) => {
     setLoading(true);
     const date = format(new Date(), 'yyyy-MM-dd\'T\'HH:mm:ss');
     const { insertRound } = await sdk.newRoundButtonInsert({ courseId, date });
-    const { roundId } = insertRound;
+    const { roundId, course } = insertRound;
 
-    push(`/scorecard/${roundId}`);
+    push(`/${course.slug}/scorecard/?roundId=${roundId}`);
   };
 
   return (
