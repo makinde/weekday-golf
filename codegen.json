@@ -25,7 +25,7 @@
         "omitOperationSuffix": true,
         "skipTypename": true,
         "scalars": {
-          "_int4": "number",
+          "_int4": "number[]",
           "_text": "string",
           "date": "string",
           "numeric": "number",
