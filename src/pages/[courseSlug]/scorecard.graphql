@@ -5,5 +5,6 @@ query scorecardPageNEW($slug: String!) {
       par
     }
     ...courseForScorecardPlayerList
+    ...courseForScorecardRoundInfo
   }
 }

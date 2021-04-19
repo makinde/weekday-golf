@@ -1,0 +1,10 @@
+# To be used later on when we add the ability to remove rounds
+mutation removeRound($roundId: Int!) {
+  deleteScores(where: {roundId: {_eq: $roundId}}) {
+    affected_rows
+  }
+  deleteRound(id: $roundId) {
+    id
+  }
+}
+

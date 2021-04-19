@@ -1,0 +1,7 @@
+query playerSelector {
+  players(order_by: { scores_aggregate: { count: desc } }) {
+    id
+    fullName
+    img
+  }
+}

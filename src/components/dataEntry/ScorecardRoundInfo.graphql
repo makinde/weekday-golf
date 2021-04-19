@@ -1,0 +1,32 @@
+fragment roundForScorecard on round {
+  name
+  date
+  skinsHoleBounty
+  skinsPlayerIds
+  skinsTiebreakWinnerId
+  roundBounty
+  roundBountyPlayerIds
+  roundBountyTiebreakWinnerId
+}
+
+fragment courseForScorecardRoundInfo on course {
+  name
+}
+
+query scorecardRoundInfo($roundId: Int!) {
+  round(id: $roundId) {
+    ...roundForScorecard
+  }
+}
+
+mutation updateScorecardRound(
+  $roundId: Int!,
+  $roundUpdate: round_set_input!
+) {
+  round: updateRound(
+    pk_columns: {id: $roundId},
+    _set: $roundUpdate
+  ) {
+    ...roundForScorecard
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  ToggleButtonGroup, ToggleButton, Button,
+  ToggleButtonGroup, ToggleButton, Button, Modal, Card,
 } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import find from 'lodash/find';
@@ -13,8 +13,9 @@ import Layout from '../../components/utils/Layout';
 import sdk from '../../sdk';
 import ScorecardRoundInfo from '../../components/dataEntry/ScorecardRoundInfo';
 import ScorecardPlayerList from '../../components/dataEntry/ScorecardPlayerList';
-import PlayerSelectorModal from '../../components/dataEntry/PlayerSelectorModal';
 import { ScorecardPageNew } from '../../types';
+import PlayerSelector from '../../components/dataEntry/PlayerSelector';
+import CardHeaderTitle from '../../components/utils/CardHeaderTitle';
 
 type PageQuery = { courseSlug: string };
 type Props = { course: ScorecardPageNew['courses'][0] };
@@ -33,7 +34,7 @@ const ScorecardPage = ({ course }: Props) => {
 
   return (
     <Layout title="Overview">
-      <ScorecardRoundInfo />
+      <ScorecardRoundInfo course={course} roundId={roundId} />
       <div className="d-flex mx-n3 mx-md-n5 p-3 bg-light">
         <span>
           Hole&nbsp;
@@ -56,19 +57,40 @@ const ScorecardPage = ({ course }: Props) => {
         block
         onClick={() => setShowPlayerSelector(true)}
         variant="light"
-        className="mb-3"
+        className="my-3"
       >
         Edit Players
       </Button>
-      <PlayerSelectorModal
-        playerIds={activePlayerIds}
-        setPlayerIds={(newPlayerIds) => replace({
-          pathname,
-          query: { ...query, actives: newPlayerIds },
-        }, undefined, { shallow: true })}
+      <Modal
+        centered
         onHide={() => setShowPlayerSelector(false)}
         show={showPlayerSelector}
-      />
+      >
+        <div className="modal-card">
+          <Card.Header>
+            <CardHeaderTitle>
+              Select Players
+            </CardHeaderTitle>
+            <Button className="close" onClick={() => setShowPlayerSelector(false)} aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </Button>
+          </Card.Header>
+          <Modal.Body>
+            <PlayerSelector
+              playerIds={activePlayerIds}
+              setPlayerIds={(newPlayerIds) => replace({
+                pathname,
+                query: { ...query, actives: newPlayerIds },
+              }, undefined, { shallow: true })}
+            />
+          </Modal.Body>
+          <Card.Footer>
+            <Button variant="primary" onClick={() => setShowPlayerSelector(false)}>
+              Done
+            </Button>
+          </Card.Footer>
+        </div>
+      </Modal>
       <ToggleButtonGroup
         name="hole_selector"
         type="radio"
