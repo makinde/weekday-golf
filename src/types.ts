@@ -4755,11 +4755,6 @@ export type Timestamp_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['timestamp']>>;
 };
 
-export type PlayerRoundForChart = (
-  Pick<Player_Round, 'relativeScore'>
-  & { player?: Maybe<Pick<Player, 'nickname' | 'id' | 'img'>>, round?: Maybe<Pick<Round, 'date' | 'id'>> }
-);
-
 export type _LeaderboardCardCourse = Pick<Course, 'slug'>;
 
 export type _LeaderboardCardPlayerRound = (
@@ -5073,20 +5068,6 @@ export type ScorecardPageNew = { courses: Array<(
     & CourseForScorecardRoundInfo
   )> };
 
-export const PlayerRoundForChart = gql`
-    fragment playerRoundForChart on player_round {
-  relativeScore
-  player {
-    nickname
-    id
-    img
-  }
-  round {
-    date
-    id
-  }
-}
-    `;
 export const _LeaderboardCardCourse = gql`
     fragment _leaderboardCardCourse on course {
   slug
