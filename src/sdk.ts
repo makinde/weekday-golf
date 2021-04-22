@@ -15,10 +15,13 @@ const BROWSER = typeof window !== 'undefined';
 
 // Hasura GraphQL requires arrays to be passed as postgres literals :(
 // https://hasura.io/docs/latest/graphql/core/databases/postgres/mutations/insert.html#insert-an-object-with-an-array-field
+// This is extra annoying since there are some args to the API that are arrays
+// of enums (see useOfflineScores) so we have to try to find arrays that
+// are likely ids (H4x).
 const serializeArraysDeep = (obj: any) => transform(obj, (result, val, key) => {
-  if (isArray(val)) {
+  if (isArray(val) && val.every(Number.isInteger)) {
     result[key] = `{${val}}`;
-  } else if (isObject(val)) {
+  } else if (!isArray(val) && isObject(val)) {
     result[key] = serializeArraysDeep(val);
   } else {
     result[key] = val;
