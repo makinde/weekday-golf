@@ -1,8 +1,10 @@
 import React from 'react';
-import useSWR from 'swr';
+import map from 'lodash/map';
 
 import StatCard from '../../utils/StatCard';
-import sdk from '../../../sdk';
+import sdk, { useSdk } from '../../../sdk';
+import Sparkline from '../../utils/Sparkline';
+import { cumulativeSeries } from '../../../dataSeriesUtils';
 
 type Props = {
   courseId?: number,
@@ -15,15 +17,19 @@ const ScoreCountStatCard = ({
   playerId,
   relativeScoreCutoff = 0,
 }: Props) => {
-  const { data } = useSWR(
-    ['ScoreCountStatCard', courseId, playerId, relativeScoreCutoff],
-    () => sdk.scoreCountStatCard({ courseId, playerId, relativeScoreCutoff }),
+  const { data } = useSdk(
+    sdk.scoreCountStatCard,
+    { courseId, playerId, relativeScoreCutoff },
   );
+
+  const counts = map(data?.rounds || [], 'scoringInfo_aggregate.aggregate.count');
+  const cumCounts = cumulativeSeries(counts);
 
   return (
     <StatCard
       title="Par Or Better"
       heading={data?.scoringStats?.aggregate?.count ?? '-'}
+      extra={<Sparkline data={cumCounts} id={`ScoreCountStatCard:${courseId}:${playerId}`} />}
     />
   );
 };

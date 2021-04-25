@@ -3,11 +3,14 @@ import { Card, Table } from 'react-bootstrap';
 import round from 'lodash/round';
 import Link from 'next/link';
 import useSWR from 'swr';
+import { ReferenceLine } from 'recharts';
 
 import RelativeScore from '../utils/RelativeScore';
 import CardHeaderTitle from '../utils/CardHeaderTitle';
 import { WinningsPill } from '../utils/Winnings';
 import sdk from '../../sdk';
+import Sparkline from '../utils/Sparkline';
+import { cumulativeSeries } from '../../dataSeriesUtils';
 
 type Props = {
   courseId: number,
@@ -45,8 +48,12 @@ const ParticipationStatsCard = ({ courseId }: Props) => {
         <tbody className="list">
           {coursePlayers.map((coursePlayer) => {
             const { player: { id, nickname, slug: playerSlug } } = coursePlayer;
+            const { playerRoundScores, playerRoundWinnings } = coursePlayer;
             const { playerRoundsStats: { aggregate: stats } } = coursePlayer;
             const { winningStats: { aggregate: { count: roundsWon } } } = coursePlayer;
+
+            const roundWinnings = playerRoundWinnings.map((pr) => pr.totalWinnings);
+            const cumWinnings = cumulativeSeries(roundWinnings);
 
             return (
               <tr key={id}>
@@ -57,11 +64,32 @@ const ParticipationStatsCard = ({ courseId }: Props) => {
                     </a>
                   </Link>
                 </td>
-                <td><RelativeScore value={round(stats.avg.relativeScore, 2)} /></td>
+                <td>
+                  <RelativeScore value={round(stats.avg.relativeScore, 2)} />
+                  {stats.count > 3 && (
+                    <Sparkline
+                      data={playerRoundScores}
+                      dataKey="score"
+                      id="ParticipationStatsCard:Score"
+                    />
+                  )}
+                </td>
                 <td>{stats.count}</td>
                 <td>{roundsWon || '-'}</td>
                 {showWinnings && (
-                  <td><WinningsPill value={stats.sum.totalWinnings} /></td>
+                  <td>
+                    <WinningsPill value={stats.sum.totalWinnings} />
+                    {playerRoundWinnings.length > 1 && (
+                      <Sparkline
+                        data={cumWinnings}
+                        id="ParticipationStatsCard:Winnings"
+                        type="monotoneX"
+                        stroke={stats.sum.totalWinnings > 0 ? '#00D97E' : '#E63757'}
+                      >
+                        <ReferenceLine ifOverflow="extendDomain" y={0} stroke="grey" strokeDasharray="3 3" />
+                      </Sparkline>
+                    )}
+                  </td>
                 )}
               </tr>
             );

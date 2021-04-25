@@ -12,4 +12,22 @@ query scoreCountStatCard(
       count
     }
   }
+  rounds(
+    order_by: { date: asc },
+    where: {
+      courseId: { _eq: $courseId },
+      scores: { playerId: { _eq: $playerId } }
+    }
+  ) {
+    scoringInfo_aggregate(
+      where: {
+        relativeScore: { _lte: $relativeScoreCutoff },
+        playerId: { _eq: $playerId }
+      }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
 }

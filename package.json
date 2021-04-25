@@ -21,7 +21,6 @@
   "dependencies": {
     "@next/bundle-analyzer": "9.5.5",
     "bootstrap": "4.5.3",
-    "chart.js": "3.1.1",
     "classnames": "^2.2.6",
     "cross-fetch": "3.1.4",
     "date-fns": "2.16.1",
@@ -32,9 +31,9 @@
     "next": "10.0.3",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
-    "react-chartjs-2": "2.11.1",
     "react-dom": "^17.0.1",
     "react-use": "17.1.1",
+    "recharts": "2.0.9",
     "sass": "1.27.0",
     "swr": "0.3.9",
     "use-latest": "1.2.0"

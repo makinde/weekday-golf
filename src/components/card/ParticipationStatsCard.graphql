@@ -7,6 +7,18 @@ query participationStatsCard($courseId: Int!) {
         slug
         nickname
       }
+      playerRoundScores: playerRounds(
+        where: {score: {_is_null: false}},
+        order_by: { round: { date: asc } }
+      ) {
+        score
+      }
+      playerRoundWinnings: playerRounds(
+        where: { totalWinnings: { _is_null: false } },
+        order_by: { round: { date: asc } }
+      ) {
+        totalWinnings
+      }
       playerRoundsStats: playerRounds_aggregate {
         aggregate {
           count

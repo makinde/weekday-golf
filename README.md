@@ -8,7 +8,7 @@ A site/app for a small number of small groups to track their golf rounds. More i
 - [Vercel](https://vercel.com/docs) hosting
 - [CSS Modules](https://github.com/css-modules/css-modules)
 - [Bootstrap CSS](https://getbootstrap.com/docs/5.0/getting-started/introduction/) (using [React Bootstrap](https://react-bootstrap.github.io/components/alerts) with [Dashkit Theme](https://dashkit.goodthemes.co/docs/components.html))
-- [ChartJS](https://www.chartjs.org/docs/latest/) ([for React](https://github.com/reactchartjs/react-chartjs-2)) for charts
+- [Recharts](https://recharts.org/en-US) for charts
 
 ## Features
 - Fast. This does need to be balanced with simplicity and other things, but generally we try to make this production level performance.

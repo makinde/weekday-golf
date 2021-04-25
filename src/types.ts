@@ -2790,6 +2790,10 @@ export type Round = {
   scores: Array<Score>;
   /** An aggregated array relationship */
   scores_aggregate: Score_Aggregate;
+  /** An array relationship */
+  scoringInfo: Array<Scoring_Info>;
+  /** An aggregated array relationship */
+  scoringInfo_aggregate: Scoring_Info_Aggregate;
   skinsHoleBounty?: Maybe<Scalars['numeric']>;
   skinsPlayerIds: Scalars['_int4'];
   /** An array relationship */
@@ -2839,6 +2843,26 @@ export type RoundScores_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Score_Order_By>>;
   where?: Maybe<Score_Bool_Exp>;
+};
+
+
+/** columns and relationships of "round" */
+export type RoundScoringInfoArgs = {
+  distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Scoring_Info_Order_By>>;
+  where?: Maybe<Scoring_Info_Bool_Exp>;
+};
+
+
+/** columns and relationships of "round" */
+export type RoundScoringInfo_AggregateArgs = {
+  distinct_on?: Maybe<Array<Scoring_Info_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Scoring_Info_Order_By>>;
+  where?: Maybe<Scoring_Info_Bool_Exp>;
 };
 
 
@@ -2945,6 +2969,7 @@ export type Round_Bool_Exp = {
   roundBountyPlayerIds?: Maybe<_Int4_Comparison_Exp>;
   roundBountyTiebreakWinnerId?: Maybe<Int_Comparison_Exp>;
   scores?: Maybe<Score_Bool_Exp>;
+  scoringInfo?: Maybe<Scoring_Info_Bool_Exp>;
   skinsHoleBounty?: Maybe<Numeric_Comparison_Exp>;
   skinsPlayerIds?: Maybe<_Int4_Comparison_Exp>;
   skinsPlayers?: Maybe<Player_Bool_Exp>;
@@ -3067,6 +3092,7 @@ export type Round_Order_By = {
   roundBountyPlayerIds?: Maybe<Order_By>;
   roundBountyTiebreakWinnerId?: Maybe<Order_By>;
   scores_aggregate?: Maybe<Score_Aggregate_Order_By>;
+  scoringInfo_aggregate?: Maybe<Scoring_Info_Aggregate_Order_By>;
   skinsHoleBounty?: Maybe<Order_By>;
   skinsPlayerIds?: Maybe<Order_By>;
   skinsPlayers_aggregate?: Maybe<Player_Aggregate_Order_By>;
@@ -4798,7 +4824,7 @@ export type ParticipationStatsCardVariables = Exact<{
 
 export type ParticipationStatsCard = { course?: Maybe<(
     Pick<Course, 'slug'>
-    & { coursePlayers: Array<{ player?: Maybe<Pick<Player, 'id' | 'slug' | 'nickname'>>, playerRoundsStats: { aggregate?: Maybe<(
+    & { coursePlayers: Array<{ player?: Maybe<Pick<Player, 'id' | 'slug' | 'nickname'>>, playerRoundScores: Array<Pick<Player_Round, 'score'>>, playerRoundWinnings: Array<Pick<Player_Round, 'totalWinnings'>>, playerRoundsStats: { aggregate?: Maybe<(
           Pick<Player_Round_Aggregate_Fields, 'count'>
           & { avg?: Maybe<Pick<Player_Round_Avg_Fields, 'relativeScore'>>, sum?: Maybe<Pick<Player_Round_Sum_Fields, 'totalWinnings'>> }
         )> }, winningStats: { aggregate?: Maybe<Pick<Player_Round_Aggregate_Fields, 'count'>> } }> }
@@ -4883,7 +4909,7 @@ export type ScoreCountStatCardVariables = Exact<{
 }>;
 
 
-export type ScoreCountStatCard = { scoringStats: { aggregate?: Maybe<Pick<Scoring_Info_Aggregate_Fields, 'count'>> } };
+export type ScoreCountStatCard = { scoringStats: { aggregate?: Maybe<Pick<Scoring_Info_Aggregate_Fields, 'count'>> }, rounds: Array<{ scoringInfo_aggregate: { aggregate?: Maybe<Pick<Scoring_Info_Aggregate_Fields, 'count'>> } }> };
 
 export type WinningsStatCardVariables = Exact<{
   courseId: Scalars['Int'];
@@ -5226,6 +5252,18 @@ export const ParticipationStatsCardDocument = gql`
         slug
         nickname
       }
+      playerRoundScores: playerRounds(
+        where: {score: {_is_null: false}}
+        order_by: {round: {date: asc}}
+      ) {
+        score
+      }
+      playerRoundWinnings: playerRounds(
+        where: {totalWinnings: {_is_null: false}}
+        order_by: {round: {date: asc}}
+      ) {
+        totalWinnings
+      }
       playerRoundsStats: playerRounds_aggregate {
         aggregate {
           count
@@ -5338,6 +5376,18 @@ export const ScoreCountStatCardDocument = gql`
   ) {
     aggregate {
       count
+    }
+  }
+  rounds(
+    order_by: {date: asc}
+    where: {courseId: {_eq: $courseId}, scores: {playerId: {_eq: $playerId}}}
+  ) {
+    scoringInfo_aggregate(
+      where: {relativeScore: {_lte: $relativeScoreCutoff}, playerId: {_eq: $playerId}}
+    ) {
+      aggregate {
+        count
+      }
     }
   }
 }

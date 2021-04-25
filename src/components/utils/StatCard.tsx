@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 
 type Props = {
-  title: React.ReactNode,
-  heading: React.ReactNode,
-  icon?: string,
+  title: ReactNode,
+  heading: ReactNode,
+  extra?: ReactNode,
+
 };
 
-const StatCard = ({ title, heading, icon }: Props) => (
+const StatCard = ({ title, heading, extra }: Props) => (
   <Card body>
     <Row className="align-items-center">
       <Col>
@@ -18,9 +19,9 @@ const StatCard = ({ title, heading, icon }: Props) => (
           {heading}
         </span>
       </Col>
-      {icon && (
+      {extra && (
         <Col xs="auto">
-          <span className={`h2 fe fe-${icon} text-muted mb-0`} />
+          {extra}
         </Col>
       )}
     </Row>
