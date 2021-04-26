@@ -10,11 +10,13 @@ import Avatar from '../utils/Avatar';
 type PlayerSelectorProps = {
   playerIds: number[],
   setPlayerIds: (playerIds: number[]) => void,
+  id: string,
 };
 
 const PlayerSelector = ({
   playerIds,
   setPlayerIds,
+  id: elementId,
 }: PlayerSelectorProps) => {
   const { data } = useSdk(sdk.playerSelector, {});
   const { players = [] } = data ?? {};
@@ -25,7 +27,7 @@ const PlayerSelector = ({
         <div key={id} className="custom-control custom-checkbox checklist-control">
           <input
             className="custom-control-input"
-            id={`checklist-${id}`}
+            id={`checklist-${elementId}-${id}`}
             type="checkbox"
             checked={playerIds.includes(id)}
             onChange={(event) => {
@@ -36,8 +38,8 @@ const PlayerSelector = ({
               );
             }}
           />
-          <label className="custom-control-label" htmlFor={`checklist-${id}`} />
-          <label htmlFor={`checklist-${id}`}>
+          <label className="custom-control-label" htmlFor={`checklist-${elementId}-${id}`} />
+          <label htmlFor={`checklist-${elementId}-${id}`}>
             {fullName}
           </label>
         </div>
@@ -73,7 +75,11 @@ const MultiPlayerSelectorButton = ({
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <div className="px-4">
-          <PlayerSelector playerIds={playerIds} setPlayerIds={setPlayerIds} />
+          <PlayerSelector
+            playerIds={playerIds}
+            setPlayerIds={setPlayerIds}
+            id={`${elementId}-multiselector`}
+          />
         </div>
       </Dropdown.Menu>
     </Dropdown>

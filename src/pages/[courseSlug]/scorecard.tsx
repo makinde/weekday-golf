@@ -82,6 +82,7 @@ const ScorecardPage = ({ course }: Props) => {
                 pathname,
                 query: { ...query, actives: newPlayerIds },
               }, undefined, { shallow: true })}
+              id="scorecardPlayerSelector"
             />
           </Modal.Body>
           <Card.Footer>
