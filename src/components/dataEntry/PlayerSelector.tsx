@@ -69,7 +69,7 @@ const MultiPlayerSelectorButton = ({
         <AvatarGroup max={4}>
           {playerIds.map((playerId) => {
             const { img, fullName } = find(players, { id: playerId }) || {};
-            return <Avatar src={img} alt={fullName} size="xs" />;
+            return <Avatar src={img} alt={fullName} size="xs" key={playerId} />;
           })}
         </AvatarGroup>
       </Dropdown.Toggle>
