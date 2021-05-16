@@ -22,6 +22,8 @@ type Props = {
 
 const ScorecardRoundInfo = ({ course, roundId }: Props) => {
   const [editing, setEditing] = useState(false);
+  const [pinSkinsTiebreak, setPinSkinsTiebreak] = useState(false);
+  const [pinRoundTiebreak, setPinRoundTiebreak] = useState(false);
 
   const queryClient = useQueryClient();
   const queryKey = useScorecardRoundInfo.getKey({ roundId });
@@ -61,6 +63,9 @@ const ScorecardRoundInfo = ({ course, roundId }: Props) => {
     roundBountyPlayerIds = [],
     roundBountyTiebreakWinnerId = null,
   } = data?.round ?? {};
+
+  const showSkinsTiebreak = pinSkinsTiebreak || skinsTiebreakWinnerId !== null;
+  const showRoundTiebreak = pinRoundTiebreak || roundBountyTiebreakWinnerId !== null;
 
   return (
     <>
@@ -110,7 +115,15 @@ const ScorecardRoundInfo = ({ course, roundId }: Props) => {
               onChange={(event) => mutateField('name', event.target.value)}
             />
             <br />
-            Skins
+            <h3 className="d-inline-block">Skins</h3>
+            {!showSkinsTiebreak && (
+              <Button
+                variant="link"
+                onClick={() => setPinSkinsTiebreak(true)}
+              >
+                + Add Tiebreak Winner
+              </Button>
+            )}
             <Row>
               <Col>
                 <InputGroup className="mb-3">
@@ -140,15 +153,37 @@ const ScorecardRoundInfo = ({ course, roundId }: Props) => {
                 />
               </Col>
             </Row>
-            <SinglePlayerSelectorButton
-              playerId={skinsTiebreakWinnerId}
-              setPlayerId={(playerId) => mutateField('skinsTiebreakWinnerId', playerId)}
-              id="skinsTiebreakWinner"
-              variant="outline-secondary"
-              block
-            />
+            {showSkinsTiebreak && (
+              <>
+                <SinglePlayerSelectorButton
+                  playerId={skinsTiebreakWinnerId}
+                  setPlayerId={(playerId) => mutateField('skinsTiebreakWinnerId', playerId)}
+                  id="skinsTiebreakWinner"
+                  variant="outline-secondary"
+                  block
+                />
+                <Button
+                  variant="link"
+                  onClick={() => {
+                    setPinSkinsTiebreak(false);
+                    mutateField('skinsTiebreakWinnerId', null);
+                  }}
+                  className="px-0 mb-3"
+                >
+                  Clear Tiebreak Winner
+                </Button>
+              </>
+            )}
             <br />
-            Round Bounty
+            <h3 className="d-inline-block">Round Bounty</h3>
+            {!showRoundTiebreak && (
+            <Button
+              variant="link"
+              onClick={() => setPinRoundTiebreak(true)}
+            >
+              + Add Tiebreak Winner
+            </Button>
+            )}
             <Row>
               <Col>
                 <InputGroup className="mb-3">
@@ -178,13 +213,27 @@ const ScorecardRoundInfo = ({ course, roundId }: Props) => {
                 />
               </Col>
             </Row>
-            <SinglePlayerSelectorButton
-              playerId={roundBountyTiebreakWinnerId}
-              setPlayerId={(playerId) => mutateField('roundBountyTiebreakWinnerId', playerId)}
-              id="roundBountyTiebreakWinner"
-              variant="outline-secondary"
-              block
-            />
+            {showRoundTiebreak && (
+              <>
+                <SinglePlayerSelectorButton
+                  playerId={roundBountyTiebreakWinnerId}
+                  setPlayerId={(playerId) => mutateField('roundBountyTiebreakWinnerId', playerId)}
+                  id="roundBountyTiebreakWinner"
+                  variant="outline-secondary"
+                  block
+                />
+                <Button
+                  variant="link"
+                  onClick={() => {
+                    setPinRoundTiebreak(false);
+                    mutateField('roundBountyTiebreakWinnerId', null);
+                  }}
+                  className="px-0"
+                >
+                  Clear Tiebreak Winner
+                </Button>
+              </>
+            )}
           </Modal.Body>
           <Card.Footer>
             <Button
