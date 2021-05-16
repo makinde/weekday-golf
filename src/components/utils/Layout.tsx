@@ -1,15 +1,14 @@
 import React, { useContext } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import useSWR from 'swr';
 import cx from 'classnames';
 import {
   Accordion, Container, Nav, Navbar, AccordionContext, useAccordionToggle,
 } from 'react-bootstrap';
 
 import Avatar from './Avatar';
-import sdk from '../../sdk';
 import NewRoundButton from '../dataEntry/NewRoundButton';
+import { useLayout } from '../../apiHooks';
 
 import styles from './Layout.module.scss';
 
@@ -51,7 +50,7 @@ const Layout = ({
   focusedPlayerId,
   children,
 }: Props) => {
-  const { data } = useSWR('Layout', () => sdk.layout());
+  const { data } = useLayout({}, { staleTime: Infinity });
   const courses = data?.courses ?? [];
 
   return (

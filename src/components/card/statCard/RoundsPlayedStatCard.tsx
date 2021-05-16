@@ -1,8 +1,9 @@
 import React from 'react';
-import useSWR from 'swr';
+import { useQuery } from 'react-query';
 
 import StatCard from '../../utils/StatCard';
-import sdk from '../../../sdk';
+import graphqlClient from '../../../graphqlClient';
+import { RoundsPlayedStatCardDocument, RoundsPlayedStatCardForPlayerDocument } from '../../../apiHooks';
 
 type Props = {
   courseId: number,
@@ -10,13 +11,13 @@ type Props = {
 };
 
 const RoundsPlayedStatCard = ({ courseId, playerId }: Props) => {
-  const { data } = useSWR(
-    ['RoundsPlayedStatCard', courseId, playerId],
-    () => (
-      playerId
-        ? sdk.roundsPlayedStatCardForPlayer({ courseId, playerId })
-        : sdk.roundsPlayedStatCard({ courseId })
-    ),
+  const variables = { courseId, playerId };
+  const queryDoc = playerId
+    ? RoundsPlayedStatCardForPlayerDocument
+    : RoundsPlayedStatCardDocument;
+  const { data } = useQuery(
+    ['RoundsPlayedStatCard', variables],
+    () => graphqlClient.request(queryDoc, variables),
   );
 
   return (

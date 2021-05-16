@@ -1,9 +1,8 @@
 import React from 'react';
-import useSWR from 'swr';
 
 import StatCard from '../../utils/StatCard';
-import sdk from '../../../sdk';
 import { winningsText } from '../../utils/Winnings';
+import { useWinningsStatCard } from '../../../apiHooks';
 
 type Props = {
   courseId?: number,
@@ -11,10 +10,7 @@ type Props = {
 };
 
 const WinningsStatCard = ({ courseId, playerId }: Props) => {
-  const { data } = useSWR(
-    ['WinningsStatCard', courseId, playerId],
-    () => sdk.winningsStatCard({ courseId, playerId }),
-  );
+  const { data } = useWinningsStatCard({ courseId, playerId });
 
   const winnings = data?.playerRoundStats?.aggregate?.sum?.totalWinnings;
   let heading;

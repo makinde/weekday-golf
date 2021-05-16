@@ -1,10 +1,9 @@
 import React from 'react';
-import useSWR from 'swr';
 import Link from 'next/link';
 
-import sdk from '../../sdk';
 import RoundCard from './RoundCard';
 import CardHeaderTitle from '../utils/CardHeaderTitle';
+import { useRoundCardList } from '../../apiHooks';
 
 type Props = {
   courseId?: number,
@@ -13,10 +12,7 @@ type Props = {
 };
 
 const RoundCardList = ({ courseId, playerId, limit }: Props) => {
-  const { data } = useSWR(
-    ['RoundCardList', courseId, playerId, limit],
-    () => sdk.roundCardList({ courseId, playerId, limit }),
-  );
+  const { data } = useRoundCardList({ courseId, playerId, limit });
 
   const rounds = data?.rounds ?? [];
   const singleRound = limit === 1;

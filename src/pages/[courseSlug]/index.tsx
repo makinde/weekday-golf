@@ -2,7 +2,12 @@ import React from 'react';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { Row, Col } from 'react-bootstrap';
 
-import sdk from '../../sdk';
+import graphqlClient from '../../graphqlClient';
+import {
+  CourseIndexPageDocument,
+  CourseForIndexPage,
+  CourseSlugStaticListingDocument,
+} from '../../apiHooks';
 import Layout, { CoursePage } from '../../components/utils/Layout';
 import Avatar from '../../components/utils/Avatar';
 import PageHeader from '../../components/utils/PageHeader';
@@ -13,7 +18,6 @@ import ScoringStatsCard from '../../components/card/ScoringStatsCard';
 import RoundsPlayedStatCard from '../../components/card/statCard/RoundsPlayedStatCard';
 import ScoreCountStatCard from '../../components/card/statCard/ScoreCountStatCard';
 
-import { CourseForIndexPage } from '../../types';
 import AverageScoreStatCard from '../../components/card/statCard/AverageScoreStatCard';
 import NewRoundButton from '../../components/dataEntry/NewRoundButton';
 
@@ -70,7 +74,7 @@ const CourseIndexPage = ({ course }: Props) => (
 
 const getStaticProps: ServerSideProps = async ({ params }) => {
   const { courseSlug: slug } = params;
-  const { courses } = await sdk.courseIndexPage({ slug });
+  const { courses } = await graphqlClient.request(CourseIndexPageDocument, { slug });
 
   return {
     props: {
@@ -80,7 +84,7 @@ const getStaticProps: ServerSideProps = async ({ params }) => {
 };
 
 const getStaticPaths: GetStaticPaths<PageQuery> = async () => {
-  const { courses } = await sdk.courseSlugStaticListing();
+  const { courses } = await graphqlClient.request(CourseSlugStaticListingDocument);
 
   return {
     paths: courses.map(({ slug }) => ({ params: { courseSlug: slug } })),

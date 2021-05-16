@@ -8,14 +8,14 @@ import castArray from 'lodash/castArray';
 import toInteger from 'lodash/toInteger';
 import { GetStaticProps } from 'next';
 
+import graphqlClient from '../../graphqlClient';
 import { getStaticPaths } from './index';
 import Layout from '../../components/utils/Layout';
-import sdk from '../../sdk';
 import ScorecardRoundInfo from '../../components/dataEntry/ScorecardRoundInfo';
 import ScorecardPlayerList from '../../components/dataEntry/ScorecardPlayerList';
-import { ScorecardPageNew } from '../../types';
 import PlayerSelector from '../../components/dataEntry/PlayerSelector';
 import CardHeaderTitle from '../../components/utils/CardHeaderTitle';
+import { ScorecardPageNewDocument, ScorecardPageNew } from '../../apiHooks';
 
 type PageQuery = { courseSlug: string };
 type Props = { course: ScorecardPageNew['courses'][0] };
@@ -113,7 +113,7 @@ const ScorecardPage = ({ course }: Props) => {
 
 const getStaticProps: StaticProps = async ({ params }) => {
   const { courseSlug: slug } = params;
-  const { courses: [course] } = await sdk.scorecardPageNEW({ slug });
+  const { courses: [course] } = await graphqlClient.request(ScorecardPageNewDocument, { slug });
 
   return {
     props: { course },

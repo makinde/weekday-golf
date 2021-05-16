@@ -2,9 +2,9 @@ import React from 'react';
 import map from 'lodash/map';
 
 import StatCard from '../../utils/StatCard';
-import sdk, { useSdk } from '../../../sdk';
 import Sparkline from '../../utils/Sparkline';
 import { cumulativeSeries } from '../../../dataSeriesUtils';
+import { useScoreCountStatCard } from '../../../apiHooks';
 
 type Props = {
   courseId?: number,
@@ -17,10 +17,7 @@ const ScoreCountStatCard = ({
   playerId,
   relativeScoreCutoff = 0,
 }: Props) => {
-  const { data } = useSdk(
-    sdk.scoreCountStatCard,
-    { courseId, playerId, relativeScoreCutoff },
-  );
+  const { data } = useScoreCountStatCard({ courseId, playerId, relativeScoreCutoff });
 
   const counts = map(data?.rounds || [], 'scoringInfo_aggregate.aggregate.count');
   const cumCounts = cumulativeSeries(counts);

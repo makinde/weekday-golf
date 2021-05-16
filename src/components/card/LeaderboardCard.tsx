@@ -2,13 +2,14 @@ import React from 'react';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
 import { Card, Table } from 'react-bootstrap';
-import useSWR from 'swr';
+import { useQuery } from 'react-query';
 
 import Link from 'next/link';
 import RelativeScore from '../utils/RelativeScore';
 import CardHeaderTitle from '../utils/CardHeaderTitle';
 import CompactDate from '../utils/CompactDate';
-import sdk from '../../sdk';
+import graphqlClient from '../../graphqlClient';
+import { LeaderboardCardDocument, LeaderboardCardForPlayerDocument } from '../../apiHooks';
 
 type Props = {
   courseId: number,
@@ -22,12 +23,14 @@ const LeaderboardCard = ({
   rankLimit = 10,
   ...props
 }: Props) => {
-  const { data } = useSWR(
-    ['LeaderboardCard', courseId, playerId, rankLimit],
-    () => (
+  const variables = { courseId, playerId, rankLimit };
+  const { data } = useQuery(
+    ['LeaderboardCard', variables],
+    () => graphqlClient.request(
       playerId
-        ? sdk.leaderboardCardForPlayer({ courseId, playerId, rankLimit })
-        : sdk.leaderboardCard({ courseId, rankLimit })
+        ? LeaderboardCardForPlayerDocument
+        : LeaderboardCardDocument,
+      variables,
     ),
   );
 

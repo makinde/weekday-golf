@@ -1,10 +1,9 @@
 import React from 'react';
-import useSWR from 'swr';
 
 import round from 'lodash/round';
 import StatCard from '../../utils/StatCard';
-import sdk from '../../../sdk';
 import RelativeScore from '../../utils/RelativeScore';
+import { useAverageScoreStatCard } from '../../../apiHooks';
 
 type Props = {
   courseId?: number,
@@ -12,10 +11,7 @@ type Props = {
 };
 
 const AverageScoreStatCard = ({ courseId, playerId }: Props) => {
-  const { data } = useSWR(
-    ['AverageScoreStatCard', courseId, playerId],
-    () => sdk.averageScoreStatCard({ courseId, playerId }),
-  );
+  const { data } = useAverageScoreStatCard({ courseId, playerId });
 
   const avg = data?.playerRoundStats?.aggregate?.avg?.relativeScore;
 

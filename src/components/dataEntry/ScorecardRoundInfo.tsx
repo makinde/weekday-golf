@@ -2,12 +2,18 @@ import React, { useState } from 'react';
 import {
   Button, Card, FormControl, Modal, InputGroup, Row, Col,
 } from 'react-bootstrap';
-import sdk, { useSdk } from '../../sdk';
-import { CourseForScorecardRoundInfo, RoundForScorecard } from '../../types';
+import { useQueryClient } from 'react-query';
 
 import CardHeaderTitle from '../utils/CardHeaderTitle';
 import CompactDate from '../utils/CompactDate';
 import { MultiPlayerSelectorButton, SinglePlayerSelectorButton } from './PlayerSelector';
+import {
+  UpdateScorecardRound,
+  useScorecardRoundInfo,
+  useUpdateScorecardRound,
+  RoundForScorecard,
+  CourseForScorecardRoundInfo,
+} from '../../apiHooks';
 
 type Props = {
   course: CourseForScorecardRoundInfo,
@@ -16,16 +22,34 @@ type Props = {
 
 const ScorecardRoundInfo = ({ course, roundId }: Props) => {
   const [editing, setEditing] = useState(false);
-  const { data, mutate } = useSdk(sdk.scorecardRoundInfo, { roundId });
+
+  const queryClient = useQueryClient();
+  const queryKey = useScorecardRoundInfo.getKey({ roundId });
+
+  const { data } = useScorecardRoundInfo({ roundId });
+  const { mutate } = useUpdateScorecardRound<unknown, {previousRoundData: UpdateScorecardRound}>({
+    onMutate: async (mutationData) => {
+      await queryClient.cancelQueries(queryKey);
+      const previousRoundData = queryClient.getQueryData<UpdateScorecardRound>(queryKey);
+      queryClient.setQueryData(queryKey, {
+        round: {
+          ...previousRoundData.round,
+          ...mutationData.roundUpdate,
+        },
+      });
+
+      return { previousRoundData };
+    },
+    onError: (err, mutationData, context) => {
+      queryClient.setQueryData(queryKey, context.previousRoundData);
+    },
+  });
 
   const onHide = () => setEditing(false);
-  const onExit = async () => sdk.updateScorecardRound({ roundId, roundUpdate: data.round });
   const mutateField = (fieldName: keyof RoundForScorecard, value: any) => mutate({
-    round: {
-      ...data.round,
-      [fieldName]: value || null,
-    },
-  }, false);
+    roundId,
+    roundUpdate: { [fieldName]: value || null },
+  });
 
   const {
     name = null,
@@ -60,7 +84,7 @@ const ScorecardRoundInfo = ({ course, roundId }: Props) => {
           </Button>
         </div>
       </div>
-      <Modal centered show={editing} onHide={onHide} onExit={onExit}>
+      <Modal centered show={editing} onHide={onHide}>
         <div className="modal-card">
           <Card.Header>
             <CardHeaderTitle>

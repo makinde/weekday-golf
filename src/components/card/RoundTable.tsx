@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 import { Table } from 'react-bootstrap';
 
-import { RoundForTable } from '../../types';
+import { RoundForTable } from '../../apiHooks';
 import RelativeScore from '../utils/RelativeScore';
 import { WinningsPill } from '../utils/Winnings';
 import styles from './RoundTable.module.scss';

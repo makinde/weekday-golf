@@ -3,9 +3,9 @@ import without from 'lodash/without';
 import { ButtonProps, Dropdown } from 'react-bootstrap';
 import find from 'lodash/find';
 
-import sdk, { useSdk } from '../../sdk';
 import AvatarGroup from '../utils/AvatarGroup';
 import Avatar from '../utils/Avatar';
+import { usePlayerSelector } from '../../apiHooks';
 
 type PlayerSelectorProps = {
   playerIds: number[],
@@ -18,7 +18,7 @@ const PlayerSelector = ({
   setPlayerIds,
   id: elementId,
 }: PlayerSelectorProps) => {
-  const { data } = useSdk(sdk.playerSelector, {});
+  const { data } = usePlayerSelector();
   const { players = [] } = data ?? {};
 
   return (
@@ -60,7 +60,7 @@ const MultiPlayerSelectorButton = ({
   id: elementId,
   ...rest
 }: MultiButtonProps) => {
-  const { data } = useSdk(sdk.playerSelector, {});
+  const { data } = usePlayerSelector();
   const { players = [] } = data ?? {};
 
   return (
@@ -105,7 +105,7 @@ const SinglePlayerSelectorButton = ({
   id: elementId,
   ...rest
 }: SingleButtonProps) => {
-  const { data } = useSdk(sdk.playerSelector, {});
+  const { data } = usePlayerSelector();
   const { players = [] } = data ?? {};
   const player = find(players, { id: playerId });
 

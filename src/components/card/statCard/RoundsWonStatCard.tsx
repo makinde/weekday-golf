@@ -1,8 +1,7 @@
 import React from 'react';
-import useSWR from 'swr';
 
 import StatCard from '../../utils/StatCard';
-import sdk from '../../../sdk';
+import { useRoundsWonStatCard } from '../../../apiHooks';
 
 type Props = {
   courseId?: number,
@@ -10,10 +9,7 @@ type Props = {
 };
 
 const RoundsWonStatCard = ({ courseId, playerId }: Props) => {
-  const { data } = useSWR(
-    ['RoundsWonStatCard', courseId, playerId],
-    () => sdk.roundsWonStatCard({ courseId, playerId }),
-  );
+  const { data } = useRoundsWonStatCard({ courseId, playerId });
 
   const winnings = data?.playerRoundStats?.aggregate?.count;
   let heading;

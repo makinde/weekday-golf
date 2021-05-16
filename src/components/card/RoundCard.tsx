@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 
 import Link from 'next/link';
-import { RoundForRoundCard } from '../../types';
+import { RoundForRoundCard } from '../../apiHooks';
 import RoundTable from './RoundTable';
 import RoundTitle from '../utils/RoundTitle';
 import CardHeaderTitle from '../utils/CardHeaderTitle';

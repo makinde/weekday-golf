@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import sumBy from 'lodash/sumBy';
 
-import { HoleForScoresHeader } from '../../types';
+import { HoleForScoresHeader } from '../../apiHooks';
 
 type Props = {
   holes: HoleForScoresHeader[],

@@ -3,12 +3,11 @@ import React, { useState } from 'react';
 import {
   Table, Card, Nav, Badge,
 } from 'react-bootstrap';
-import useSWR from 'swr';
 import cx from 'classnames';
 
 import ScoresHeader from './ScoresHeader';
 import CardHeaderTitle from '../utils/CardHeaderTitle';
-import sdk from '../../sdk';
+import { useScoringStatsCard } from '../../apiHooks';
 
 const MIN_COUNT_CUTOFF = 3;
 const TRENDING_CUTOFF = 0.4;
@@ -26,10 +25,8 @@ const ScoringStatsCard = ({ courseId }: Props) => {
   const viewingRecent = view === VIEWS.RECENT;
   const viewingAll = view === VIEWS.ALL_TIME;
 
-  const { data, error } = useSWR(
-    `ScoringStatsCard:${courseId}`,
-    () => sdk.scoringStatsCard({ courseId }),
-  );
+  const { data, isError, isLoading } = useScoringStatsCard({ courseId });
+
   const { course } = data || {};
   const { holes, coursePlayers } = course || {};
 
@@ -60,7 +57,8 @@ const ScoringStatsCard = ({ courseId }: Props) => {
       </Card.Header>
       {!data && (
         <Card.Body className="text-muted">
-          {error ? 'Oops! Something went wrong.' : 'Loading...'}
+          {isError && 'Oops! Something went wrong.'}
+          {isLoading && 'Loading...'}
         </Card.Body>
       )}
       {data && (

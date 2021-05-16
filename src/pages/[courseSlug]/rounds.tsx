@@ -3,10 +3,10 @@ import { GetStaticProps } from 'next';
 import { Row, Col } from 'react-bootstrap';
 
 import { getStaticPaths } from './index';
-import sdk from '../../sdk';
+import graphqlClient from '../../graphqlClient';
+import { CourseRoundsPageDocument, CourseForRoundsPage } from '../../apiHooks';
 import Layout, { CoursePage } from '../../components/utils/Layout';
 import LeaderboardCard from '../../components/card/LeaderboardCard';
-import { CourseForRoundsPage } from '../../types';
 import RoundCardList from '../../components/card/RoundCardList';
 import PageHeader from '../../components/utils/PageHeader';
 
@@ -44,7 +44,7 @@ const CourseRoundsPage = ({ course }: Props) => (
 
 const getStaticProps: StaticProps = async ({ params }) => {
   const { courseSlug: slug } = params;
-  const { courses } = await sdk.courseRoundsPage({ slug });
+  const { courses } = await graphqlClient.request(CourseRoundsPageDocument, { slug });
 
   return {
     props: {

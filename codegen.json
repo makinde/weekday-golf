@@ -3,7 +3,7 @@
   "documents": ["./src/**/*.graphql"],
   "overwrite": true,
   "generates": {
-    "./src/types.ts": {
+    "./src/apiHooks.ts": {
       "plugins": [
         {
           "add": {
@@ -19,11 +19,17 @@
         },
         "typescript",
         "typescript-operations",
-        "typescript-graphql-request"
+        "typescript-react-query"
       ],
       "config": {
         "omitOperationSuffix": true,
         "skipTypename": true,
+        "fetcher": {
+          "func": "./graphqlClient#customFetcher",
+          "isReactHook": false
+        },
+        "exposeDocument": true,
+        "exposeQueryKeys": true,
         "scalars": {
           "_int4": "number[]",
           "_text": "string",

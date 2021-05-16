@@ -2,7 +2,7 @@ import React from 'react';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { Row, Col } from 'react-bootstrap';
 
-import sdk from '../../sdk';
+import graphqlClient from '../../graphqlClient';
 import Layout from '../../components/utils/Layout';
 import Avatar from '../../components/utils/Avatar';
 import PageHeader from '../../components/utils/PageHeader';
@@ -14,7 +14,11 @@ import AverageScoreStatCard from '../../components/card/statCard/AverageScoreSta
 import WinningsStatCard from '../../components/card/statCard/WinningsStatCard';
 import RoundsWonStatCard from '../../components/card/statCard/RoundsWonStatCard';
 
-import { CoursePlayerForPlayerPage } from '../../types';
+import {
+  CoursePlayerForPlayerPage,
+  CoursePlayerPageDocument,
+  CoursePlayerStaticListingDocument,
+} from '../../apiHooks';
 
 type PageQuery = { courseSlug: string, playerSlug: string };
 type ServerSideProps = GetStaticProps<Props, PageQuery>;
@@ -67,7 +71,10 @@ const CoursePlayerPage = ({
 
 const getStaticProps: ServerSideProps = async ({ params }) => {
   const { courseSlug, playerSlug } = params;
-  const { coursePlayers } = await sdk.coursePlayerPage({ courseSlug, playerSlug });
+  const { coursePlayers } = await graphqlClient.request(
+    CoursePlayerPageDocument,
+    { courseSlug, playerSlug },
+  );
 
   return {
     props: {
@@ -77,7 +84,7 @@ const getStaticProps: ServerSideProps = async ({ params }) => {
 };
 
 const getStaticPaths: GetStaticPaths<PageQuery> = async () => {
-  const { coursePlayers } = await sdk.coursePlayerStaticListing();
+  const { coursePlayers } = await graphqlClient.request(CoursePlayerStaticListingDocument);
 
   return {
     paths: coursePlayers.map(

@@ -5,6 +5,7 @@ A site/app for a small number of small groups to track their golf rounds. More i
 - [NextJS](https://nextjs.org/docs/getting-started)
 - [TypeScript](https://www.typescriptlang.org/docs)
 - [GraphQL](https://graphql.org) (Endpoint built with [Hasura](https://hasura.io/docs/1.0/graphql/core/index.html) atop a Postgres DB). Ask for access.
+- [React Query](https://react-query.tanstack.com) for requesting/updating data.
 - [Vercel](https://vercel.com/docs) hosting
 - [CSS Modules](https://github.com/css-modules/css-modules)
 - [Bootstrap CSS](https://getbootstrap.com/docs/5.0/getting-started/introduction/) (using [React Bootstrap](https://react-bootstrap.github.io/components/alerts) with [Dashkit Theme](https://dashkit.goodthemes.co/docs/components.html))
@@ -54,7 +55,7 @@ The `dev` command also handles transpiling typescript on the fly, so you basical
 ### Data
 Data from all the rounds are stored in a Postgres database. Hasura is a service that you point to a DB and it generates a graphql endpoint based on it (crazy, I know). We try to push a decent amount of things back to SQL/Hasura so the front end can mostly just worry about querying data in the shape it needs and rendering it. Ask for access to Hasura if you don't have it. You can use the GraphiQL interface provided to explore and add data.
 
-Data is queried using graphQL. All queries/fragments/mutations are in *.graphql files collocated with the typescript file that uses it. `yarn generate` looks at all these files and produces a strongly typed sdk and result types for all the queries, mutations, and fragments. In development, `yarn dev` will run this generation any time the files are touched, which is really convenient.
+Data is queried using graphQL. All queries/fragments/mutations are in *.graphql files collocated with the typescript file that uses it. `yarn generate` looks at all these files and produces strongly typed hooks and result types for all the queries, mutations, and fragments. In development, `yarn dev` will run this generation any time the files are touched, which is really convenient.
 
 ### Deployment
 Vercel is connected to this repository. Every pull request will automatically get a new URL to host the branch. That URL will be shown on the PR page by the Vercel bot. For now, the production add will redeploy whenever any data changes or any code is pushed.

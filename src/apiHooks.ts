@@ -4,9 +4,8 @@
  * overwritten before every build.
  * See `codegen.json` in the project root.
  */
-import { GraphQLClient } from 'graphql-request';
-import { print } from 'graphql';
-import gql from 'graphql-tag';
+import { useQuery, UseQueryOptions, useMutation, UseMutationOptions } from 'react-query';
+import { customFetcher } from './graphqlClient';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** All built-in and custom scalars, mapped to their actual values */
@@ -4919,39 +4918,6 @@ export type WinningsStatCardVariables = Exact<{
 
 export type WinningsStatCard = { playerRoundStats: { aggregate?: Maybe<{ sum?: Maybe<Pick<Player_Round_Sum_Fields, 'totalWinnings'>> }> } };
 
-export type HoleInputVariables = Exact<{
-  holeNumber: Scalars['Int'];
-  playerId: Scalars['Int'];
-  roundId: Scalars['Int'];
-}>;
-
-
-export type HoleInput = { score?: Maybe<Pick<Score, 'score' | 'putts'>> };
-
-export type HoleInputInsertVariables = Exact<{
-  score: Score_Insert_Input;
-}>;
-
-
-export type HoleInputInsert = { insertScore?: Maybe<Pick<Score, 'roundId'>> };
-
-export type HoleInputUpdateVariables = Exact<{
-  scoreKey: Score_Pk_Columns_Input;
-  scoreUpdate: Score_Set_Input;
-}>;
-
-
-export type HoleInputUpdate = { updateScore?: Maybe<Pick<Score, 'roundId'>> };
-
-export type HoleInputDeleteVariables = Exact<{
-  holeNumber: Scalars['Int'];
-  playerId: Scalars['Int'];
-  roundId: Scalars['Int'];
-}>;
-
-
-export type HoleInputDelete = { deleteScore?: Maybe<Pick<Score, 'roundId'>> };
-
 export type NewRoundButtonInsertVariables = Exact<{
   courseId: Scalars['Int'];
   date: Scalars['timestamp'];
@@ -4991,6 +4957,30 @@ export type CourseForScorecardPlayerList = (
   & { holes: Array<Pick<Hole, 'number' | 'par'>> }
 );
 
+export type ScoresForRoundVariables = Exact<{
+  roundId: Scalars['Int'];
+}>;
+
+
+export type ScoresForRound = { scores: Array<Pick<Score, 'playerId' | 'holeNumber' | 'roundId' | 'score' | 'putts'>> };
+
+export type RoundScoresUpsertVariables = Exact<{
+  scoreData: Score_Insert_Input;
+  updateColumns: Array<Score_Update_Column>;
+}>;
+
+
+export type RoundScoresUpsert = { insertScores?: Maybe<{ returning: Array<Pick<Score, 'playerId' | 'holeNumber' | 'roundId' | 'score' | 'putts'>> }> };
+
+export type RoundScoresDeleteVariables = Exact<{
+  holeNumber: Scalars['Int'];
+  playerId: Scalars['Int'];
+  roundId: Scalars['Int'];
+}>;
+
+
+export type RoundScoresDelete = { deleteScore?: Maybe<Pick<Score, 'roundId'>> };
+
 export type RoundForScorecard = Pick<Round, 'name' | 'date' | 'skinsHoleBounty' | 'skinsPlayerIds' | 'skinsTiebreakWinnerId' | 'roundBounty' | 'roundBountyPlayerIds' | 'roundBountyTiebreakWinnerId'>;
 
 export type CourseForScorecardRoundInfo = Pick<Course, 'name'>;
@@ -5009,30 +4999,6 @@ export type UpdateScorecardRoundVariables = Exact<{
 
 
 export type UpdateScorecardRound = { round?: Maybe<RoundForScorecard> };
-
-export type OfflineRoundScoresVariables = Exact<{
-  roundId: Scalars['Int'];
-}>;
-
-
-export type OfflineRoundScores = { scores: Array<Pick<Score, 'playerId' | 'holeNumber' | 'roundId' | 'score' | 'putts'>> };
-
-export type OfflineRoundScoresUpsertVariables = Exact<{
-  scoreData: Score_Insert_Input;
-  updateColumns: Array<Score_Update_Column>;
-}>;
-
-
-export type OfflineRoundScoresUpsert = { insertScores?: Maybe<{ returning: Array<Pick<Score, 'playerId' | 'holeNumber' | 'roundId' | 'score' | 'putts'>> }> };
-
-export type OfflineRoundScoresDeleteVariables = Exact<{
-  holeNumber: Scalars['Int'];
-  playerId: Scalars['Int'];
-  roundId: Scalars['Int'];
-}>;
-
-
-export type OfflineRoundScoresDelete = { deleteScore?: Maybe<Pick<Score, 'roundId'>> };
 
 export type LayoutVariables = Exact<{ [key: string]: never; }>;
 
@@ -5094,12 +5060,12 @@ export type ScorecardPageNew = { courses: Array<(
     & CourseForScorecardRoundInfo
   )> };
 
-export const _LeaderboardCardCourse = gql`
+export const _LeaderboardCardCourse = `
     fragment _leaderboardCardCourse on course {
   slug
 }
     `;
-export const _LeaderboardCardPlayerRound = gql`
+export const _LeaderboardCardPlayerRound = `
     fragment _leaderboardCardPlayerRound on player_round {
   playerId
   roundId
@@ -5113,14 +5079,14 @@ export const _LeaderboardCardPlayerRound = gql`
   }
 }
     `;
-export const HoleForScoresHeader = gql`
+export const HoleForScoresHeader = `
     fragment holeForScoresHeader on hole {
   nickname
   number
   par
 }
     `;
-export const RoundForTable = gql`
+export const RoundForTable = `
     fragment roundForTable on round {
   id
   date
@@ -5153,7 +5119,7 @@ export const RoundForTable = gql`
   }
 }
     ${HoleForScoresHeader}`;
-export const RoundForRoundCard = gql`
+export const RoundForRoundCard = `
     fragment roundForRoundCard on round {
   ...roundForTable
   date
@@ -5162,7 +5128,7 @@ export const RoundForRoundCard = gql`
   roundBounty
 }
     ${RoundForTable}`;
-export const CourseForScorecardPlayerList = gql`
+export const CourseForScorecardPlayerList = `
     fragment courseForScorecardPlayerList on course {
   id
   holes {
@@ -5171,7 +5137,7 @@ export const CourseForScorecardPlayerList = gql`
   }
 }
     `;
-export const RoundForScorecard = gql`
+export const RoundForScorecard = `
     fragment roundForScorecard on round {
   name
   date
@@ -5183,12 +5149,12 @@ export const RoundForScorecard = gql`
   roundBountyTiebreakWinnerId
 }
     `;
-export const CourseForScorecardRoundInfo = gql`
+export const CourseForScorecardRoundInfo = `
     fragment courseForScorecardRoundInfo on course {
   name
 }
     `;
-export const CoursePlayerForPlayerPage = gql`
+export const CoursePlayerForPlayerPage = `
     fragment coursePlayerForPlayerPage on course_player {
   courseId
   playerId
@@ -5201,14 +5167,14 @@ export const CoursePlayerForPlayerPage = gql`
   }
 }
     `;
-export const CourseForIndexPage = gql`
+export const CourseForIndexPage = `
     fragment courseForIndexPage on course {
   id
   name
   img
 }
     `;
-export const CourseForRoundsPage = gql`
+export const CourseForRoundsPage = `
     fragment courseForRoundsPage on course {
   id
   slug
@@ -5216,7 +5182,7 @@ export const CourseForRoundsPage = gql`
   img
 }
     `;
-export const LeaderboardCardDocument = gql`
+export const LeaderboardCardDocument = `
     query leaderboardCard($courseId: Int!, $rankLimit: bigint!) {
   course(id: $courseId) {
     ..._leaderboardCardCourse
@@ -5228,7 +5194,23 @@ export const LeaderboardCardDocument = gql`
 }
     ${_LeaderboardCardCourse}
 ${_LeaderboardCardPlayerRound}`;
-export const LeaderboardCardForPlayerDocument = gql`
+export const useLeaderboardCard = <
+      TData = LeaderboardCard,
+      TError = unknown
+    >(
+      variables: LeaderboardCardVariables, 
+      options?: UseQueryOptions<LeaderboardCard, TError, TData>
+    ) => 
+    useQuery<LeaderboardCard, TError, TData>(
+      ['leaderboardCard', variables],
+      customFetcher<LeaderboardCard, LeaderboardCardVariables>(LeaderboardCardDocument, variables),
+      options
+    );
+useLeaderboardCard.document = LeaderboardCardDocument;
+
+useLeaderboardCard.getKey = (variables: LeaderboardCardVariables) => ['leaderboardCard', variables];
+
+export const LeaderboardCardForPlayerDocument = `
     query leaderboardCardForPlayer($courseId: Int!, $playerId: Int, $rankLimit: bigint!) {
   course(id: $courseId) {
     ..._leaderboardCardCourse
@@ -5242,7 +5224,23 @@ export const LeaderboardCardForPlayerDocument = gql`
 }
     ${_LeaderboardCardCourse}
 ${_LeaderboardCardPlayerRound}`;
-export const ParticipationStatsCardDocument = gql`
+export const useLeaderboardCardForPlayer = <
+      TData = LeaderboardCardForPlayer,
+      TError = unknown
+    >(
+      variables: LeaderboardCardForPlayerVariables, 
+      options?: UseQueryOptions<LeaderboardCardForPlayer, TError, TData>
+    ) => 
+    useQuery<LeaderboardCardForPlayer, TError, TData>(
+      ['leaderboardCardForPlayer', variables],
+      customFetcher<LeaderboardCardForPlayer, LeaderboardCardForPlayerVariables>(LeaderboardCardForPlayerDocument, variables),
+      options
+    );
+useLeaderboardCardForPlayer.document = LeaderboardCardForPlayerDocument;
+
+useLeaderboardCardForPlayer.getKey = (variables: LeaderboardCardForPlayerVariables) => ['leaderboardCardForPlayer', variables];
+
+export const ParticipationStatsCardDocument = `
     query participationStatsCard($courseId: Int!) {
   course(id: $courseId) {
     slug
@@ -5284,7 +5282,23 @@ export const ParticipationStatsCardDocument = gql`
   }
 }
     `;
-export const RoundCardListDocument = gql`
+export const useParticipationStatsCard = <
+      TData = ParticipationStatsCard,
+      TError = unknown
+    >(
+      variables: ParticipationStatsCardVariables, 
+      options?: UseQueryOptions<ParticipationStatsCard, TError, TData>
+    ) => 
+    useQuery<ParticipationStatsCard, TError, TData>(
+      ['participationStatsCard', variables],
+      customFetcher<ParticipationStatsCard, ParticipationStatsCardVariables>(ParticipationStatsCardDocument, variables),
+      options
+    );
+useParticipationStatsCard.document = ParticipationStatsCardDocument;
+
+useParticipationStatsCard.getKey = (variables: ParticipationStatsCardVariables) => ['participationStatsCard', variables];
+
+export const RoundCardListDocument = `
     query roundCardList($courseId: Int, $playerId: Int, $limit: Int) {
   rounds(
     where: {_and: [{courseId: {_eq: $courseId}}, {_or: [{scores: {playerId: {_eq: $playerId}}}, {_not: {scores: {}}}]}]}
@@ -5299,7 +5313,23 @@ export const RoundCardListDocument = gql`
   }
 }
     ${RoundForRoundCard}`;
-export const ScoringStatsCardDocument = gql`
+export const useRoundCardList = <
+      TData = RoundCardList,
+      TError = unknown
+    >(
+      variables?: RoundCardListVariables, 
+      options?: UseQueryOptions<RoundCardList, TError, TData>
+    ) => 
+    useQuery<RoundCardList, TError, TData>(
+      ['roundCardList', variables],
+      customFetcher<RoundCardList, RoundCardListVariables>(RoundCardListDocument, variables),
+      options
+    );
+useRoundCardList.document = RoundCardListDocument;
+
+useRoundCardList.getKey = (variables?: RoundCardListVariables) => ['roundCardList', variables];
+
+export const ScoringStatsCardDocument = `
     query scoringStatsCard($courseId: Int!) {
   course(id: $courseId) {
     slug
@@ -5323,7 +5353,23 @@ export const ScoringStatsCardDocument = gql`
   }
 }
     ${HoleForScoresHeader}`;
-export const AverageScoreStatCardDocument = gql`
+export const useScoringStatsCard = <
+      TData = ScoringStatsCard,
+      TError = unknown
+    >(
+      variables: ScoringStatsCardVariables, 
+      options?: UseQueryOptions<ScoringStatsCard, TError, TData>
+    ) => 
+    useQuery<ScoringStatsCard, TError, TData>(
+      ['scoringStatsCard', variables],
+      customFetcher<ScoringStatsCard, ScoringStatsCardVariables>(ScoringStatsCardDocument, variables),
+      options
+    );
+useScoringStatsCard.document = ScoringStatsCardDocument;
+
+useScoringStatsCard.getKey = (variables: ScoringStatsCardVariables) => ['scoringStatsCard', variables];
+
+export const AverageScoreStatCardDocument = `
     query averageScoreStatCard($courseId: Int, $playerId: Int) {
   playerRoundStats(
     where: {courseId: {_eq: $courseId}, playerId: {_eq: $playerId}}
@@ -5336,7 +5382,23 @@ export const AverageScoreStatCardDocument = gql`
   }
 }
     `;
-export const RoundsPlayedStatCardDocument = gql`
+export const useAverageScoreStatCard = <
+      TData = AverageScoreStatCard,
+      TError = unknown
+    >(
+      variables?: AverageScoreStatCardVariables, 
+      options?: UseQueryOptions<AverageScoreStatCard, TError, TData>
+    ) => 
+    useQuery<AverageScoreStatCard, TError, TData>(
+      ['averageScoreStatCard', variables],
+      customFetcher<AverageScoreStatCard, AverageScoreStatCardVariables>(AverageScoreStatCardDocument, variables),
+      options
+    );
+useAverageScoreStatCard.document = AverageScoreStatCardDocument;
+
+useAverageScoreStatCard.getKey = (variables?: AverageScoreStatCardVariables) => ['averageScoreStatCard', variables];
+
+export const RoundsPlayedStatCardDocument = `
     query roundsPlayedStatCard($courseId: Int!) {
   scope: course(id: $courseId) {
     roundStats: rounds_aggregate {
@@ -5347,7 +5409,23 @@ export const RoundsPlayedStatCardDocument = gql`
   }
 }
     `;
-export const RoundsPlayedStatCardForPlayerDocument = gql`
+export const useRoundsPlayedStatCard = <
+      TData = RoundsPlayedStatCard,
+      TError = unknown
+    >(
+      variables: RoundsPlayedStatCardVariables, 
+      options?: UseQueryOptions<RoundsPlayedStatCard, TError, TData>
+    ) => 
+    useQuery<RoundsPlayedStatCard, TError, TData>(
+      ['roundsPlayedStatCard', variables],
+      customFetcher<RoundsPlayedStatCard, RoundsPlayedStatCardVariables>(RoundsPlayedStatCardDocument, variables),
+      options
+    );
+useRoundsPlayedStatCard.document = RoundsPlayedStatCardDocument;
+
+useRoundsPlayedStatCard.getKey = (variables: RoundsPlayedStatCardVariables) => ['roundsPlayedStatCard', variables];
+
+export const RoundsPlayedStatCardForPlayerDocument = `
     query roundsPlayedStatCardForPlayer($courseId: Int!, $playerId: Int!) {
   scope: player(id: $playerId) {
     roundStats: playerRounds_aggregate(where: {courseId: {_eq: $courseId}}) {
@@ -5358,7 +5436,23 @@ export const RoundsPlayedStatCardForPlayerDocument = gql`
   }
 }
     `;
-export const RoundsWonStatCardDocument = gql`
+export const useRoundsPlayedStatCardForPlayer = <
+      TData = RoundsPlayedStatCardForPlayer,
+      TError = unknown
+    >(
+      variables: RoundsPlayedStatCardForPlayerVariables, 
+      options?: UseQueryOptions<RoundsPlayedStatCardForPlayer, TError, TData>
+    ) => 
+    useQuery<RoundsPlayedStatCardForPlayer, TError, TData>(
+      ['roundsPlayedStatCardForPlayer', variables],
+      customFetcher<RoundsPlayedStatCardForPlayer, RoundsPlayedStatCardForPlayerVariables>(RoundsPlayedStatCardForPlayerDocument, variables),
+      options
+    );
+useRoundsPlayedStatCardForPlayer.document = RoundsPlayedStatCardForPlayerDocument;
+
+useRoundsPlayedStatCardForPlayer.getKey = (variables: RoundsPlayedStatCardForPlayerVariables) => ['roundsPlayedStatCardForPlayer', variables];
+
+export const RoundsWonStatCardDocument = `
     query roundsWonStatCard($courseId: Int!, $playerId: Int!) {
   playerRoundStats(
     where: {courseId: {_eq: $courseId}, playerId: {_eq: $playerId}, winner: {_eq: true}}
@@ -5369,7 +5463,23 @@ export const RoundsWonStatCardDocument = gql`
   }
 }
     `;
-export const ScoreCountStatCardDocument = gql`
+export const useRoundsWonStatCard = <
+      TData = RoundsWonStatCard,
+      TError = unknown
+    >(
+      variables: RoundsWonStatCardVariables, 
+      options?: UseQueryOptions<RoundsWonStatCard, TError, TData>
+    ) => 
+    useQuery<RoundsWonStatCard, TError, TData>(
+      ['roundsWonStatCard', variables],
+      customFetcher<RoundsWonStatCard, RoundsWonStatCardVariables>(RoundsWonStatCardDocument, variables),
+      options
+    );
+useRoundsWonStatCard.document = RoundsWonStatCardDocument;
+
+useRoundsWonStatCard.getKey = (variables: RoundsWonStatCardVariables) => ['roundsWonStatCard', variables];
+
+export const ScoreCountStatCardDocument = `
     query scoreCountStatCard($courseId: Int, $playerId: Int, $relativeScoreCutoff: Int) {
   scoringStats(
     where: {courseId: {_eq: $courseId}, playerId: {_eq: $playerId}, relativeScore: {_lte: $relativeScoreCutoff}}
@@ -5392,7 +5502,23 @@ export const ScoreCountStatCardDocument = gql`
   }
 }
     `;
-export const WinningsStatCardDocument = gql`
+export const useScoreCountStatCard = <
+      TData = ScoreCountStatCard,
+      TError = unknown
+    >(
+      variables?: ScoreCountStatCardVariables, 
+      options?: UseQueryOptions<ScoreCountStatCard, TError, TData>
+    ) => 
+    useQuery<ScoreCountStatCard, TError, TData>(
+      ['scoreCountStatCard', variables],
+      customFetcher<ScoreCountStatCard, ScoreCountStatCardVariables>(ScoreCountStatCardDocument, variables),
+      options
+    );
+useScoreCountStatCard.document = ScoreCountStatCardDocument;
+
+useScoreCountStatCard.getKey = (variables?: ScoreCountStatCardVariables) => ['scoreCountStatCard', variables];
+
+export const WinningsStatCardDocument = `
     query winningsStatCard($courseId: Int!, $playerId: Int!) {
   playerRoundStats(
     where: {courseId: {_eq: $courseId}, playerId: {_eq: $playerId}}
@@ -5405,36 +5531,23 @@ export const WinningsStatCardDocument = gql`
   }
 }
     `;
-export const HoleInputDocument = gql`
-    query holeInput($holeNumber: Int!, $playerId: Int!, $roundId: Int!) {
-  score(holeNumber: $holeNumber, playerId: $playerId, roundId: $roundId) {
-    score
-    putts
-  }
-}
-    `;
-export const HoleInputInsertDocument = gql`
-    mutation holeInputInsert($score: score_insert_input!) {
-  insertScore(object: $score) {
-    roundId
-  }
-}
-    `;
-export const HoleInputUpdateDocument = gql`
-    mutation holeInputUpdate($scoreKey: score_pk_columns_input!, $scoreUpdate: score_set_input!) {
-  updateScore(pk_columns: $scoreKey, _set: $scoreUpdate) {
-    roundId
-  }
-}
-    `;
-export const HoleInputDeleteDocument = gql`
-    mutation holeInputDelete($holeNumber: Int!, $playerId: Int!, $roundId: Int!) {
-  deleteScore(holeNumber: $holeNumber, playerId: $playerId, roundId: $roundId) {
-    roundId
-  }
-}
-    `;
-export const NewRoundButtonInsertDocument = gql`
+export const useWinningsStatCard = <
+      TData = WinningsStatCard,
+      TError = unknown
+    >(
+      variables: WinningsStatCardVariables, 
+      options?: UseQueryOptions<WinningsStatCard, TError, TData>
+    ) => 
+    useQuery<WinningsStatCard, TError, TData>(
+      ['winningsStatCard', variables],
+      customFetcher<WinningsStatCard, WinningsStatCardVariables>(WinningsStatCardDocument, variables),
+      options
+    );
+useWinningsStatCard.document = WinningsStatCardDocument;
+
+useWinningsStatCard.getKey = (variables: WinningsStatCardVariables) => ['winningsStatCard', variables];
+
+export const NewRoundButtonInsertDocument = `
     mutation newRoundButtonInsert($courseId: Int!, $date: timestamp!) {
   insertRound(object: {courseId: $courseId, date: $date}) {
     roundId: id
@@ -5444,7 +5557,15 @@ export const NewRoundButtonInsertDocument = gql`
   }
 }
     `;
-export const PlayerSelectorDocument = gql`
+export const useNewRoundButtonInsert = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<NewRoundButtonInsert, TError, NewRoundButtonInsertVariables, TContext>) => 
+    useMutation<NewRoundButtonInsert, TError, NewRoundButtonInsertVariables, TContext>(
+      (variables?: NewRoundButtonInsertVariables) => customFetcher<NewRoundButtonInsert, NewRoundButtonInsertVariables>(NewRoundButtonInsertDocument, variables)(),
+      options
+    );
+export const PlayerSelectorDocument = `
     query playerSelector {
   players(order_by: {scores_aggregate: {count: desc}}) {
     id
@@ -5453,7 +5574,23 @@ export const PlayerSelectorDocument = gql`
   }
 }
     `;
-export const RemoveRoundDocument = gql`
+export const usePlayerSelector = <
+      TData = PlayerSelector,
+      TError = unknown
+    >(
+      variables?: PlayerSelectorVariables, 
+      options?: UseQueryOptions<PlayerSelector, TError, TData>
+    ) => 
+    useQuery<PlayerSelector, TError, TData>(
+      ['playerSelector', variables],
+      customFetcher<PlayerSelector, PlayerSelectorVariables>(PlayerSelectorDocument, variables),
+      options
+    );
+usePlayerSelector.document = PlayerSelectorDocument;
+
+usePlayerSelector.getKey = (variables?: PlayerSelectorVariables) => ['playerSelector', variables];
+
+export const RemoveRoundDocument = `
     mutation removeRound($roundId: Int!) {
   deleteScores(where: {roundId: {_eq: $roundId}}) {
     affected_rows
@@ -5463,7 +5600,15 @@ export const RemoveRoundDocument = gql`
   }
 }
     `;
-export const ScorecardPlayerInfoDocument = gql`
+export const useRemoveRound = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<RemoveRound, TError, RemoveRoundVariables, TContext>) => 
+    useMutation<RemoveRound, TError, RemoveRoundVariables, TContext>(
+      (variables?: RemoveRoundVariables) => customFetcher<RemoveRound, RemoveRoundVariables>(RemoveRoundDocument, variables)(),
+      options
+    );
+export const ScorecardPlayerInfoDocument = `
     query scorecardPlayerInfo($courseId: Int!, $playerId: Int!) {
   player(id: $playerId) {
     id
@@ -5484,22 +5629,24 @@ export const ScorecardPlayerInfoDocument = gql`
   }
 }
     `;
-export const ScorecardRoundInfoDocument = gql`
-    query scorecardRoundInfo($roundId: Int!) {
-  round(id: $roundId) {
-    ...roundForScorecard
-  }
-}
-    ${RoundForScorecard}`;
-export const UpdateScorecardRoundDocument = gql`
-    mutation updateScorecardRound($roundId: Int!, $roundUpdate: round_set_input!) {
-  round: updateRound(pk_columns: {id: $roundId}, _set: $roundUpdate) {
-    ...roundForScorecard
-  }
-}
-    ${RoundForScorecard}`;
-export const OfflineRoundScoresDocument = gql`
-    query offlineRoundScores($roundId: Int!) {
+export const useScorecardPlayerInfo = <
+      TData = ScorecardPlayerInfo,
+      TError = unknown
+    >(
+      variables: ScorecardPlayerInfoVariables, 
+      options?: UseQueryOptions<ScorecardPlayerInfo, TError, TData>
+    ) => 
+    useQuery<ScorecardPlayerInfo, TError, TData>(
+      ['scorecardPlayerInfo', variables],
+      customFetcher<ScorecardPlayerInfo, ScorecardPlayerInfoVariables>(ScorecardPlayerInfoDocument, variables),
+      options
+    );
+useScorecardPlayerInfo.document = ScorecardPlayerInfoDocument;
+
+useScorecardPlayerInfo.getKey = (variables: ScorecardPlayerInfoVariables) => ['scorecardPlayerInfo', variables];
+
+export const ScoresForRoundDocument = `
+    query scoresForRound($roundId: Int!) {
   scores(where: {roundId: {_eq: $roundId}}) {
     playerId
     holeNumber
@@ -5509,8 +5656,24 @@ export const OfflineRoundScoresDocument = gql`
   }
 }
     `;
-export const OfflineRoundScoresUpsertDocument = gql`
-    mutation offlineRoundScoresUpsert($scoreData: score_insert_input!, $updateColumns: [score_update_column!]!) {
+export const useScoresForRound = <
+      TData = ScoresForRound,
+      TError = unknown
+    >(
+      variables: ScoresForRoundVariables, 
+      options?: UseQueryOptions<ScoresForRound, TError, TData>
+    ) => 
+    useQuery<ScoresForRound, TError, TData>(
+      ['scoresForRound', variables],
+      customFetcher<ScoresForRound, ScoresForRoundVariables>(ScoresForRoundDocument, variables),
+      options
+    );
+useScoresForRound.document = ScoresForRoundDocument;
+
+useScoresForRound.getKey = (variables: ScoresForRoundVariables) => ['scoresForRound', variables];
+
+export const RoundScoresUpsertDocument = `
+    mutation roundScoresUpsert($scoreData: score_insert_input!, $updateColumns: [score_update_column!]!) {
   insertScores(
     objects: [$scoreData]
     on_conflict: {constraint: score_pkey, update_columns: $updateColumns}
@@ -5525,14 +5688,68 @@ export const OfflineRoundScoresUpsertDocument = gql`
   }
 }
     `;
-export const OfflineRoundScoresDeleteDocument = gql`
-    mutation offlineRoundScoresDelete($holeNumber: Int!, $playerId: Int!, $roundId: Int!) {
+export const useRoundScoresUpsert = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<RoundScoresUpsert, TError, RoundScoresUpsertVariables, TContext>) => 
+    useMutation<RoundScoresUpsert, TError, RoundScoresUpsertVariables, TContext>(
+      (variables?: RoundScoresUpsertVariables) => customFetcher<RoundScoresUpsert, RoundScoresUpsertVariables>(RoundScoresUpsertDocument, variables)(),
+      options
+    );
+export const RoundScoresDeleteDocument = `
+    mutation roundScoresDelete($holeNumber: Int!, $playerId: Int!, $roundId: Int!) {
   deleteScore(holeNumber: $holeNumber, playerId: $playerId, roundId: $roundId) {
     roundId
   }
 }
     `;
-export const LayoutDocument = gql`
+export const useRoundScoresDelete = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<RoundScoresDelete, TError, RoundScoresDeleteVariables, TContext>) => 
+    useMutation<RoundScoresDelete, TError, RoundScoresDeleteVariables, TContext>(
+      (variables?: RoundScoresDeleteVariables) => customFetcher<RoundScoresDelete, RoundScoresDeleteVariables>(RoundScoresDeleteDocument, variables)(),
+      options
+    );
+export const ScorecardRoundInfoDocument = `
+    query scorecardRoundInfo($roundId: Int!) {
+  round(id: $roundId) {
+    ...roundForScorecard
+  }
+}
+    ${RoundForScorecard}`;
+export const useScorecardRoundInfo = <
+      TData = ScorecardRoundInfo,
+      TError = unknown
+    >(
+      variables: ScorecardRoundInfoVariables, 
+      options?: UseQueryOptions<ScorecardRoundInfo, TError, TData>
+    ) => 
+    useQuery<ScorecardRoundInfo, TError, TData>(
+      ['scorecardRoundInfo', variables],
+      customFetcher<ScorecardRoundInfo, ScorecardRoundInfoVariables>(ScorecardRoundInfoDocument, variables),
+      options
+    );
+useScorecardRoundInfo.document = ScorecardRoundInfoDocument;
+
+useScorecardRoundInfo.getKey = (variables: ScorecardRoundInfoVariables) => ['scorecardRoundInfo', variables];
+
+export const UpdateScorecardRoundDocument = `
+    mutation updateScorecardRound($roundId: Int!, $roundUpdate: round_set_input!) {
+  round: updateRound(pk_columns: {id: $roundId}, _set: $roundUpdate) {
+    ...roundForScorecard
+  }
+}
+    ${RoundForScorecard}`;
+export const useUpdateScorecardRound = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateScorecardRound, TError, UpdateScorecardRoundVariables, TContext>) => 
+    useMutation<UpdateScorecardRound, TError, UpdateScorecardRoundVariables, TContext>(
+      (variables?: UpdateScorecardRoundVariables) => customFetcher<UpdateScorecardRound, UpdateScorecardRoundVariables>(UpdateScorecardRoundDocument, variables)(),
+      options
+    );
+export const LayoutDocument = `
     query layout {
   courses(order_by: {scores_aggregate: {count: desc}}) {
     id
@@ -5549,7 +5766,23 @@ export const LayoutDocument = gql`
   }
 }
     `;
-export const CoursePlayerPageDocument = gql`
+export const useLayout = <
+      TData = Layout,
+      TError = unknown
+    >(
+      variables?: LayoutVariables, 
+      options?: UseQueryOptions<Layout, TError, TData>
+    ) => 
+    useQuery<Layout, TError, TData>(
+      ['layout', variables],
+      customFetcher<Layout, LayoutVariables>(LayoutDocument, variables),
+      options
+    );
+useLayout.document = LayoutDocument;
+
+useLayout.getKey = (variables?: LayoutVariables) => ['layout', variables];
+
+export const CoursePlayerPageDocument = `
     query coursePlayerPage($courseSlug: String!, $playerSlug: String!) {
   coursePlayers(
     where: {course: {slug: {_eq: $courseSlug}}, player: {slug: {_eq: $playerSlug}}}
@@ -5558,7 +5791,23 @@ export const CoursePlayerPageDocument = gql`
   }
 }
     ${CoursePlayerForPlayerPage}`;
-export const CoursePlayerStaticListingDocument = gql`
+export const useCoursePlayerPage = <
+      TData = CoursePlayerPage,
+      TError = unknown
+    >(
+      variables: CoursePlayerPageVariables, 
+      options?: UseQueryOptions<CoursePlayerPage, TError, TData>
+    ) => 
+    useQuery<CoursePlayerPage, TError, TData>(
+      ['coursePlayerPage', variables],
+      customFetcher<CoursePlayerPage, CoursePlayerPageVariables>(CoursePlayerPageDocument, variables),
+      options
+    );
+useCoursePlayerPage.document = CoursePlayerPageDocument;
+
+useCoursePlayerPage.getKey = (variables: CoursePlayerPageVariables) => ['coursePlayerPage', variables];
+
+export const CoursePlayerStaticListingDocument = `
     query coursePlayerStaticListing {
   coursePlayers {
     course {
@@ -5570,28 +5819,92 @@ export const CoursePlayerStaticListingDocument = gql`
   }
 }
     `;
-export const CourseIndexPageDocument = gql`
+export const useCoursePlayerStaticListing = <
+      TData = CoursePlayerStaticListing,
+      TError = unknown
+    >(
+      variables?: CoursePlayerStaticListingVariables, 
+      options?: UseQueryOptions<CoursePlayerStaticListing, TError, TData>
+    ) => 
+    useQuery<CoursePlayerStaticListing, TError, TData>(
+      ['coursePlayerStaticListing', variables],
+      customFetcher<CoursePlayerStaticListing, CoursePlayerStaticListingVariables>(CoursePlayerStaticListingDocument, variables),
+      options
+    );
+useCoursePlayerStaticListing.document = CoursePlayerStaticListingDocument;
+
+useCoursePlayerStaticListing.getKey = (variables?: CoursePlayerStaticListingVariables) => ['coursePlayerStaticListing', variables];
+
+export const CourseIndexPageDocument = `
     query courseIndexPage($slug: String!) {
   courses(where: {slug: {_eq: $slug}}) {
     ...courseForIndexPage
   }
 }
     ${CourseForIndexPage}`;
-export const CourseSlugStaticListingDocument = gql`
+export const useCourseIndexPage = <
+      TData = CourseIndexPage,
+      TError = unknown
+    >(
+      variables: CourseIndexPageVariables, 
+      options?: UseQueryOptions<CourseIndexPage, TError, TData>
+    ) => 
+    useQuery<CourseIndexPage, TError, TData>(
+      ['courseIndexPage', variables],
+      customFetcher<CourseIndexPage, CourseIndexPageVariables>(CourseIndexPageDocument, variables),
+      options
+    );
+useCourseIndexPage.document = CourseIndexPageDocument;
+
+useCourseIndexPage.getKey = (variables: CourseIndexPageVariables) => ['courseIndexPage', variables];
+
+export const CourseSlugStaticListingDocument = `
     query courseSlugStaticListing {
   courses {
     slug
   }
 }
     `;
-export const CourseRoundsPageDocument = gql`
+export const useCourseSlugStaticListing = <
+      TData = CourseSlugStaticListing,
+      TError = unknown
+    >(
+      variables?: CourseSlugStaticListingVariables, 
+      options?: UseQueryOptions<CourseSlugStaticListing, TError, TData>
+    ) => 
+    useQuery<CourseSlugStaticListing, TError, TData>(
+      ['courseSlugStaticListing', variables],
+      customFetcher<CourseSlugStaticListing, CourseSlugStaticListingVariables>(CourseSlugStaticListingDocument, variables),
+      options
+    );
+useCourseSlugStaticListing.document = CourseSlugStaticListingDocument;
+
+useCourseSlugStaticListing.getKey = (variables?: CourseSlugStaticListingVariables) => ['courseSlugStaticListing', variables];
+
+export const CourseRoundsPageDocument = `
     query courseRoundsPage($slug: String!) {
   courses(where: {slug: {_eq: $slug}}) {
     ...courseForRoundsPage
   }
 }
     ${CourseForRoundsPage}`;
-export const ScorecardPageNewDocument = gql`
+export const useCourseRoundsPage = <
+      TData = CourseRoundsPage,
+      TError = unknown
+    >(
+      variables: CourseRoundsPageVariables, 
+      options?: UseQueryOptions<CourseRoundsPage, TError, TData>
+    ) => 
+    useQuery<CourseRoundsPage, TError, TData>(
+      ['courseRoundsPage', variables],
+      customFetcher<CourseRoundsPage, CourseRoundsPageVariables>(CourseRoundsPageDocument, variables),
+      options
+    );
+useCourseRoundsPage.document = CourseRoundsPageDocument;
+
+useCourseRoundsPage.getKey = (variables: CourseRoundsPageVariables) => ['courseRoundsPage', variables];
+
+export const ScorecardPageNewDocument = `
     query scorecardPageNEW($slug: String!) {
   courses(where: {slug: {_eq: $slug}}) {
     holes {
@@ -5604,106 +5917,18 @@ export const ScorecardPageNewDocument = gql`
 }
     ${CourseForScorecardPlayerList}
 ${CourseForScorecardRoundInfo}`;
+export const useScorecardPageNew = <
+      TData = ScorecardPageNew,
+      TError = unknown
+    >(
+      variables: ScorecardPageNewVariables, 
+      options?: UseQueryOptions<ScorecardPageNew, TError, TData>
+    ) => 
+    useQuery<ScorecardPageNew, TError, TData>(
+      ['scorecardPageNEW', variables],
+      customFetcher<ScorecardPageNew, ScorecardPageNewVariables>(ScorecardPageNewDocument, variables),
+      options
+    );
+useScorecardPageNew.document = ScorecardPageNewDocument;
 
-export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
-
-
-const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
-export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
-  return {
-    leaderboardCard(variables: LeaderboardCardVariables): Promise<LeaderboardCard> {
-      return withWrapper(() => client.request<LeaderboardCard>(print(LeaderboardCardDocument), variables));
-    },
-    leaderboardCardForPlayer(variables: LeaderboardCardForPlayerVariables): Promise<LeaderboardCardForPlayer> {
-      return withWrapper(() => client.request<LeaderboardCardForPlayer>(print(LeaderboardCardForPlayerDocument), variables));
-    },
-    participationStatsCard(variables: ParticipationStatsCardVariables): Promise<ParticipationStatsCard> {
-      return withWrapper(() => client.request<ParticipationStatsCard>(print(ParticipationStatsCardDocument), variables));
-    },
-    roundCardList(variables?: RoundCardListVariables): Promise<RoundCardList> {
-      return withWrapper(() => client.request<RoundCardList>(print(RoundCardListDocument), variables));
-    },
-    scoringStatsCard(variables: ScoringStatsCardVariables): Promise<ScoringStatsCard> {
-      return withWrapper(() => client.request<ScoringStatsCard>(print(ScoringStatsCardDocument), variables));
-    },
-    averageScoreStatCard(variables?: AverageScoreStatCardVariables): Promise<AverageScoreStatCard> {
-      return withWrapper(() => client.request<AverageScoreStatCard>(print(AverageScoreStatCardDocument), variables));
-    },
-    roundsPlayedStatCard(variables: RoundsPlayedStatCardVariables): Promise<RoundsPlayedStatCard> {
-      return withWrapper(() => client.request<RoundsPlayedStatCard>(print(RoundsPlayedStatCardDocument), variables));
-    },
-    roundsPlayedStatCardForPlayer(variables: RoundsPlayedStatCardForPlayerVariables): Promise<RoundsPlayedStatCardForPlayer> {
-      return withWrapper(() => client.request<RoundsPlayedStatCardForPlayer>(print(RoundsPlayedStatCardForPlayerDocument), variables));
-    },
-    roundsWonStatCard(variables: RoundsWonStatCardVariables): Promise<RoundsWonStatCard> {
-      return withWrapper(() => client.request<RoundsWonStatCard>(print(RoundsWonStatCardDocument), variables));
-    },
-    scoreCountStatCard(variables?: ScoreCountStatCardVariables): Promise<ScoreCountStatCard> {
-      return withWrapper(() => client.request<ScoreCountStatCard>(print(ScoreCountStatCardDocument), variables));
-    },
-    winningsStatCard(variables: WinningsStatCardVariables): Promise<WinningsStatCard> {
-      return withWrapper(() => client.request<WinningsStatCard>(print(WinningsStatCardDocument), variables));
-    },
-    holeInput(variables: HoleInputVariables): Promise<HoleInput> {
-      return withWrapper(() => client.request<HoleInput>(print(HoleInputDocument), variables));
-    },
-    holeInputInsert(variables: HoleInputInsertVariables): Promise<HoleInputInsert> {
-      return withWrapper(() => client.request<HoleInputInsert>(print(HoleInputInsertDocument), variables));
-    },
-    holeInputUpdate(variables: HoleInputUpdateVariables): Promise<HoleInputUpdate> {
-      return withWrapper(() => client.request<HoleInputUpdate>(print(HoleInputUpdateDocument), variables));
-    },
-    holeInputDelete(variables: HoleInputDeleteVariables): Promise<HoleInputDelete> {
-      return withWrapper(() => client.request<HoleInputDelete>(print(HoleInputDeleteDocument), variables));
-    },
-    newRoundButtonInsert(variables: NewRoundButtonInsertVariables): Promise<NewRoundButtonInsert> {
-      return withWrapper(() => client.request<NewRoundButtonInsert>(print(NewRoundButtonInsertDocument), variables));
-    },
-    playerSelector(variables?: PlayerSelectorVariables): Promise<PlayerSelector> {
-      return withWrapper(() => client.request<PlayerSelector>(print(PlayerSelectorDocument), variables));
-    },
-    removeRound(variables: RemoveRoundVariables): Promise<RemoveRound> {
-      return withWrapper(() => client.request<RemoveRound>(print(RemoveRoundDocument), variables));
-    },
-    scorecardPlayerInfo(variables: ScorecardPlayerInfoVariables): Promise<ScorecardPlayerInfo> {
-      return withWrapper(() => client.request<ScorecardPlayerInfo>(print(ScorecardPlayerInfoDocument), variables));
-    },
-    scorecardRoundInfo(variables: ScorecardRoundInfoVariables): Promise<ScorecardRoundInfo> {
-      return withWrapper(() => client.request<ScorecardRoundInfo>(print(ScorecardRoundInfoDocument), variables));
-    },
-    updateScorecardRound(variables: UpdateScorecardRoundVariables): Promise<UpdateScorecardRound> {
-      return withWrapper(() => client.request<UpdateScorecardRound>(print(UpdateScorecardRoundDocument), variables));
-    },
-    offlineRoundScores(variables: OfflineRoundScoresVariables): Promise<OfflineRoundScores> {
-      return withWrapper(() => client.request<OfflineRoundScores>(print(OfflineRoundScoresDocument), variables));
-    },
-    offlineRoundScoresUpsert(variables: OfflineRoundScoresUpsertVariables): Promise<OfflineRoundScoresUpsert> {
-      return withWrapper(() => client.request<OfflineRoundScoresUpsert>(print(OfflineRoundScoresUpsertDocument), variables));
-    },
-    offlineRoundScoresDelete(variables: OfflineRoundScoresDeleteVariables): Promise<OfflineRoundScoresDelete> {
-      return withWrapper(() => client.request<OfflineRoundScoresDelete>(print(OfflineRoundScoresDeleteDocument), variables));
-    },
-    layout(variables?: LayoutVariables): Promise<Layout> {
-      return withWrapper(() => client.request<Layout>(print(LayoutDocument), variables));
-    },
-    coursePlayerPage(variables: CoursePlayerPageVariables): Promise<CoursePlayerPage> {
-      return withWrapper(() => client.request<CoursePlayerPage>(print(CoursePlayerPageDocument), variables));
-    },
-    coursePlayerStaticListing(variables?: CoursePlayerStaticListingVariables): Promise<CoursePlayerStaticListing> {
-      return withWrapper(() => client.request<CoursePlayerStaticListing>(print(CoursePlayerStaticListingDocument), variables));
-    },
-    courseIndexPage(variables: CourseIndexPageVariables): Promise<CourseIndexPage> {
-      return withWrapper(() => client.request<CourseIndexPage>(print(CourseIndexPageDocument), variables));
-    },
-    courseSlugStaticListing(variables?: CourseSlugStaticListingVariables): Promise<CourseSlugStaticListing> {
-      return withWrapper(() => client.request<CourseSlugStaticListing>(print(CourseSlugStaticListingDocument), variables));
-    },
-    courseRoundsPage(variables: CourseRoundsPageVariables): Promise<CourseRoundsPage> {
-      return withWrapper(() => client.request<CourseRoundsPage>(print(CourseRoundsPageDocument), variables));
-    },
-    scorecardPageNEW(variables: ScorecardPageNewVariables): Promise<ScorecardPageNew> {
-      return withWrapper(() => client.request<ScorecardPageNew>(print(ScorecardPageNewDocument), variables));
-    }
-  };
-}
-export type Sdk = ReturnType<typeof getSdk>;
+useScorecardPageNew.getKey = (variables: ScorecardPageNewVariables) => ['scorecardPageNEW', variables];

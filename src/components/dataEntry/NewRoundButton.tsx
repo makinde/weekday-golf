@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, ButtonProps } from 'react-bootstrap';
-
 import { format } from 'date-fns';
-import sdk from '../../sdk';
+
+import { useNewRoundButtonInsert } from '../../apiHooks';
 
 type Props = ButtonProps & React.PropsWithChildren<{
   courseId: number,
@@ -12,11 +12,12 @@ type Props = ButtonProps & React.PropsWithChildren<{
 const NewRoundButton = ({ courseId, children, ...rest }: Props) => {
   const { push } = useRouter();
   const [loading, setLoading] = useState(false);
+  const { mutateAsync } = useNewRoundButtonInsert();
 
   const createRound = async () => {
     setLoading(true);
     const date = format(new Date(), 'yyyy-MM-dd\'T\'HH:mm:ss');
-    const { insertRound } = await sdk.newRoundButtonInsert({ courseId, date });
+    const { insertRound } = await mutateAsync({ courseId, date });
     const { roundId, course } = insertRound;
 
     push(`/${course.slug}/scorecard/?roundId=${roundId}`);

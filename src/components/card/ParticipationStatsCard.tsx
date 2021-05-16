@@ -2,25 +2,21 @@ import React from 'react';
 import { Card, Table } from 'react-bootstrap';
 import round from 'lodash/round';
 import Link from 'next/link';
-import useSWR from 'swr';
 import { ReferenceLine } from 'recharts';
 
 import RelativeScore from '../utils/RelativeScore';
 import CardHeaderTitle from '../utils/CardHeaderTitle';
 import { WinningsPill } from '../utils/Winnings';
-import sdk from '../../sdk';
 import Sparkline from '../utils/Sparkline';
 import { cumulativeSeries } from '../../dataSeriesUtils';
+import { useParticipationStatsCard } from '../../apiHooks';
 
 type Props = {
   courseId: number,
 };
 
 const ParticipationStatsCard = ({ courseId }: Props) => {
-  const { data } = useSWR(
-    ['PlayerCourseStatsCard', courseId],
-    () => sdk.participationStatsCard({ courseId }),
-  );
+  const { data } = useParticipationStatsCard({ courseId });
 
   const { slug: courseSlug, coursePlayers = [] } = data?.course ?? {};
 

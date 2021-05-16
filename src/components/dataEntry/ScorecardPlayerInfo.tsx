@@ -3,7 +3,7 @@ import React from 'react';
 import find from 'lodash/find';
 import { Media } from 'react-bootstrap';
 import Avatar from '../utils/Avatar';
-import sdk, { useSdk } from '../../sdk';
+import { useScorecardPlayerInfo } from '../../apiHooks';
 
 type Props = {
   courseId: number,
@@ -12,11 +12,7 @@ type Props = {
 };
 
 const ScorecardPlayerInfo = ({ courseId, playerId, holeNumber }: Props) => {
-  const { data } = useSdk(
-    sdk.scorecardPlayerInfo,
-    { courseId, playerId },
-    { offline: true },
-  );
+  const { data } = useScorecardPlayerInfo({ courseId, playerId });
 
   const { player } = data ?? {};
   const { scoringInfo } = player ?? {};

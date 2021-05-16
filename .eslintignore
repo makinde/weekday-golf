@@ -1,5 +1,5 @@
 .next/*
 **/node_modules/*
-src/types.ts
+src/apiHooks.ts
 next-env.d.ts
 styles.d.ts
