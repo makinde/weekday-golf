@@ -4921,6 +4921,10 @@ export type WinningsStatCard = { playerRoundStats: { aggregate?: Maybe<{ sum?: M
 export type NewRoundButtonInsertVariables = Exact<{
   courseId: Scalars['Int'];
   date: Scalars['timestamp'];
+  skinsHoleBounty?: Maybe<Scalars['numeric']>;
+  skinsPlayerIds?: Maybe<Scalars['_int4']>;
+  roundBounty?: Maybe<Scalars['numeric']>;
+  roundBountyPlayerIds?: Maybe<Scalars['_int4']>;
 }>;
 
 
@@ -5548,8 +5552,10 @@ useWinningsStatCard.document = WinningsStatCardDocument;
 useWinningsStatCard.getKey = (variables: WinningsStatCardVariables) => ['winningsStatCard', variables];
 
 export const NewRoundButtonInsertDocument = `
-    mutation newRoundButtonInsert($courseId: Int!, $date: timestamp!) {
-  insertRound(object: {courseId: $courseId, date: $date}) {
+    mutation newRoundButtonInsert($courseId: Int!, $date: timestamp!, $skinsHoleBounty: numeric = null, $skinsPlayerIds: _int4 = "", $roundBounty: numeric = null, $roundBountyPlayerIds: _int4 = "") {
+  insertRound(
+    object: {courseId: $courseId, date: $date, skinsHoleBounty: $skinsHoleBounty, skinsPlayerIds: $skinsPlayerIds, roundBounty: $roundBounty, roundBountyPlayerIds: $roundBountyPlayerIds}
+  ) {
     roundId: id
     course {
       slug

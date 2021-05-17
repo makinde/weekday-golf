@@ -1,5 +1,19 @@
-mutation newRoundButtonInsert($courseId: Int!, $date: timestamp!) {
-  insertRound(object: { courseId: $courseId, date: $date }) {
+mutation newRoundButtonInsert(
+  $courseId: Int!,
+  $date: timestamp!,
+  $skinsHoleBounty: numeric = null,
+  $skinsPlayerIds: _int4 = "",
+  $roundBounty: numeric = null,
+  $roundBountyPlayerIds: _int4 = "",
+) {
+  insertRound(object: {
+    courseId: $courseId,
+    date: $date,
+    skinsHoleBounty: $skinsHoleBounty,
+    skinsPlayerIds: $skinsPlayerIds,
+    roundBounty: $roundBounty,
+    roundBountyPlayerIds: $roundBountyPlayerIds,
+  }) {
     roundId: id
     course {
       slug
