@@ -8,6 +8,8 @@ import { useQuery, UseQueryOptions, useMutation, UseMutationOptions } from 'reac
 import { customFetcher } from './graphqlClient';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -4970,7 +4972,7 @@ export type ScoresForRound = { scores: Array<Pick<Score, 'playerId' | 'holeNumbe
 
 export type RoundScoresUpsertVariables = Exact<{
   scoreData: Score_Insert_Input;
-  updateColumns: Array<Score_Update_Column>;
+  updateColumns: Array<Score_Update_Column> | Score_Update_Column;
 }>;
 
 
