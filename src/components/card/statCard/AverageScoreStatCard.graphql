@@ -12,4 +12,21 @@ query averageScoreStatCard(
       }
     }
   }
+  rounds(
+    where: { courseId: { _eq: $courseId } },
+    order_by: { date: asc },
+  ) {
+    playerRounds_aggregate(
+      where: {
+        complete: { _eq: true },
+        playerId: { _eq: $playerId },
+      }
+    ) {
+      aggregate {
+        avg {
+          score
+        }
+      }
+    }
+  }
 }

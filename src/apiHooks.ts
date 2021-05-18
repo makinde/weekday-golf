@@ -4878,7 +4878,7 @@ export type AverageScoreStatCardVariables = Exact<{
 }>;
 
 
-export type AverageScoreStatCard = { playerRoundStats: { aggregate?: Maybe<{ avg?: Maybe<Pick<Player_Round_Avg_Fields, 'relativeScore'>> }> } };
+export type AverageScoreStatCard = { playerRoundStats: { aggregate?: Maybe<{ avg?: Maybe<Pick<Player_Round_Avg_Fields, 'relativeScore'>> }> }, rounds: Array<{ playerRounds_aggregate: { aggregate?: Maybe<{ avg?: Maybe<Pick<Player_Round_Avg_Fields, 'score'>> }> } }> };
 
 export type RoundsPlayedStatCardVariables = Exact<{
   courseId: Scalars['Int'];
@@ -5383,6 +5383,17 @@ export const AverageScoreStatCardDocument = `
     aggregate {
       avg {
         relativeScore
+      }
+    }
+  }
+  rounds(where: {courseId: {_eq: $courseId}}, order_by: {date: asc}) {
+    playerRounds_aggregate(
+      where: {complete: {_eq: true}, playerId: {_eq: $playerId}}
+    ) {
+      aggregate {
+        avg {
+          score
+        }
       }
     }
   }
