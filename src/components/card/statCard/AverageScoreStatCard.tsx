@@ -26,7 +26,7 @@ const AverageScoreStatCard = ({ courseId, playerId }: Props) => {
       heading={avg === null ? '-' : (
         <RelativeScore value={round(avg, 2)} />
       )}
-      extra={(
+      extra={filteredRounds.length > 2 && (
         <Sparkline
           data={filteredRounds}
           dataKey="playerRounds_aggregate.aggregate.avg.score"

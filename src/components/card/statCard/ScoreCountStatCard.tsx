@@ -26,7 +26,9 @@ const ScoreCountStatCard = ({
     <StatCard
       title="Par Or Better"
       heading={data?.scoringStats?.aggregate?.count ?? '-'}
-      extra={<Sparkline data={cumCounts} id={`ScoreCountStatCard:${courseId}:${playerId}`} />}
+      extra={cumCounts.length > 2 && (
+        <Sparkline data={cumCounts} id={`ScoreCountStatCard:${courseId}:${playerId}`} />
+      )}
     />
   );
 };
