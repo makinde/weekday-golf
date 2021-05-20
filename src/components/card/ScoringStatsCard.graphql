@@ -3,6 +3,7 @@ query scoringStatsCard($courseId: Int!) {
     slug
 
     holes(order_by: { number: asc }) {
+      number
       ...holeForScoresHeader
     }
 

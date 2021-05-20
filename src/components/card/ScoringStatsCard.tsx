@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import {
   Table, Card, Nav, Badge,
 } from 'react-bootstrap';
+import find from 'lodash/find';
 import cx from 'classnames';
 
 import ScoresHeader from './ScoresHeader';
@@ -85,19 +86,25 @@ const ScoringStatsCard = ({ courseId }: Props) => {
                         </a>
                       </Link>
                     </td>
-                    {scoringInfo.map((info) => (
-                      <td key={info.holeNumber} className="position-relative">
-                        {viewingRecent && info.trailingAvgScore}
-                        {viewingAll && info.lifetimeAvgScore}
-                        {Math.abs(info.scoreTrend) > TRENDING_CUTOFF && (
-                          <i className={cx('fe ml-1 mt-1 position-absolute', {
-                            'fe-chevrons-up text-danger': info.scoreTrend > 0,
-                            'fe-chevrons-down text-success': info.scoreTrend < 0,
-                          })}
-                          />
-                        )}
-                      </td>
-                    ))}
+                    {holes.map((hole) => {
+                      const info = find(scoringInfo, { holeNumber: hole.number });
+
+                      return info === undefined
+                        ? (<td key={hole.number} />)
+                        : (
+                          <td key={hole.number} className="position-relative">
+                            {viewingRecent && info.trailingAvgScore}
+                            {viewingAll && info.lifetimeAvgScore}
+                            {Math.abs(info.scoreTrend) > TRENDING_CUTOFF && (
+                            <i className={cx('fe ml-1 mt-1 position-absolute', {
+                              'fe-chevrons-up text-danger': info.scoreTrend > 0,
+                              'fe-chevrons-down text-success': info.scoreTrend < 0,
+                            })}
+                            />
+                            )}
+                          </td>
+                        );
+                    })}
                   </tr>
                 );
               })}

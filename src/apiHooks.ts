@@ -4869,7 +4869,10 @@ export type ScoringStatsCardVariables = Exact<{
 
 export type ScoringStatsCard = { course?: Maybe<(
     Pick<Course, 'slug'>
-    & { holes: Array<HoleForScoresHeader>, coursePlayers: Array<{ player?: Maybe<Pick<Player, 'id' | 'slug' | 'nickname'>>, scoringInfo: Array<Pick<Scoring_Info, 'holeNumber' | 'trailingCount' | 'trailingAvgScore' | 'lifetimeAvgScore' | 'scoreTrend'>> }> }
+    & { holes: Array<(
+      Pick<Hole, 'number'>
+      & HoleForScoresHeader
+    )>, coursePlayers: Array<{ player?: Maybe<Pick<Player, 'id' | 'slug' | 'nickname'>>, scoringInfo: Array<Pick<Scoring_Info, 'holeNumber' | 'trailingCount' | 'trailingAvgScore' | 'lifetimeAvgScore' | 'scoreTrend'>> }> }
   )> };
 
 export type AverageScoreStatCardVariables = Exact<{
@@ -5340,6 +5343,7 @@ export const ScoringStatsCardDocument = `
   course(id: $courseId) {
     slug
     holes(order_by: {number: asc}) {
+      number
       ...holeForScoresHeader
     }
     coursePlayers(order_by: {scores_aggregate: {count: desc}}) {
