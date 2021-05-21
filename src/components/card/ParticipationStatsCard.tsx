@@ -48,6 +48,9 @@ const ParticipationStatsCard = ({ courseId }: Props) => {
             const { playerRoundsStats: { aggregate: stats } } = coursePlayer;
             const { winningStats: { aggregate: { count: roundsWon } } } = coursePlayer;
 
+            const roundedRelativeScore = stats.avg.relativeScore === null
+              ? null
+              : round(stats.avg.relativeScore, 2);
             const roundWinnings = playerRoundWinnings.map((pr) => pr.totalWinnings);
             const cumWinnings = cumulativeSeries(roundWinnings);
 
@@ -61,7 +64,7 @@ const ParticipationStatsCard = ({ courseId }: Props) => {
                   </Link>
                 </td>
                 <td>
-                  <RelativeScore value={round(stats.avg.relativeScore, 2)} />
+                  <RelativeScore value={roundedRelativeScore} />
                   {stats.count > 3 && (
                     <Sparkline
                       data={playerRoundScores}
