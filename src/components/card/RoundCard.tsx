@@ -1,5 +1,8 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import {
+  Button, Card, Row, Col,
+} from 'react-bootstrap';
+import map from 'lodash/map';
 
 import Link from 'next/link';
 import { RoundForRoundCard } from '../../apiHooks';
@@ -37,26 +40,39 @@ const RoundCard = ({ round, title }: Props) => (
         <RoundTable round={round} className="table-nowrap card-table" />
         {(round.skinsHoleBounty || round.roundBounty || canEdit) && (
           <Card.Body className="border-top">
-            <div className="small text-muted">
-              {round.skinsHoleBounty && (
+            <Row>
+              <Col className="small text-muted">
+                {round.skinsHoleBounty && (
                 <span>
                   $
                   {round.skinsHoleBounty}
                   /hole skin
                   {round.roundBounty && (<>,&nbsp;</>)}
                 </span>
-              )}
-              {round.roundBounty && (
-                `$${round.roundBounty} round winner`
-              )}
-              <div>
-                <Link href={`/${round.course.slug}/scorecard/?roundId=${round.id}`}>
-                  <a>
-                    edit scores
-                  </a>
+                )}
+                {round.roundBounty && (
+                  `$${round.roundBounty} round winner`
+                )}
+              </Col>
+              <Col xs="auto">
+                <Link
+                  href={{
+                    pathname: '/[courseSlug]/scorecard/',
+                    query: {
+                      courseSlug: round.course.slug,
+                      roundId: round.id,
+                      actives: map(round.playerRounds, 'player.id'),
+                    },
+                  }}
+                  passHref
+                >
+                  <Button variant="white" size="sm">
+                    <i className="fe fe-edit mr-2" />
+                    Edit Scores
+                  </Button>
                 </Link>
-              </div>
-            </div>
+              </Col>
+            </Row>
           </Card.Body>
         )}
       </>
