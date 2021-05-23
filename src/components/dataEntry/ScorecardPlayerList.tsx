@@ -144,9 +144,8 @@ const ScorecardPlayerList = ({
               />
               <div className="d-block d-sm-none">
                 <Button
-                  variant="white"
-                  className="btn-rounded-circle mr-2"
-                  size="sm"
+                  variant="link"
+                  className="mr-2 text-reset"
                   onClick={async () => updateScore({
                     scoreKey,
                     scoreUpdate: {
@@ -154,12 +153,12 @@ const ScorecardPlayerList = ({
                     },
                   })}
                 >
-                  -
+                  <i className="fe fe-minus-circle h1" />
                 </Button>
-                {score?.score ?? '-'}
+                <span className="h1 font-weight-normal">{score?.score ?? '-'}</span>
                 <Button
-                  variant="white"
-                  className="btn-rounded-circle ml-2"
+                  variant="link"
+                  className="ml-2 text-reset"
                   onClick={async () => updateScore({
                     scoreKey,
                     scoreUpdate: {
@@ -167,7 +166,7 @@ const ScorecardPlayerList = ({
                     },
                   })}
                 >
-                  +
+                  <i className="fe fe-plus-circle h1 " />
                 </Button>
               </div>
             </div>
