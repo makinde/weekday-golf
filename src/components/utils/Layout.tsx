@@ -166,7 +166,7 @@ const Layout = ({
 
         </Container>
       </Navbar>
-      <div className={`main-content bg-lighter ${styles.content}`}>
+      <div className={`main-content bg-lighter min-vh-100 ${styles.content}`}>
         <Container fluid>
           {children}
         </Container>
