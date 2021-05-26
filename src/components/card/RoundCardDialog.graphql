@@ -1,0 +1,9 @@
+query roundCardDialog($roundId: Int!) {
+  round(id: $roundId) {
+    id
+    course {
+      slug
+    }
+    ...roundForRoundCard
+  }
+}

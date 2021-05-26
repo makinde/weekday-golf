@@ -23,11 +23,15 @@ const RoundCardList = ({ courseId, playerId, limit }: Props) => {
         <RoundCard
           key={round.id}
           round={round}
+          canShare={singleRound || true}
           title={singleRound && (
             <CardHeaderTitle>
               Latest Round
-              <Link href={playerId ? '#rounds' : `/${round.course.slug}/rounds`}>
-                <a className="small ml-3 text-primary">
+              <Link
+                href={playerId ? '#rounds' : `/${round.course.slug}/rounds`}
+                data-html2canvas-ignore
+              >
+                <a className="small ml-3 text-primary ">
                   See all
                 </a>
               </Link>

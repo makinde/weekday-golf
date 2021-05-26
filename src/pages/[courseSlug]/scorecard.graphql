@@ -1,5 +1,6 @@
 query scorecardPageNEW($slug: String!) {
   courses(where: { slug: { _eq: $slug } }) {
+    name
     holes {
       number
       par

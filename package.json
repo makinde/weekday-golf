@@ -26,6 +26,7 @@
     "date-fns": "2.16.1",
     "graphql": "15.4.0",
     "graphql-request": "^3.4.0",
+    "html2canvas": "1.0.0-rc.7",
     "lodash": "^4.17.20",
     "next": "10.0.3",
     "react": "^17.0.1",

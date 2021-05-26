@@ -4836,6 +4836,17 @@ export type RoundForRoundCard = (
   & RoundForTable
 );
 
+export type RoundCardDialogVariables = Exact<{
+  roundId: Scalars['Int'];
+}>;
+
+
+export type RoundCardDialog = { round?: Maybe<(
+    Pick<Round, 'id'>
+    & { course: Pick<Course, 'slug'> }
+    & RoundForRoundCard
+  )> };
+
 export type RoundCardListVariables = Exact<{
   courseId?: Maybe<Scalars['Int']>;
   playerId?: Maybe<Scalars['Int']>;
@@ -5064,7 +5075,8 @@ export type ScorecardPageNewVariables = Exact<{
 
 
 export type ScorecardPageNew = { courses: Array<(
-    { holes: Array<Pick<Hole, 'number' | 'par'>> }
+    Pick<Course, 'name'>
+    & { holes: Array<Pick<Hole, 'number' | 'par'>> }
     & CourseForScorecardPlayerList
     & CourseForScorecardRoundInfo
   )> };
@@ -5306,6 +5318,33 @@ export const useParticipationStatsCard = <
 useParticipationStatsCard.document = ParticipationStatsCardDocument;
 
 useParticipationStatsCard.getKey = (variables: ParticipationStatsCardVariables) => ['participationStatsCard', variables];
+
+export const RoundCardDialogDocument = `
+    query roundCardDialog($roundId: Int!) {
+  round(id: $roundId) {
+    id
+    course {
+      slug
+    }
+    ...roundForRoundCard
+  }
+}
+    ${RoundForRoundCard}`;
+export const useRoundCardDialog = <
+      TData = RoundCardDialog,
+      TError = unknown
+    >(
+      variables: RoundCardDialogVariables, 
+      options?: UseQueryOptions<RoundCardDialog, TError, TData>
+    ) => 
+    useQuery<RoundCardDialog, TError, TData>(
+      ['roundCardDialog', variables],
+      customFetcher<RoundCardDialog, RoundCardDialogVariables>(RoundCardDialogDocument, variables),
+      options
+    );
+useRoundCardDialog.document = RoundCardDialogDocument;
+
+useRoundCardDialog.getKey = (variables: RoundCardDialogVariables) => ['roundCardDialog', variables];
 
 export const RoundCardListDocument = `
     query roundCardList($courseId: Int, $playerId: Int, $limit: Int) {
@@ -5930,6 +5969,7 @@ useCourseRoundsPage.getKey = (variables: CourseRoundsPageVariables) => ['courseR
 export const ScorecardPageNewDocument = `
     query scorecardPageNEW($slug: String!) {
   courses(where: {slug: {_eq: $slug}}) {
+    name
     holes {
       number
       par

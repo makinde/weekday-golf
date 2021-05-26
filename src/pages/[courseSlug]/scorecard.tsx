@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  ToggleButtonGroup, ToggleButton, Button, Modal, Card,
+  ToggleButtonGroup, ToggleButton, Button, Modal, Card, Row, Col,
 } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import find from 'lodash/find';
@@ -16,6 +16,7 @@ import ScorecardPlayerList from '../../components/dataEntry/ScorecardPlayerList'
 import PlayerSelector from '../../components/dataEntry/PlayerSelector';
 import CardHeaderTitle from '../../components/utils/CardHeaderTitle';
 import { ScorecardPageNewDocument, ScorecardPageNew } from '../../apiHooks';
+import RoundCardDialog from '../../components/card/RoundCardDialog';
 
 type PageQuery = { courseSlug: string };
 type Props = { course: ScorecardPageNew['courses'][0] };
@@ -31,9 +32,10 @@ const ScorecardPage = ({ course }: Props) => {
   const activeHoleNumber = toInteger(query.hole) || 1;
   const activeHole = find(holes, { number: activeHoleNumber });
   const [showPlayerSelector, setShowPlayerSelector] = useState(false);
+  const [showFinalScorecard, setShowFinalScorecard] = useState(false);
 
   return (
-    <Layout title="Overview">
+    <Layout title={`${course.name} Scorecard`}>
       <ScorecardRoundInfo course={course} roundId={roundId} />
       <div className="d-flex mx-n3 mx-md-n5 p-3 bg-light">
         <span>
@@ -46,21 +48,38 @@ const ScorecardPage = ({ course }: Props) => {
         </span>
       </div>
       {roundId && (
-        <ScorecardPlayerList
-          playerIds={activePlayerIds}
-          roundId={roundId}
-          course={course}
-          holeNumber={activeHoleNumber}
-        />
+      <ScorecardPlayerList
+        playerIds={activePlayerIds}
+        roundId={roundId}
+        course={course}
+        holeNumber={activeHoleNumber}
+      />
       )}
-      <Button
-        block
-        onClick={() => setShowPlayerSelector(true)}
-        variant="light"
-        className="my-3"
-      >
-        Edit Players
-      </Button>
+      <Row className="my-3">
+        <Col>
+          <Button
+            block
+            onClick={() => setShowPlayerSelector(true)}
+            variant="light"
+          >
+            Edit Players
+          </Button>
+        </Col>
+        <Col>
+          <Button
+            block
+            onClick={() => setShowFinalScorecard(true)}
+            variant="light"
+          >
+            Final Scorecard
+          </Button>
+          <RoundCardDialog
+            roundId={roundId}
+            show={showFinalScorecard}
+            onHide={() => setShowFinalScorecard(false)}
+          />
+        </Col>
+      </Row>
       <Modal
         centered
         onHide={() => setShowPlayerSelector(false)}
@@ -95,17 +114,21 @@ const ScorecardPage = ({ course }: Props) => {
       <ToggleButtonGroup
         name="hole_selector"
         type="radio"
+        className="Xmx-n3 d-flex Xposition-absolute fixed-bottom"
+        style={{ bottom: 0 }}
         value={activeHoleNumber}
         onChange={(value) => replace({
           pathname,
           query: { ...query, hole: value },
         }, undefined, { shallow: true })}
       >
+        <div className="d-none" />
         {holes.map((hole) => (
-          <ToggleButton key={hole.number} value={hole.number} variant="secondary">
+          <ToggleButton key={hole.number} value={hole.number} variant="secondary" className="flex-fill">
             {hole.number}
           </ToggleButton>
         ))}
+        <div className="d-none" />
       </ToggleButtonGroup>
     </Layout>
   );
