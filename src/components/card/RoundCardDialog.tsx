@@ -17,7 +17,7 @@ const RoundCardDialog = ({ roundId, show = false, onHide }: Props) => {
 
   return (
     <Modal centered show={show} onHide={onHide}>
-      <RoundCard round={round} className="modal-card" canEdit={false} canShare />
+      <RoundCard round={round} className="modal-card" canEdit={false} />
     </Modal>
   );
 };

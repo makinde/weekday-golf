@@ -23,7 +23,6 @@ const RoundCardList = ({ courseId, playerId, limit }: Props) => {
         <RoundCard
           key={round.id}
           round={round}
-          canShare={singleRound}
           title={singleRound && (
             <CardHeaderTitle>
               Latest Round
